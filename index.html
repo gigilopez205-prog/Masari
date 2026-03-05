@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari Ultimate</title>
+    <title>Masari Academy & Simulator</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -13,7 +13,7 @@
     <nav class="sidebar">
         <div class="brand">MASARI</div>
         <div class="menu">
-            <button onclick="cambiarPagina('inicio')" id="btn-inicio" class="nav-btn active"><i data-lucide="layout-grid"></i><span>Inicio</span></button>
+            <button onclick="cambiarPagina('inicio')" id="btn-inicio" class="nav-btn active"><i data-lucide="layout-grid"></i><span>Panel</span></button>
             <button onclick="cambiarPagina('clases')" id="btn-clases" class="nav-btn"><i data-lucide="graduation-cap"></i><span>Academia</span></button>
             <button onclick="cambiarPagina('juegos')" id="btn-juegos" class="nav-btn"><i data-lucide="line-chart"></i><span>Bolsa</span></button>
             <button onclick="cambiarPagina('perfil')" id="btn-perfil" class="nav-btn"><i data-lucide="user"></i><span>Perfil</span></button>
@@ -26,14 +26,14 @@
 
     <main class="content">
         <section id="inicio" class="page active">
-            <h1 class="title">Tu <span>Resumen</span></h1>
+            <h1 class="title">Resumen <span>Financiero</span></h1>
             <div class="card-grid">
                 <div class="card">
-                    <h4>Valor de Cartera</h4>
+                    <h4>Valor Cartera</h4>
                     <p id="balance-total" class="price-min">$0</p>
                 </div>
                 <div class="card">
-                    <h4>Acciones en Posesión</h4>
+                    <h4>Posición</h4>
                     <p id="mis-acciones" class="price-min">0 unidades</p>
                 </div>
             </div>
@@ -41,43 +41,69 @@
 
         <section id="clases" class="page">
             <h2 class="title">Academia 📚</h2>
-            <div id="quiz-container" class="card" style="display:none; border: 2px solid #3b82f6;">
+            
+            <div id="quiz-container" class="card" style="display:none; border: 2px solid var(--blue);">
                 <h3 id="quiz-titulo">Examen</h3>
-                <p id="quiz-pregunta" style="margin: 15px 0;"></p>
+                <p id="quiz-pregunta" style="margin: 15px 0; font-size: 1.1rem;"></p>
                 <div id="quiz-opciones" style="display:flex; flex-direction:column; gap:10px;"></div>
+                
+                <div id="quiz-feedback" style="display:none; margin-top: 20px; padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05);">
+                    <p id="feedback-texto"></p>
+                    <button class="btn-main" style="margin-top:10px; background: var(--green);" onclick="cerrarQuiz()">Continuar</button>
+                </div>
             </div>
+
             <div class="card-grid">
                 <div class="card">
-                    <h3>Interés Compuesto</h3>
-                    <button class="btn-main" onclick="abrirQuiz('interes')">Hacer examen +500 XP</button>
+                    <h3>Inflación</h3>
+                    <p>Entiende por qué el dinero pierde valor.</p>
+                    <button class="btn-main" onclick="abrirQuiz('inflacion')">Iniciar Examen</button>
                 </div>
                 <div class="card">
-                    <h3>Ahorro Real</h3>
-                    <button class="btn-main" onclick="abrirQuiz('ahorro')">Hacer examen +500 XP</button>
+                    <h3>ETFs</h3>
+                    <p>Inversión diversificada para principiantes.</p>
+                    <button class="btn-main" onclick="abrirQuiz('etfs')">Iniciar Examen</button>
+                </div>
+                <div class="card">
+                    <h3>Criptoactivos</h3>
+                    <p>Bitcoin y la tecnología Blockchain.</p>
+                    <button class="btn-main" onclick="abrirQuiz('cripto')">Iniciar Examen</button>
+                </div>
+                <div class="card">
+                    <h3>Interés Compuesto</h3>
+                    <p>La octava maravilla del mundo.</p>
+                    <button class="btn-main" onclick="abrirQuiz('interes')">Iniciar Examen</button>
                 </div>
             </div>
         </section>
 
         <section id="juegos" class="page">
-            <h2 class="title">Simulador 📈</h2>
+            <h2 class="title">Simulador en Vivo</h2>
             <div class="card market-card">
                 <div class="market-info">
                     <div id="p-bolsa" class="price-big">$800,000</div>
                     <div class="btns-trade">
-                        <button class="btn-buy" onclick="comprarAccion()">COMPRAR 1</button>
-                        <button class="btn-sell" onclick="venderAccion()">VENDER TODO</button>
+                        <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
+                        <button class="btn-sell" onclick="venderAccion()">VENDER</button>
                     </div>
                 </div>
-                <div class="chart-box" style="height: 250px;"><canvas id="graficaBolsa"></canvas></div>
+                <div class="chart-box"><canvas id="graficaBolsa"></canvas></div>
+            </div>
+
+            <div class="card">
+                <h3>Historial de Transacciones</h3>
+                <div id="historial-bolsa" class="historial-lista">
+                    <p style="color: var(--gray); text-align: center; padding: 20px;">No hay movimientos en esta sesión.</p>
+                </div>
             </div>
         </section>
 
         <section id="perfil" class="page">
-            <h2 class="title">Tus <span>Logros</span></h2>
+            <h2 class="title">Tus Logros</h2>
             <div class="card">
-                <div style="display:flex; gap:20px; justify-content: space-around;">
+                <div style="display:flex; gap:20px; justify-content: space-around; flex-wrap: wrap;">
                     <div class="medalla" id="med-lobo">🐺<br><small>Inversionista</small></div>
-                    <div class="medalla" id="med-genio">🧠<br><small>Sabio</small></div>
+                    <div class="medalla" id="med-genio">🧠<br><small>Experto</small></div>
                     <div class="medalla" id="med-rico">💰<br><small>Millonario</small></div>
                 </div>
             </div>
