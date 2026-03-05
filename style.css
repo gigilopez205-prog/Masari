@@ -93,3 +93,36 @@ input { background: var(--bg-dark); border: 1px solid #233554; color: white; pad
     .sidebar span, .brand, .xp-footer { display: none; }
     .content { margin-left: 80px; }
 }
+/* (Mantén todo lo anterior y añade/reemplaza esto) */
+.medalla {
+    text-align: center;
+    padding: 20px;
+    background: var(--bg-dark);
+    border-radius: 15px;
+    filter: grayscale(1);
+    opacity: 0.3;
+    transition: 0.5s;
+    flex: 1;
+}
+
+.medalla.unlocked {
+    filter: grayscale(0);
+    opacity: 1;
+    border: 2px solid gold;
+    transform: scale(1.1);
+}
+
+.quiz-btn {
+    background: var(--bg-dark);
+    color: white;
+    border: 1px solid var(--blue);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.quiz-btn:hover { background: var(--blue); }
+
+.price-min.ganancia { color: var(--green); }
+.price-min.perdida { color: var(--red); }
