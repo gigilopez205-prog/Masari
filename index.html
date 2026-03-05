@@ -6,7 +6,6 @@
     <title>Masari Ultimate Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* CSS INTEGRADO - No tocar estas etiquetas <style> */
         :root {
             --bg-dark: #020c1b; --bg-main: #0a192f; --bg-card: #112240;
             --blue: #3b82f6; --white: #e2e8f0; --gray: #94a3b8;
@@ -33,18 +32,22 @@
         .title { font-size: 32px; margin-bottom: 30px; }
         .title span { color: var(--blue); }
 
-        /* BOLSA ESTILO PICOS */
+        /* BOLSA & HISTORIAL */
         .market-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         #p-bolsa { font-size: 48px; font-family: 'Courier New', monospace; font-weight: bold; transition: 0.2s; }
-        .chart-box { height: 350px; width: 100%; background: #020c1b; border-radius: 12px; padding: 15px; }
+        .chart-box { height: 350px; width: 100%; background: #020c1b; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        .history-table th { text-align: left; color: var(--gray); padding-bottom: 10px; border-bottom: 1px solid #233554; }
+        .history-table td { padding: 10px 0; border-bottom: 1px solid rgba(35, 53, 84, 0.5); }
 
-        /* PERFIL FUNCIONAL */
-        .profile-flex { display: flex; gap: 30px; align-items: center; }
-        .avatar-wrap { position: relative; width: 130px; height: 130px; }
+        /* PERFIL */
+        .profile-flex { display: flex; gap: 30px; align-items: flex-start; }
+        .avatar-wrap { position: relative; width: 130px; height: 130px; flex-shrink: 0; }
         #user-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--blue); background: #1d2d50; }
         .edit-badge { position: absolute; bottom: 5px; right: 5px; background: var(--blue); border: none; color: white; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .profile-inputs { flex: 1; display: flex; flex-direction: column; gap: 12px; }
-        input, textarea { background: #020c1b; border: 1px solid #233554; color: white; padding: 12px; border-radius: 8px; font-size: 16px; width: 100%; }
+        .profile-inputs { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+        input, textarea, select { background: #020c1b; border: 1px solid #233554; color: white; padding: 12px; border-radius: 8px; font-size: 14px; width: 100%; }
         
         /* BOTONES */
         .btn { padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; color: white; }
@@ -80,16 +83,22 @@
 
     <main>
         <section id="inicio" class="page active">
-            <h1 class="title">Bienvenido, <span>Inversionista</span></h1>
+            <h1 class="title">Bienvenido, <span id="display-name">Inversionista</span></h1>
             <div class="card" style="border-left: 6px solid var(--blue);">
-                <h3>¿Qué es Masari? 🚀</h3>
+                <h3>¿Por qué Masari? 🚀</h3>
                 <p style="margin-top: 10px; line-height: 1.6; color: var(--gray);">
-                    Masari es tu simulador financiero de alto rendimiento. Aprende a dominar el mercado real, gestiona tu capital y compite en retos de conocimiento. <b>El conocimiento es la mejor inversión.</b>
+                    Masari es tu simulador financiero de alto rendimiento. En un mundo donde la inflación devora tus ahorros, aprender a invertir no es un lujo, es una necesidad. Aquí aprenderás a dominar el mercado real sin riesgo.
                 </p>
+                <button class="btn btn-blue" style="width:auto; margin-top:15px;" onclick="goto('academia')">¡Empezar a Ganar XP!</button>
             </div>
+            
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="card"><h4>Cartera Estimada</h4><h2 id="ui-cartera" style="color: var(--green); margin-top:10px;">$0</h2></div>
                 <div class="card"><h4>Acciones Masari</h4><h2 id="ui-acciones" style="margin-top:10px;">0</h2></div>
+                <div class="card full-width" style="text-align: center;">
+                    <h4 style="color:var(--blue)">CONSEJO DEL DÍA</h4>
+                    <p id="daily-tip" style="font-style: italic; margin-top: 10px;">"No trabajes por el dinero, haz que el dinero trabaje por ti."</p>
+                </div>
             </div>
         </section>
 
@@ -122,6 +131,16 @@
                 </div>
                 <div class="chart-box"><canvas id="graficaReal"></canvas></div>
             </div>
+            <div class="card">
+                <h3 style="margin-bottom: 15px;">Historial de Transacciones</h3>
+                <table class="history-table">
+                    <thead>
+                        <tr><th>Tipo</th><th>Precio</th><th>Cantidad</th><th>Estado</th></tr>
+                    </thead>
+                    <tbody id="trade-history">
+                        </tbody>
+                </table>
+            </div>
         </section>
 
         <section id="perfil" class="page">
@@ -134,9 +153,31 @@
                         <button class="edit-badge" onclick="document.getElementById('img-input').click()">📷</button>
                     </div>
                     <div class="profile-inputs">
-                        <input type="text" id="user-name" placeholder="Nombre de Usuario" value="Inversionista Masari">
-                        <textarea id="user-bio" placeholder="Describe tu estrategia de inversión..."></textarea>
-                        <button class="btn btn-blue" onclick="saveP()">GUARDAR CAMBIOS</button>
+                        <div>
+                            <label style="font-size:12px; color:var(--gray)">Nombre de Usuario</label>
+                            <input type="text" id="user-name" value="Inversionista Masari">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:var(--gray)">País / Región</label>
+                            <input type="text" id="user-country" placeholder="Ej. México">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:var(--gray)">Estrategia</label>
+                            <select id="user-strategy">
+                                <option>Agresiva (Trading)</option>
+                                <option>Moderada (ETFs)</option>
+                                <option>Conservadora (Ahorro)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:var(--gray)">Red Social / Link</label>
+                            <input type="text" id="user-link" placeholder="@tu_usuario">
+                        </div>
+                        <div class="full-width">
+                            <label style="font-size:12px; color:var(--gray)">Mi Biografía Financiera</label>
+                            <textarea id="user-bio" placeholder="Describe tu meta (Ej. Comprar mi casa en 5 años)"></textarea>
+                        </div>
+                        <button class="btn btn-blue full-width" onclick="saveP()">GUARDAR PERFIL COMPLETO</button>
                     </div>
                 </div>
             </div>
@@ -144,10 +185,10 @@
     </main>
 
     <script>
-        /* MOTOR JAVASCRIPT - No tocar estas etiquetas <script> */
         let xp = 2500, price = 800000, stocks = 0, qIdx = 0;
+        let historyData = [];
 
-        // --- BOLSA (GRÁFICA DE PICOS REALES) ---
+        // --- BOLSA (PICOS REALES) ---
         const ctx = document.getElementById('graficaReal').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'line',
@@ -158,7 +199,7 @@
                     borderColor: '#3b82f6',
                     borderWidth: 3,
                     pointRadius: 0,
-                    tension: 0, // 0 = Picos rectos (bolsa real), 0.4 = Ondas
+                    tension: 0,
                     fill: true,
                     backgroundColor: 'rgba(59, 130, 246, 0.05)'
                 }]
@@ -166,21 +207,19 @@
             options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: false }, y: { grid: { color: '#233554' } } }, animation: false }
         });
 
-        // Simulación de movimiento constante (cada 1.2 segundos)
         setInterval(() => {
-            let drift = (Math.random() - 0.48) * 14000; // Fluctuación agresiva
+            let drift = (Math.random() - 0.48) * 14000;
             price += drift;
             const el = document.getElementById('p-bolsa');
             el.innerText = "$" + Math.floor(price).toLocaleString();
             el.style.color = drift > 0 ? "#10b981" : "#ef4444";
-            
             chart.data.datasets[0].data.push(price);
             chart.data.datasets[0].data.shift();
             chart.update();
             updateUI();
         }, 1200);
 
-        // --- SISTEMA DE MEMES ---
+        // --- MEMES ---
         function meme(isWin, txt) {
             const ok = ["https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif", "https://media.giphy.com/media/3o6gDWzmAzrpi5DQU8/giphy.gif", "https://media.giphy.com/media/2XskdWuV659n7gW64s/giphy.gif"];
             const no = ["https://media.giphy.com/media/9pZw57AyqOHy47uAdZ/giphy.gif", "https://media.giphy.com/media/hStvd5LiWCFzXYZAzM/giphy.gif", "https://media.giphy.com/media/vfs07m4bFhR1X1g6uH/giphy.gif"];
@@ -200,12 +239,8 @@
             {q:"Un 'Bull Market' significa que la bolsa...", o:["Baja","Sube","Está cerrada","Está en crisis"], a:1},
             {q:"¿Qué significa diversificar?", o:["Apostar todo","Repartir riesgo","No invertir","Comprar oro"], a:1},
             {q:"¿Qué es un dividendo?", o:["Un gasto","Reparto de beneficios","Un préstamo","Una multa"], a:1},
-            {q:"¿Qué es el S&P 500?", o:["Un carro","Índice de 500 empresas","Un banco","Un país"], a:1},
-            {q:"¿Qué es un activo?", o:["Algo que quita dinero","Algo que pone dinero","Una deuda","Un gasto"], a:1},
-            {q:"Invertir a largo plazo suele ser...", o:["Más arriesgado","Menos arriesgado","Imposible","Aburrido"], a:1},
-            // ... (Se repiten para completar 25 de forma dinámica)
+            {q:"¿Qué es el S&P 500?", o:["Un carro","Índice de 500 empresas","Un banco","Un país"], a:1}
         ];
-        // Autocompletar a 25 preguntas
         while(questions.length < 25) { questions.push(questions[Math.floor(Math.random()*questions.length)]); }
 
         function startQuiz() { document.getElementById('quiz-start').style.display='none'; document.getElementById('quiz-ui').style.display='block'; loadQ(); }
@@ -221,34 +256,49 @@
             else { meme(false, "¡ERROR! Sigue estudiando"); }
             qIdx++;
             if(qIdx < 25) setTimeout(loadQ, 3000);
-            else { document.getElementById('quiz-ui').innerHTML = "<h2 style='text-align:center'>🏆 ¡MARATÓN COMPLETADA! Eres un experto.</h2>"; }
+            else { document.getElementById('quiz-ui').innerHTML = "<h2 style='text-align:center'>🏆 ¡MARATÓN COMPLETADA!</h2>"; }
             updateUI();
         }
 
-        // --- FUNCIONES NAVEGACIÓN Y PERFIL ---
+        // --- NAVEGACIÓN Y PERFIL ---
         function goto(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('n-'+id).classList.add('active');
         }
+        
         function trade(n) { 
             if(n < 0 && stocks <= 0) { meme(false, "No tienes acciones"); return; }
             stocks += n; 
+            
+            // Agregar al historial
+            const type = n > 0 ? "COMPRA" : "VENTA";
+            const color = n > 0 ? "var(--green)" : "var(--red)";
+            const row = `<tr><td style="color:${color}; font-weight:bold;">${type}</td><td>$${Math.floor(price).toLocaleString()}</td><td>1</td><td style="color:var(--gray)">Completado</td></tr>`;
+            document.getElementById('trade-history').insertAdjacentHTML('afterbegin', row);
+            
             meme(true, n > 0 ? "¡COMPRA EXITOSA!" : "¡VENTA EXITOSA!"); 
             updateUI(); 
         }
+
         function updateUI() {
             document.getElementById('ui-cartera').innerText = "$" + Math.floor(stocks * price).toLocaleString();
             document.getElementById('ui-acciones').innerText = stocks;
             document.getElementById('xp-display').innerText = xp;
         }
+
         function upload(input) {
             const reader = new FileReader();
             reader.onload = (e) => document.getElementById('user-img').src = e.target.result;
             reader.readAsDataURL(input.files[0]);
         }
-        function saveP() { alert("¡Perfil guardado correctamente!"); }
+
+        function saveP() { 
+            const name = document.getElementById('user-name').value;
+            document.getElementById('display-name').innerText = name;
+            alert("¡Perfil financiero actualizado!"); 
+        }
 
         updateUI();
     </script>
