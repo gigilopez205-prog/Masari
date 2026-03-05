@@ -1,23 +1,24 @@
 let puntosXP = 2500;
 let precioActual = 800000;
-let historialPrecios = [790000, 795000, 798000, 800000]; // Precios iniciales
-let etiquetas = ["10:00", "10:05", "10:10", "10:15"]; // Horas iniciales
+let datosPrecios = [795000, 798000, 800000];
+let etiquetas = ["T-2", "T-1", "T-0"];
 
-// CONFIGURACIÓN DE LA GRÁFICA
+// 1. INICIALIZAR GRÁFICA
 const ctx = document.getElementById('graficaBolsa').getContext('2d');
+let colorGrafica = '#3b82f6'; 
+
 const miGrafica = new Chart(ctx, {
     type: 'line',
     data: {
         labels: etiquetas,
         datasets: [{
-            label: 'Precio $MAS',
-            data: historialPrecios,
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            data: datosPrecios,
+            borderColor: colorGrafica,
+            backgroundColor: 'rgba(59, 130, 246, 0.05)',
             borderWidth: 3,
             fill: true,
             tension: 0.4,
-            pointRadius: 0
+            pointRadius: 2
         }]
     },
     options: {
@@ -31,6 +32,7 @@ const miGrafica = new Chart(ctx, {
     }
 });
 
+// 2. FUNCIONES DE XP
 function actualizarXP(cantidad) {
     puntosXP += cantidad;
     document.getElementById('xp-count').innerText = puntosXP.toLocaleString();
@@ -38,6 +40,7 @@ function actualizarXP(cantidad) {
     document.getElementById('xp-bar-inner').style.width = porcentaje + "%";
 }
 
+// 3. COMPRAR Y VENDER
 function comprarAccion() {
     actualizarXP(100);
     registrarHistorial("COMPRA", "#10b981");
@@ -46,56 +49,69 @@ function comprarAccion() {
 function venderAccion() {
     actualizarXP(50);
     registrarHistorial("VENTA", "#ef4444");
-    alert("Venta realizada.");
 }
 
 function registrarHistorial(tipo, color) {
     const historial = document.getElementById('lista-transacciones');
     const pLabel = document.getElementById('precio-bolsa').innerText;
     const ahora = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    const item = `<p style="border-bottom: 1px solid #233554; padding: 5px 0;">
-        <span style="color: ${color};">●</span> ${tipo}: $MAS a ${pLabel} <small style="float:right;">${ahora}</small>
+    const item = `<p style="border-bottom: 1px solid rgba(255,255,255,0.05); padding: 8px 0; margin:0;">
+        <span style="color: ${color}; font-weight:bold;">● ${tipo}</span> $MAS a ${pLabel} <small style="float:right; color:#64748b;">${ahora}</small>
     </p>`;
-    if (historial.innerHTML.includes("No hay movimientos")) historial.innerHTML = item;
+    if (historial.innerHTML.includes("No hay actividad")) historial.innerHTML = item;
     else historial.innerHTML = item + historial.innerHTML;
 }
 
+// 4. ACADEMIA E IA
 function completarClase(nombre, recompensa) {
     actualizarXP(recompensa);
-    alert("¡Felicidades! +" + recompensa + " XP");
+    alert("¡Clase completada! Ganaste " + recompensa + " XP");
 }
 
-// SIMULADOR EN VIVO (ACTUALIZA PRECIO Y GRÁFICA)
+function analizarGasto() {
+    const monto = document.getElementById('gasto-input').value;
+    const res = document.getElementById('ia-resultado');
+    if (monto > 1000) {
+        res.innerHTML = "<span style='color:#ef4444;'>🤖 Gasto alto. Considera invertirlo.</span>";
+    } else {
+        res.innerHTML = "<span style='color:#10b981;'>🤖 Gasto sano. +10 XP</span>";
+        actualizarXP(10);
+    }
+}
+
+// 5. BUCLE DEL MERCADO (CAMBIO DE COLOR AQUÍ)
 setInterval(() => {
-    let cambio = Math.floor(Math.random() * 8000) - 3500;
+    let cambio = Math.floor(Math.random() * 10000) - 4500;
     precioActual += cambio;
     
-    // Actualizar Texto
     const pDoc = document.getElementById('precio-bolsa');
     const tDoc = document.getElementById('trend-label');
+    
     pDoc.innerText = "$" + precioActual.toLocaleString();
     
+    // Cambiar colores según mercado
     if(cambio > 0) {
+        colorGrafica = '#10b981'; // Verde
         pDoc.style.color = "#10b981";
-        tDoc.innerText = "▲ Subiendo";
+        tDoc.innerText = "▲ SUBIENDO";
         tDoc.style.color = "#10b981";
-        miGrafica.data.datasets[0].borderColor = "#10b981"; // Cambia gráfica a verde
     } else {
+        colorGrafica = '#ef4444'; // Rojo
         pDoc.style.color = "#ef4444";
-        tDoc.innerText = "▼ Bajando";
+        tDoc.innerText = "▼ BAJANDO";
         tDoc.style.color = "#ef4444";
-        miGrafica.data.datasets[0].borderColor = "#ef4444"; // Cambia gráfica a rojo
     }
 
     // Actualizar Gráfica
-    miGrafica.data.labels.push(new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'}));
+    miGrafica.data.datasets[0].borderColor = colorGrafica;
+    miGrafica.data.datasets[0].backgroundColor = colorGrafica + '1A'; // 1A es transparencia
+    miGrafica.data.labels.push("");
     miGrafica.data.datasets[0].data.push(precioActual);
     
-    // Mantener solo los últimos 15 puntos para que no se amontone
-    if(miGrafica.data.labels.length > 15) {
+    if(miGrafica.data.labels.length > 20) {
         miGrafica.data.labels.shift();
         miGrafica.data.datasets[0].data.shift();
     }
     
-    miGrafica.update();
+    miGrafica.update('none'); // Update suave
 }, 3000);
