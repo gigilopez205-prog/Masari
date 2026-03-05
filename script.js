@@ -1,122 +1,129 @@
+// VARIABLES GLOBALES
 let xp = 2500;
 let precioActual = 800000;
-let cantidadAcciones = 0;
-
-// BASE DE DATOS DE QUIZZES
-const maratonPreguntas = [
-    { t: "INFLACIÓN", q: "¿Qué pasa con los ahorros si hay mucha inflación?", o: ["Valen más", "Valen menos", "No cambian"], a: 1, e: "La inflación devora el valor del dinero ahorrado bajo el colchón." },
-    { t: "ETFs", q: "¿Por qué invertir en un ETF?", o: ["Es una sola empresa", "Es diversificar riesgo", "Es una estafa"], a: 1, e: "Un ETF te protege porque no pones todos los huevos en la misma cesta." },
-    { t: "CRIPTO", q: "¿Quién creó Bitcoin?", o: ["Elon Musk", "Satoshi Nakamoto", "El Banco Mundial"], a: 1, e: "Fue creado por una persona o grupo anónimo en 2009." },
-    { t: "INTERÉS", q: "¿Qué acelera el interés compuesto?", o: ["Retirar las ganancias", "Reinvertir ganancias", "Gastar intereses"], a: 1, e: "Reinvertir es el combustible del interés compuesto." }
-];
-
+let acciones = 0;
 let indiceQuiz = 0;
 
-// FUNCIONES DE NAVEGACIÓN
+// BASE DE PREGUNTAS
+const preguntas = [
+    { t: "INFLACIÓN", q: "¿Qué pasa con tu dinero si hay mucha inflación?", o: ["Sube de valor", "Pierde valor", "Se duplica"], a: 1, e: "La inflación hace que los precios suban, por lo que tu dinero compra menos cosas." },
+    { t: "ETFs", q: "¿Qué es un ETF?", o: ["Una sola empresa", "Un paquete de acciones", "Una moneda física"], a: 1, e: "Es como una cesta con muchas acciones para diversificar el riesgo." },
+    { t: "CRIPTO", q: "¿Cuál es el límite total de Bitcoins?", o: ["No tiene límite", "21 Millones", "100 Millones"], a: 1, e: "Bitcoin es escaso, solo existirán 21 millones de unidades." },
+    { t: "INTERÉS", q: "¿Qué es el interés compuesto?", o: ["Interés sobre interés", "Un impuesto nuevo", "Dinero perdido"], a: 0, e: "Es cuando tus ganancias generan sus propias ganancias con el tiempo." }
+];
+
+// NAVEGACIÓN
 function cambiarPagina(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('btn-' + id).classList.add('active');
+    if(id === 'juegos') { setTimeout(initChart, 100); }
 }
 
 // LÓGICA DE MEMES
-function mostrarMeme(exito, mensaje) {
+function lanzarMeme(exito, texto) {
     const box = document.getElementById('meme-container');
     const img = document.getElementById('meme-img');
     const msg = document.getElementById('meme-msg');
     
-    // URLs de memes (puedes cambiarlas por las que quieras)
-    const memesExito = [
-        "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmZzR6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/LdOyjZ7TC5K3LghXY8/giphy.gif", // Stonks
-        "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmZzR6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o6gDWzmAzrpi5DQU8/giphy.gif"  // Money rain
-    ];
-    const memesFallo = [
-        "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmZzR6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/9pZw57AyqOHy47uAdZ/giphy.gif", // This is fine
-        "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmZzR6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/hStvd5LiWCFzXYZAzM/giphy.gif"  // Sad
-    ];
+    const mExito = ["https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmZzR6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/LdOyjZ7TC5K3LghXY8/giphy.gif", "https://media.giphy.com/media/3o6gDWzmAzrpi5DQU8/giphy.gif"];
+    const mFallo = ["https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmZzR6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/9pZw57AyqOHy47uAdZ/giphy.gif", "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmZzR6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0cmZ6NHI0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/hStvd5LiWCFzXYZAzM/giphy.gif"];
 
-    img.src = exito ? memesExito[Math.floor(Math.random()*memesExito.length)] : memesFallo[Math.floor(Math.random()*memesFallo.length)];
-    msg.innerText = mensaje;
+    img.src = exito ? mExito[Math.floor(Math.random()*mExito.length)] : mFallo[Math.floor(Math.random()*mFallo.length)];
+    msg.innerText = texto;
     msg.style.color = exito ? "#10b981" : "#ef4444";
     
     box.classList.add('active');
-    setTimeout(() => box.classList.remove('active'), 3000);
+    setTimeout(() => box.classList.remove('active'), 2500);
 }
 
-// MARATÓN DE QUIZZES
+// SISTEMA DE QUIZ AUTOMÁTICO
 function iniciarMaraton() {
     indiceQuiz = 0;
     document.getElementById('quiz-intro').style.display = 'none';
     document.getElementById('quiz-play').style.display = 'block';
-    mostrarPregunta();
+    cargarPregunta();
 }
 
-function mostrarPregunta() {
-    const data = maratonPreguntas[indiceQuiz];
-    document.getElementById('quiz-feedback').style.display = 'none';
-    document.getElementById('quiz-tema-tag').innerText = data.t;
-    document.getElementById('quiz-count').innerText = `${indiceQuiz + 1}/${maratonPreguntas.length}`;
-    document.getElementById('quiz-q').innerText = data.q;
+function cargarPregunta() {
+    const data = preguntas[indiceQuiz];
+    document.getElementById('q-feedback').style.display = 'none';
+    document.getElementById('q-tag').innerText = data.t;
+    document.getElementById('q-num').innerText = (indiceQuiz + 1) + "/" + preguntas.length;
+    document.getElementById('q-texto').innerText = data.q;
     
-    const opts = document.getElementById('quiz-options');
-    opts.innerHTML = "";
-    data.o.forEach((o, i) => {
-        opts.innerHTML += `<button class="btn-main" onclick="responderMaraton(${i})">${o}</button>`;
+    const divOpc = document.getElementById('q-opciones');
+    divOpc.innerHTML = "";
+    data.o.forEach((opt, i) => {
+        divOpc.innerHTML += `<button class="btn-main" onclick="responder(${i})">${opt}</button>`;
     });
 }
 
-function responderMaraton(idx) {
-    const data = maratonPreguntas[indiceQuiz];
-    const feed = document.getElementById('quiz-feedback');
-    const txt = document.getElementById('feedback-text');
+function responder(idx) {
+    const data = preguntas[indiceQuiz];
+    const fBox = document.getElementById('q-feedback');
+    const fTxt = document.getElementById('f-texto');
     
-    feed.style.display = 'block';
-    const esCorrecto = (idx === data.a);
-    
-    if(esCorrecto) {
-        txt.innerHTML = `<b style="color:#10b981">¡CORRECTO!</b><br>${data.e}`;
-        actualizarXP(500);
-        mostrarMeme(true, "¡Eres un genio financiero!");
+    fBox.style.display = 'block';
+    if(idx === data.a) {
+        fTxt.innerHTML = `<b style="color:#10b981">¡CORRECTO!</b><br>${data.e}`;
+        xp += 500;
+        lanzarMeme(true, "¡Stonks! Ganaste 500 XP");
     } else {
-        txt.innerHTML = `<b style="color:#ef4444">ERROR</b><br>Era: ${data.o[data.a]}. ${data.e}`;
-        mostrarMeme(false, "F en el chat por tus ahorros...");
+        fTxt.innerHTML = `<b style="color:#ef4444">ERROR</b><br>Era: ${data.o[data.a]}<br>${data.e}`;
+        lanzarMeme(false, "F en el chat...");
     }
+    actualizarXPUI();
 
-    // PASAR AUTOMÁTICAMENTE
     setTimeout(() => {
         indiceQuiz++;
-        if(indiceQuiz < maratonPreguntas.length) {
-            mostrarPregunta();
+        if(indiceQuiz < preguntas.length) {
+            cargarPregunta();
         } else {
-            document.getElementById('quiz-play').innerHTML = "<h3>¡Maratón Completada! 🏆</h3><button class='btn-main' onclick='location.reload()'>Volver a empezar</button>";
-            desbloquearMedalla('med-genio');
+            document.getElementById('quiz-play').innerHTML = "<h3>¡Maratón Completada! 🏆</h3><button class='btn-main' onclick='location.reload()'>Reiniciar</button>";
+            document.getElementById('med-genio').classList.add('unlocked');
         }
-    }, 3500);
+    }, 3000);
 }
 
-// ... (Resto de funciones: Bolsa, XP, Medallas - igual que antes) ...
+// BOLSA Y OTROS
 function comprarAccion() { 
-    cantidadAcciones++; 
-    actualizarVista(); 
-    mostrarMeme(true, "¡Compraste el dip! Stonks 📈");
+    acciones++; 
+    lanzarMeme(true, "¡Acción comprada!");
+    actualizarUI(); 
 }
 function venderAccion() { 
-    if(cantidadAcciones > 0) {
-        cantidadAcciones = 0; 
-        actualizarVista();
-        mostrarMeme(true, "¡Ganancias aseguradas! 💰");
-    } else {
-        mostrarMeme(false, "No tienes nada que vender...");
-    }
+    if(acciones > 0) { 
+        acciones = 0; 
+        lanzarMeme(true, "¡Vendido con éxito!");
+        actualizarUI(); 
+    } 
 }
-function actualizarVista() {
-    document.getElementById('balance-total').innerText = "$" + (cantidadAcciones * precioActual).toLocaleString();
-    document.getElementById('mis-acciones').innerText = cantidadAcciones + " unidades";
+function actualizarUI() {
+    document.getElementById('balance-total').innerText = "$" + (acciones * precioActual).toLocaleString();
+    document.getElementById('mis-acciones').innerText = acciones;
 }
-function actualizarXP(p) { xp += p; document.getElementById('xp-count').innerText = xp.toLocaleString(); document.getElementById('xp-bar-fill').style.width = Math.min((xp/10000)*100, 100) + "%"; }
-function desbloquearMedalla(id) { document.getElementById(id).classList.add('unlocked'); }
+function actualizarXPUI() {
+    document.getElementById('xp-count').innerText = xp;
+    document.getElementById('xp-bar-fill').style.width = Math.min((xp/10000)*100, 100) + "%";
+}
 
-// GRÁFICA (Simplicada para el ejemplo)
-const ctx = document.getElementById('graficaBolsa').getContext('2d');
-let miChart = new Chart(ctx, { type: 'line', data: { labels: ["","","","",""], datasets: [{ data: [800000, 810000, 790000, 820000], borderColor: '#3b82f6' }] } });
+// INICIALIZACIÓN
+window.onload = () => {
+    lucide.createIcons();
+    actualizarXPUI();
+};
+
+// GRÁFICA SENCILLA
+let miChart;
+function initChart() {
+    const ctx = document.getElementById('graficaBolsa');
+    if(!ctx) return;
+    if(miChart) miChart.destroy();
+    miChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels: ["","","","",""], datasets: [{ data: [800000, 810000, 790000, 820000, 800000], borderColor: '#3b82f6', tension:0.4 }] },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+}
