@@ -55,6 +55,13 @@
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; margin: 10px 0; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
+        /* SECCIÓN COMUNIDAD (RED SOCIAL) */
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .user-social-card { background: var(--bg-card); border-radius: 15px; padding: 20px; border: 1px solid #233554; text-align: center; transition: 0.3s; }
+        .user-social-card:hover { border-color: var(--blue); transform: translateY(-5px); }
+        .social-img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--blue); margin-bottom: 10px; }
+        .social-status { font-size: 12px; padding: 4px 10px; border-radius: 20px; background: rgba(59, 130, 246, 0.1); color: var(--blue); display: inline-block; margin-bottom: 10px; }
+
         /* BOTONES */
         .btn { padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; color: white; }
         .btn:active { transform: scale(0.95); }
@@ -78,6 +85,7 @@
     <nav>
         <div class="logo"><div class="logo-icon">M</div> MASARI</div>
         <button onclick="goto('inicio')" class="nav-btn active" id="n-inicio">Inicio</button>
+        <button onclick="goto('comunidad')" class="nav-btn" id="n-comunidad">Comunidad</button>
         <button onclick="goto('academia')" class="nav-btn" id="n-academia">Academia</button>
         <button onclick="goto('bolsa')" class="nav-btn" id="n-bolsa">Mercado</button>
         <button onclick="goto('perfil')" class="nav-btn" id="n-perfil">Mi Perfil</button>
@@ -108,9 +116,35 @@
             </div>
         </section>
 
+        <section id="comunidad" class="page">
+            <h1 class="title">Comunidad <span>Masari</span></h1>
+            <div class="social-grid" id="users-container">
+                <div class="user-social-card">
+                    <img src="https://i.pravatar.cc/150?u=1" class="social-img">
+                    <h3>Carlos Trader</h3>
+                    <span class="social-status">Scalping Pro</span>
+                    <p style="font-size: 13px; color: var(--gray); margin-bottom:15px;">"Buscando el 1% diario."</p>
+                    <button class="btn btn-blue" style="font-size:12px; padding:8px;" onclick="meme(true, '¡Sigues a Carlos!')">Seguir</button>
+                </div>
+                <div class="user-social-card">
+                    <img src="https://i.pravatar.cc/150?u=2" class="social-img">
+                    <h3>Ana Crypt</h3>
+                    <span class="social-status">HODL Master</span>
+                    <p style="font-size: 13px; color: var(--gray); margin-bottom:15px;">"Bitcoin a la luna 🚀"</p>
+                    <button class="btn btn-blue" style="font-size:12px; padding:8px;" onclick="meme(true, '¡Sigues a Ana!')">Seguir</button>
+                </div>
+                <div class="user-social-card" id="my-social-card">
+                    <img id="my-social-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="social-img">
+                    <h3 id="my-social-name">Tú</h3>
+                    <span class="social-status">Nuevo Miembro</span>
+                    <p style="font-size: 13px; color: var(--gray); margin-bottom:15px;">Estudiante Masari</p>
+                    <button class="btn btn-sell" style="font-size:12px; padding:8px; border-color:var(--gray); color:var(--gray)">Perfil Propio</button>
+                </div>
+            </div>
+        </section>
+
         <section id="academia" class="page">
             <h1 class="title">Academia <span>Quiz & Clases</span></h1>
-            
             <div class="card">
                 <div id="quiz-start">
                     <h3 style="margin-bottom: 10px;">Maratón de Conocimiento</h3>
@@ -125,19 +159,16 @@
                     <div id="q-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;"></div>
                 </div>
             </div>
-
             <div class="card">
                 <h3>Añadir Nueva Clase 🎥</h3>
                 <div class="class-form">
-                    <input type="text" id="class-title" placeholder="Título de la clase (Ej: Introducción a Cripto)">
-                    <input type="text" id="class-url" placeholder="URL de YouTube (Ej: https://www.youtube.com/watch?v=...)">
-                    <textarea id="class-desc" placeholder="Descripción o notas de la clase..."></textarea>
+                    <input type="text" id="class-title" placeholder="Título de la clase">
+                    <input type="text" id="class-url" placeholder="URL de YouTube">
+                    <textarea id="class-desc" placeholder="Descripción..."></textarea>
                     <button class="btn btn-buy" onclick="addClass()">GUARDAR CLASE ONLINE</button>
                 </div>
             </div>
-
-            <div id="class-container" class="class-list">
-                </div>
+            <div id="class-container" class="class-list"></div>
         </section>
 
         <section id="bolsa" class="page">
@@ -155,11 +186,8 @@
             <div class="card">
                 <h3 style="margin-bottom: 15px;">Historial de Transacciones</h3>
                 <table class="history-table">
-                    <thead>
-                        <tr><th>Tipo</th><th>Precio</th><th>Cantidad</th><th>Estado</th></tr>
-                    </thead>
-                    <tbody id="trade-history">
-                        </tbody>
+                    <thead><tr><th>Tipo</th><th>Precio</th><th>Cantidad</th><th>Estado</th></tr></thead>
+                    <tbody id="trade-history"></tbody>
                 </table>
             </div>
         </section>
@@ -196,7 +224,7 @@
                         </div>
                         <div class="full-width">
                             <label style="font-size:12px; color:var(--gray)">Mi Biografía Financiera</label>
-                            <textarea id="user-bio" placeholder="Describe tu meta (Ej. Comprar mi casa en 5 años)"></textarea>
+                            <textarea id="user-bio" placeholder="Describe tu meta"></textarea>
                         </div>
                         <button class="btn btn-blue full-width" onclick="saveP()">GUARDAR PERFIL COMPLETO</button>
                     </div>
@@ -207,9 +235,8 @@
 
     <script>
         let xp = 2500, price = 800000, stocks = 0, qIdx = 0;
-        let historyData = [];
 
-        // --- BOLSA (PICOS REALES CON COLOR) ---
+        // --- BOLSA ---
         const ctx = document.getElementById('graficaReal').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'line',
@@ -233,17 +260,13 @@
             price += drift;
             const el = document.getElementById('p-bolsa');
             el.innerText = "$" + Math.floor(price).toLocaleString();
-            
             if (drift > 0) {
-                el.style.color = "#10b981";
-                chart.data.datasets[0].borderColor = "#10b981";
+                el.style.color = "#10b981"; chart.data.datasets[0].borderColor = "#10b981";
                 chart.data.datasets[0].backgroundColor = "rgba(16, 185, 129, 0.05)";
             } else {
-                el.style.color = "#ef4444";
-                chart.data.datasets[0].borderColor = "#ef4444";
+                el.style.color = "#ef4444"; chart.data.datasets[0].borderColor = "#ef4444";
                 chart.data.datasets[0].backgroundColor = "rgba(239, 68, 68, 0.05)";
             }
-            
             chart.data.datasets[0].data.push(price);
             chart.data.datasets[0].data.shift();
             chart.update();
@@ -252,118 +275,64 @@
 
         // --- MEMES ---
         function meme(isWin, txt) {
-            const ok = ["https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif", "https://media.giphy.com/media/3o6gDWzmAzrpi5DQU8/giphy.gif", "https://media.giphy.com/media/2XskdWuV659n7gW64s/giphy.gif"];
-            const no = ["https://media.giphy.com/media/9pZw57AyqOHy47uAdZ/giphy.gif", "https://media.giphy.com/media/hStvd5LiWCFzXYZAzM/giphy.gif", "https://media.giphy.com/media/vfs07m4bFhR1X1g6uH/giphy.gif"];
+            const ok = ["https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif", "https://media.giphy.com/media/3o6gDWzmAzrpi5DQU8/giphy.gif"];
+            const no = ["https://media.giphy.com/media/9pZw57AyqOHy47uAdZ/giphy.gif", "https://media.giphy.com/media/hStvd5LiWCFzXYZAzM/giphy.gif"];
             document.getElementById('meme-img').src = isWin ? ok[Math.floor(Math.random()*ok.length)] : no[Math.floor(Math.random()*no.length)];
             document.getElementById('meme-msg').innerText = txt;
-            document.getElementById('meme-msg').style.color = isWin ? "#10b981" : "#ef4444";
             document.getElementById('meme-box').classList.add('active');
             setTimeout(() => document.getElementById('meme-box').classList.remove('active'), 2800);
         }
 
-        // --- CLASES ONLINE ---
+        // --- CLASES ---
         function addClass() {
-            const title = document.getElementById('class-title').value;
-            const url = document.getElementById('class-url').value;
-            const desc = document.getElementById('class-desc').value;
-
-            if(!title || !url) { alert("Por favor, pon un título y un link de YouTube"); return; }
-
-            // Extraer ID de YouTube de forma simple
-            let videoId = "";
-            if(url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
-            else if(url.includes("be/")) videoId = url.split("be/")[1].split("?")[0];
-
-            if(!videoId) { alert("Link de YouTube no válido"); return; }
-
-            const classHTML = `
-                <div class="card">
-                    <h3 style="color:var(--blue)">${title}</h3>
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
-                    </div>
-                    <p style="color:var(--gray); font-size:14px; margin-top:10px;">${desc}</p>
-                </div>
-            `;
-
-            document.getElementById('class-container').insertAdjacentHTML('afterbegin', classHTML);
-            
-            // Limpiar inputs
-            document.getElementById('class-title').value = "";
-            document.getElementById('class-url').value = "";
-            document.getElementById('class-desc').value = "";
-            
-            meme(true, "¡Clase publicada!");
+            const title = document.getElementById('class-title').value, url = document.getElementById('class-url').value;
+            let vId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : (url.includes("be/") ? url.split("be/")[1] : "");
+            if(!vId) return alert("Link no válido");
+            document.getElementById('class-container').insertAdjacentHTML('afterbegin', `<div class="card"><h3>${title}</h3><div class="video-container"><iframe src="https://www.youtube.com/embed/${vId}"></iframe></div></div>`);
         }
 
-        // --- 25 PREGUNTAS ---
-        const questions = [
-            {q:"¿Qué pasa con el valor del dinero durante la inflación?", o:["Sube","Baja","Se queda igual","Se duplica"], a:1},
-            {q:"¿Qué es un ETF?", o:["Un préstamo","Cesta de acciones","Una moneda","Un banco"], a:1},
-            {q:"¿Cuál es el límite total de Bitcoins?", o:["21 Millones","No tiene","100 Millones","1 Billón"], a:0},
-            {q:"¿Qué es el interés compuesto?", o:["Gastar intereses","Interés sobre interés","Un impuesto","Deuda fija"], a:1},
-            {q:"Un 'Bull Market' significa que la bolsa...", o:["Baja","Sube","Está cerrada","Está en crisis"], a:1},
-            {q:"¿Qué significa diversificar?", o:["Apostar todo","Repartir riesgo","No invertir","Comprar oro"], a:1},
-            {q:"¿Qué es un dividendo?", o:["Un gasto","Reparto de beneficios","Un préstamo","Una multa"], a:1},
-            {q:"¿Qué es el S&P 500?", o:["Un carro","Índice de 500 empresas","Un banco","Un país"], a:1}
-        ];
-        while(questions.length < 25) { questions.push(questions[Math.floor(Math.random()*questions.length)]); }
-
+        // --- QUIZ ---
+        const questions = [{q:"¿Qué es el interés compuesto?", o:["Gastar","Interés sobre interés","Impuesto","Deuda"], a:1}];
+        while(questions.length < 25) { questions.push(questions[0]); }
         function startQuiz() { document.getElementById('quiz-start').style.display='none'; document.getElementById('quiz-ui').style.display='block'; loadQ(); }
         function loadQ() {
-            const q = questions[qIdx];
-            document.getElementById('q-count').innerText = `${qIdx+1}/25`;
-            document.getElementById('q-text').innerText = q.q;
+            const q = questions[qIdx]; document.getElementById('q-count').innerText = `${qIdx+1}/25`; document.getElementById('q-text').innerText = q.q;
             const ops = document.getElementById('q-options'); ops.innerHTML = "";
             q.o.forEach((opt, i) => ops.innerHTML += `<button class="btn btn-blue" onclick="ans(${i})">${opt}</button>`);
         }
-        function ans(i) {
-            if(i === questions[qIdx].a) { xp += 100; meme(true, "¡CORRECTO! +100 XP"); } 
-            else { meme(false, "¡ERROR! Sigue estudiando"); }
-            qIdx++;
-            if(qIdx < 25) setTimeout(loadQ, 3000);
-            else { document.getElementById('quiz-ui').innerHTML = "<h2 style='text-align:center'>🏆 ¡MARATÓN COMPLETADA!</h2>"; }
-            updateUI();
-        }
+        function ans(i) { if(i === questions[qIdx].a) { xp += 100; meme(true, "+100 XP"); } else meme(false, "Sigue intentando"); qIdx++; if(qIdx < 25) loadQ(); updateUI(); }
 
-        // --- NAVEGACIÓN Y PERFIL ---
+        // --- GENERAL ---
         function goto(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('n-'+id).classList.add('active');
         }
-        
         function trade(n) { 
-            if(n < 0 && stocks <= 0) { meme(false, "No tienes acciones"); return; }
-            stocks += n; 
-            const type = n > 0 ? "COMPRA" : "VENTA";
-            const color = n > 0 ? "var(--green)" : "var(--red)";
-            const row = `<tr><td style="color:${color}; font-weight:bold;">${type}</td><td>$${Math.floor(price).toLocaleString()}</td><td>1</td><td style="color:var(--gray)">Completado</td></tr>`;
-            document.getElementById('trade-history').insertAdjacentHTML('afterbegin', row);
-            meme(true, n > 0 ? "¡COMPRA EXITOSA!" : "¡VENTA EXITOSA!"); 
+            if(n < 0 && stocks <= 0) return; stocks += n;
+            document.getElementById('trade-history').insertAdjacentHTML('afterbegin', `<tr><td>${n>0?'COMPRA':'VENTA'}</td><td>$${price.toFixed(0)}</td><td>1</td><td>OK</td></tr>`);
             updateUI(); 
         }
-
         function updateUI() {
             document.getElementById('ui-cartera').innerText = "$" + Math.floor(stocks * price).toLocaleString();
             document.getElementById('ui-acciones').innerText = stocks;
             document.getElementById('xp-display').innerText = xp;
         }
-
         function upload(input) {
             const reader = new FileReader();
-            reader.onload = (e) => document.getElementById('user-img').src = e.target.result;
+            reader.onload = (e) => {
+                document.getElementById('user-img').src = e.target.result;
+                document.getElementById('my-social-img').src = e.target.result; // Actualiza en comunidad
+            };
             reader.readAsDataURL(input.files[0]);
         }
-
         function saveP() { 
             const name = document.getElementById('user-name').value;
             document.getElementById('display-name').innerText = name;
-            alert("¡Perfil financiero actualizado!"); 
+            document.getElementById('my-social-name').innerText = name; // Actualiza en comunidad
+            alert("Perfil Guardado"); 
         }
-
-        updateUI();
     </script>
 </body>
 </html>
