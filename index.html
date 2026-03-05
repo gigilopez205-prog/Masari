@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari - App Financiera</title>
+    <title>Masari App</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -12,81 +12,64 @@
 
     <nav>
         <h1>MASARI</h1>
-        <a href="#inicio"><i data-lucide="home"></i> Inicio</a>
-        <a href="#clases"><i data-lucide="graduation-cap"></i> Academia</a>
-        <a href="#ahorro"><i data-lucide="brain-circuit"></i> IA Ahorro</a>
-        <a href="#juegos"><i data-lucide="trending-up"></i> Bolsa</a>
+        <a href="javascript:void(0)" onclick="cambiarPagina('inicio')" id="link-inicio" class="active"><i data-lucide="home"></i> Inicio</a>
+        <a href="javascript:void(0)" onclick="cambiarPagina('clases')" id="link-clases"><i data-lucide="graduation-cap"></i> Academia</a>
+        <a href="javascript:void(0)" onclick="cambiarPagina('ahorro')" id="link-ahorro"><i data-lucide="brain-circuit"></i> IA Ahorro</a>
+        <a href="javascript:void(0)" onclick="cambiarPagina('juegos')" id="link-juegos"><i data-lucide="trending-up"></i> Bolsa</a>
         
         <div class="xp-status">
-            <small>NIVEL ACTUAL</small>
-            <div class="xp-container">
-                <div id="xp-bar-inner" class="xp-bar" style="width: 20%;"></div>
-            </div>
+            <small>PROGRESO</small>
+            <div class="xp-container"><div id="xp-bar-inner" class="xp-bar" style="width: 25%;"></div></div>
             <p>⭐ <span id="xp-count">2500</span> XP</p>
         </div>
     </nav>
 
     <main>
-        <section id="inicio">
-            <h1 class="main-title">Invierte inteligente, <span>vive tranquilo</span></h1>
-            <p class="subtitle">Bienvenido a la plataforma Masari.</p>
+        <section id="inicio" class="active">
+            <h1 class="main-title">Bienvenido, <span>Inversionista</span></h1>
+            <p class="subtitle">Selecciona una sección en el menú para comenzar.</p>
+            <div class="card">
+                <h3>Resumen de cuenta</h3>
+                <p>Nivel: Principiante</p>
+                <p>Logros desbloqueados: 0</p>
+            </div>
         </section>
 
         <section id="clases">
-            <h2>Academia de Aprendizaje 📚</h2>
+            <h2>Academia Masari</h2>
             <div class="card-grid">
                 <div class="card">
-                    <i data-lucide="book-open" style="color: #3b82f6; margin-bottom: 10px;"></i>
                     <h3>Interés Compuesto</h3>
-                    <p>Haz que el tiempo trabaje para ti.</p>
                     <button class="btn-primary" onclick="completarClase('Interés Compuesto', 500)">Completar +500 XP</button>
                 </div>
                 <div class="card">
-                    <i data-lucide="shield-check" style="color: #3b82f6; margin-bottom: 10px;"></i>
-                    <h3>Ahorro Real</h3>
-                    <p>Domina tus gastos mensuales.</p>
-                    <button class="btn-primary" onclick="completarClase('Ahorro Real', 500)">Completar +500 XP</button>
+                    <h3>Ahorro Inteligente</h3>
+                    <button class="btn-primary" onclick="completarClase('Ahorro Inteligente', 500)">Completar +500 XP</button>
                 </div>
             </div>
         </section>
 
         <section id="ahorro">
-            <h2>IA Analista 🤖</h2>
+            <h2>Analista IA</h2>
             <div class="card">
-                <p>¿Cuánto piensas gastar hoy?</p>
-                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <input type="number" id="gasto-input" placeholder="Monto $">
-                    <button class="btn-primary" onclick="analizarGasto()">Analizar</button>
-                </div>
+                <input type="number" id="gasto-input" placeholder="Monto $">
+                <button class="btn-primary" onclick="analizarGasto()">Analizar</button>
                 <p id="ia-resultado"></p>
             </div>
         </section>
 
         <section id="juegos">
-            <h2>Mercado en Tiempo Real</h2>
+            <h2>Simulador de Mercado</h2>
             <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div>
-                        <h3 style="margin:0; color: #94a3b8;">$MAS (Masari Corp)</h3>
-                        <div id="precio-bolsa" class="price" style="font-size: 3rem; margin: 10px 0;">$800,000</div>
-                        <div id="trend-label" style="font-weight: bold;">● Esperando datos...</div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
-                        <button class="btn-sell" onclick="venderAccion()">VENDER</button>
-                    </div>
-                </div>
-                
-                <div style="height: 250px; width: 100%; margin-top: 20px;">
-                    <canvas id="graficaBolsa"></canvas>
-                </div>
+                <div id="precio-bolsa" class="price">$800,000</div>
+                <div id="trend-label">▲ Estable</div>
+                <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
+                <button class="btn-sell" onclick="venderAccion()">VENDER</button>
+                <div style="height: 250px; margin-top:20px;"><canvas id="graficaBolsa"></canvas></div>
             </div>
-
-            <div class="card" style="margin-top: 20px;">
-                <h3>Historial de Actividad</h3>
-                <div id="lista-transacciones" style="font-size: 0.85rem; max-height: 200px; overflow-y: auto;">
-                    <p style="color: #94a3b8;">No hay actividad en esta sesión.</p>
-                </div>
+            <div class="card" style="margin-top:20px;">
+                <h3>Historial</h3>
+                <div id="lista-transacciones"></div>
             </div>
         </section>
     </main>
