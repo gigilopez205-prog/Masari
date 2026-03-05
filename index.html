@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari - Inversión Inteligente</title>
+    <title>Masari - Academia Financiera</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,12 +12,12 @@
     <nav>
         <h1>MASARI</h1>
         <a href="#inicio"><i data-lucide="home"></i> Inicio</a>
-        <a href="#clases"><i data-lucide="book-open"></i> Clases</a>
-        <a href="#ahorro"><i data-lucide="brain-circuit"></i> IA de Ahorro</a>
+        <a href="#clases"><i data-lucide="graduation-cap"></i> Academia</a>
+        <a href="#ahorro"><i data-lucide="brain-circuit"></i> IA Ahorro</a>
         <a href="#juegos"><i data-lucide="trending-up"></i> Bolsa</a>
         
         <div class="xp-status">
-            <small>PROGRESO DEL ESTUDIANTE</small>
+            <small>PROGRESO TOTAL</small>
             <div class="xp-container">
                 <div id="xp-bar-inner" class="xp-bar" style="width: 50%;"></div>
             </div>
@@ -28,34 +28,46 @@
     <main>
         <section id="inicio">
             <h1 class="main-title">Invierte inteligente, <span>vive tranquilo</span></h1>
-            <p class="subtitle">Plataforma educativa Masari: Aprende a dominar tus finanzas.</p>
+            <p class="subtitle">Aprende a manejar tu dinero con Masari.</p>
+        </section>
+
+        <section id="clases">
+            <h2>Academia Masari 📚</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <i data-lucide="book-open" style="color: #3b82f6; margin-bottom: 10px;"></i>
+                    <h3>Interés Compuesto</h3>
+                    <p>La clave para que tu dinero crezca solo con el tiempo.</p>
+                    <button class="btn-primary" onclick="completarClase('Interés Compuesto', 500)">Completar +500 XP</button>
+                </div>
+                <div class="card">
+                    <i data-lucide="shield-check" style="color: #3b82f6; margin-bottom: 10px;"></i>
+                    <h3>Ahorro Inteligente</h3>
+                    <p>Estrategias para guardar dinero sin dejar de disfrutar.</p>
+                    <button class="btn-primary" onclick="completarClase('Ahorro Inteligente', 500)">Completar +500 XP</button>
+                </div>
+            </div>
         </section>
 
         <section id="ahorro">
             <h2>IA de Ahorro 🤖</h2>
             <div class="card">
-                <div class="cloud-tags">
-                    <span class="cloud">Ingresos estables</span>
-                    <span class="cloud">Gasto en ocio alto</span>
-                </div>
-                <p>¿Cuánto gastaste hoy?</p>
+                <p>Ingresa un gasto para analizar:</p>
                 <input type="number" id="gasto-input" placeholder="Monto $">
-                <button class="btn-primary" onclick="analizarGasto()">Analizar con IA</button>
-                <p id="ia-resultado" style="margin-top: 15px;"></p>
+                <button class="btn-primary" onclick="analizarGasto()">Analizar Gasto</button>
+                <p id="ia-resultado" style="margin-top: 15px; font-weight: bold;"></p>
             </div>
         </section>
 
         <section id="juegos">
-            <h2>Simulador: Bolsa de Valores</h2>
+            <h2>Simulador de Bolsa</h2>
             <div class="stock-market">
                 <div class="stock-info">
                     <h3>Acción Masari ($MAS)</h3>
                     <div id="precio-bolsa" class="price">$800,000</div>
-                    <div id="trend-label" class="trend">▲ Estabilizando...</div>
+                    <div id="trend-label" class="trend">▲ Estable</div>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
-                </div>
+                <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
             </div>
 
             <div class="card" style="margin-top: 20px;">
@@ -68,10 +80,6 @@
     </main>
 
     <script src="script.js"></script>
-    <script>
-        // Inicializa los iconos de Lucide
-        lucide.createIcons();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
- 
