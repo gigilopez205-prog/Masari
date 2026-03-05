@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari - Academia Financiera</title>
+    <title>Masari - App Financiera</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -18,9 +18,9 @@
         <a href="#juegos"><i data-lucide="trending-up"></i> Bolsa</a>
         
         <div class="xp-status">
-            <small>PROGRESO TOTAL</small>
+            <small>NIVEL ACTUAL</small>
             <div class="xp-container">
-                <div id="xp-bar-inner" class="xp-bar" style="width: 30%;"></div>
+                <div id="xp-bar-inner" class="xp-bar" style="width: 20%;"></div>
             </div>
             <p>⭐ <span id="xp-count">2500</span> XP</p>
         </div>
@@ -29,50 +29,63 @@
     <main>
         <section id="inicio">
             <h1 class="main-title">Invierte inteligente, <span>vive tranquilo</span></h1>
-            <p class="subtitle">Tu camino al éxito financiero comienza aquí.</p>
+            <p class="subtitle">Bienvenido a la plataforma Masari.</p>
+        </section>
+
+        <section id="clases">
+            <h2>Academia de Aprendizaje 📚</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <i data-lucide="book-open" style="color: #3b82f6; margin-bottom: 10px;"></i>
+                    <h3>Interés Compuesto</h3>
+                    <p>Haz que el tiempo trabaje para ti.</p>
+                    <button class="btn-primary" onclick="completarClase('Interés Compuesto', 500)">Completar +500 XP</button>
+                </div>
+                <div class="card">
+                    <i data-lucide="shield-check" style="color: #3b82f6; margin-bottom: 10px;"></i>
+                    <h3>Ahorro Real</h3>
+                    <p>Domina tus gastos mensuales.</p>
+                    <button class="btn-primary" onclick="completarClase('Ahorro Real', 500)">Completar +500 XP</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="ahorro">
+            <h2>IA Analista 🤖</h2>
+            <div class="card">
+                <p>¿Cuánto piensas gastar hoy?</p>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="number" id="gasto-input" placeholder="Monto $">
+                    <button class="btn-primary" onclick="analizarGasto()">Analizar</button>
+                </div>
+                <p id="ia-resultado"></p>
+            </div>
         </section>
 
         <section id="juegos">
-            <h2>Simulador de Bolsa en Vivo</h2>
-            <div class="card" style="margin-bottom: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Mercado en Tiempo Real</h2>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                     <div>
-                        <h3 style="margin:0;">Acción Masari ($MAS)</h3>
-                        <div id="precio-bolsa" class="price" style="font-size: 2.5rem;">$800,000</div>
-                        <div id="trend-label" class="trend">▲ Analizando mercado...</div>
+                        <h3 style="margin:0; color: #94a3b8;">$MAS (Masari Corp)</h3>
+                        <div id="precio-bolsa" class="price" style="font-size: 3rem; margin: 10px 0;">$800,000</div>
+                        <div id="trend-label" style="font-weight: bold;">● Esperando datos...</div>
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
                         <button class="btn-sell" onclick="venderAccion()">VENDER</button>
                     </div>
                 </div>
-                <div style="height: 300px; width: 100%;">
+                
+                <div style="height: 250px; width: 100%; margin-top: 20px;">
                     <canvas id="graficaBolsa"></canvas>
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" style="margin-top: 20px;">
                 <h3>Historial de Actividad</h3>
-                <div id="lista-transacciones" style="font-size: 0.9rem; color: #94a3b8; max-height: 150px; overflow-y: auto;">
-                    <p>No hay movimientos recientes.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="clases">
-            <h2>Academia Masari 📚</h2>
-            <div class="card-grid">
-                <div class="card">
-                    <i data-lucide="book-open" style="color: #3b82f6; margin-bottom: 10px;"></i>
-                    <h3>Interés Compuesto</h3>
-                    <p>La magia de hacer crecer tu dinero.</p>
-                    <button class="btn-primary" onclick="completarClase('Interés Compuesto', 500)">Completar +500 XP</button>
-                </div>
-                <div class="card">
-                    <i data-lucide="shield-check" style="color: #3b82f6; margin-bottom: 10px;"></i>
-                    <h3>Ahorro Inteligente</h3>
-                    <p>Estrategias de ahorro moderno.</p>
-                    <button class="btn-primary" onclick="completarClase('Ahorro Inteligente', 500)">Completar +500 XP</button>
+                <div id="lista-transacciones" style="font-size: 0.85rem; max-height: 200px; overflow-y: auto;">
+                    <p style="color: #94a3b8;">No hay actividad en esta sesión.</p>
                 </div>
             </div>
         </section>
