@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari Pro</title>
+    <title>Masari Ultimate</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -12,24 +12,14 @@
 
     <nav class="sidebar">
         <div class="brand">MASARI</div>
-        
         <div class="menu">
-            <button onclick="cambiarPagina('inicio')" id="btn-inicio" class="nav-btn active">
-                <i data-lucide="layout-grid"></i> <span>Dashboard</span>
-            </button>
-            <button onclick="cambiarPagina('clases')" id="btn-clases" class="nav-btn">
-                <i data-lucide="graduation-cap"></i> <span>Academia</span>
-            </button>
-            <button onclick="cambiarPagina('ahorro')" id="btn-ahorro" class="nav-btn">
-                <i data-lucide="brain-circuit"></i> <span>IA Ahorro</span>
-            </button>
-            <button onclick="cambiarPagina('juegos')" id="btn-juegos" class="nav-btn">
-                <i data-lucide="line-chart"></i> <span>Simulador</span>
-            </button>
+            <button onclick="cambiarPagina('inicio')" id="btn-inicio" class="nav-btn active"><i data-lucide="layout-grid"></i><span>Inicio</span></button>
+            <button onclick="cambiarPagina('clases')" id="btn-clases" class="nav-btn"><i data-lucide="graduation-cap"></i><span>Academia</span></button>
+            <button onclick="cambiarPagina('juegos')" id="btn-juegos" class="nav-btn"><i data-lucide="line-chart"></i><span>Bolsa</span></button>
+            <button onclick="cambiarPagina('perfil')" id="btn-perfil" class="nav-btn"><i data-lucide="user"></i><span>Perfil</span></button>
+            <button onclick="cambiarPagina('ahorro')" id="btn-ahorro" class="nav-btn"><i data-lucide="brain-circuit"></i><span>IA</span></button>
         </div>
-
         <div class="xp-footer">
-            <small>PROGRESO TOTAL</small>
             <div class="bar-bg"><div id="xp-bar-fill" class="bar-fill"></div></div>
             <p>⭐ <span id="xp-count">2500</span> XP</p>
         </div>
@@ -37,47 +27,36 @@
 
     <main class="content">
         <section id="inicio" class="page active">
-            <h1 class="title">Bienvenido, <span>Inversionista</span></h1>
-            <div class="card card-hero">
-                <h3>Estado de tu cuenta</h3>
-                <p>Nivel actual: <strong>Principiante</strong></p>
-                <p>Tu capital simulado está creciendo. ¡Sigue aprendiendo!</p>
-            </div>
+            <h1 class="title">Tu <span>Resumen</span></h1>
             <div class="card-grid">
-                <div class="card" onclick="cambiarPagina('juegos')" style="cursor:pointer">
-                    <h4>Bolsa en vivo</h4>
-                    <p id="p-inicio" class="price-min">$800,000</p>
+                <div class="card">
+                    <h4>Balance Cartera</h4>
+                    <p id="balance-total" class="price-min">$0</p>
+                    <small id="ganancia-porcentaje">Sin inversiones</small>
                 </div>
-                <div class="card" onclick="cambiarPagina('clases')" style="cursor:pointer">
-                    <h4>Lecciones</h4>
-                    <p>2 temas nuevos</p>
+                <div class="card">
+                    <h4>Acciones Masari</h4>
+                    <p id="mis-acciones" class="price-min">0 unidades</p>
                 </div>
             </div>
         </section>
 
         <section id="clases" class="page">
             <h2 class="title">Academia 📚</h2>
+            <div id="quiz-container" class="card" style="display:none; border: 2px solid var(--blue);">
+                <h3 id="quiz-titulo">Examen</h3>
+                <p id="quiz-pregunta" style="margin: 15px 0;"></p>
+                <div id="quiz-opciones" class="row" style="flex-direction:column; gap:10px;"></div>
+            </div>
             <div class="card-grid">
                 <div class="card">
                     <h3>Interés Compuesto</h3>
-                    <button class="btn-main" onclick="completarClase('Interés Compuesto', 500)">Completar +500 XP</button>
+                    <button class="btn-main" onclick="abrirQuiz('interes')">Hacer examen +500 XP</button>
                 </div>
                 <div class="card">
                     <h3>Ahorro Real</h3>
-                    <button class="btn-main" onclick="completarClase('Ahorro Real', 500)">Completar +500 XP</button>
+                    <button class="btn-main" onclick="abrirQuiz('ahorro')">Hacer examen +500 XP</button>
                 </div>
-            </div>
-        </section>
-
-        <section id="ahorro" class="page">
-            <h2 class="title">IA Analista 🤖</h2>
-            <div class="card">
-                <p>¿En qué piensas gastar?</p>
-                <div class="row">
-                    <input type="number" id="gasto-input" placeholder="Monto $">
-                    <button class="btn-main" onclick="analizarGasto()">Analizar</button>
-                </div>
-                <p id="ia-resultado" class="msg"></p>
             </div>
         </section>
 
@@ -88,14 +67,31 @@
                     <div id="p-bolsa" class="price-big">$800,000</div>
                     <div class="btns-trade">
                         <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
-                        <button class="btn-sell" onclick="venderAccion()">VENDER</button>
+                        <button class="btn-sell" onclick="venderAccion()">VENDER TODO</button>
                     </div>
                 </div>
                 <div class="chart-box"><canvas id="graficaBolsa"></canvas></div>
             </div>
-            <div class="card history">
-                <h4>Historial</h4>
-                <div id="lista-tx"></div>
+        </section>
+
+        <section id="perfil" class="page">
+            <h2 class="title">Tu <span>Progreso</span></h2>
+            <div class="card">
+                <h3>Medallas Desbloqueadas</h3>
+                <div id="medallas" class="row" style="margin-top:20px; gap:20px;">
+                    <div class="medalla lock" id="med-lobo">🐺 <br><small>Inversor</small></div>
+                    <div class="medalla lock" id="med-genio">🧠 <br><small>Sabio</small></div>
+                    <div class="medalla lock" id="med-rico">💰 <br><small>Millonario</small></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ahorro" class="page">
+            <h2 class="title">Analista IA 🤖</h2>
+            <div class="card">
+                <input type="number" id="gasto-input" placeholder="¿Cuánto vas a gastar?">
+                <button class="btn-main" onclick="analizarGasto()" style="margin-top:10px;">Consultar IA</button>
+                <p id="ia-resultado" class="msg" style="margin-top:15px;"></p>
             </div>
         </section>
     </main>
