@@ -1,16 +1,18 @@
+// --- VARIABLES ---
 let xp = 2500;
 let precioActual = 800000;
 let cantidadAcciones = 0;
 
+// --- NAVEGACIÓN ---
 function cambiarPagina(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('btn-' + id).classList.add('active');
-    if(id === 'juegos') setTimeout(() => miChart.update(), 100);
+    if(id === 'juegos') setTimeout(() => miChart.update(), 150);
 }
 
-// SIMULADOR
+// --- GRÁFICA ---
 const ctx = document.getElementById('graficaBolsa').getContext('2d');
 let miChart = new Chart(ctx, {
     type: 'line',
@@ -21,110 +23,92 @@ let miChart = new Chart(ctx, {
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
 });
 
+// --- SIMULACIÓN DE PRECIO ---
 setInterval(() => {
-    let cambio = Math.floor(Math.random() * 10000) - 4500;
+    let cambio = Math.floor(Math.random() * 12000) - 5500;
     precioActual += cambio;
     const pBolsa = document.getElementById('p-bolsa');
     if(pBolsa) {
         pBolsa.innerText = "$" + precioActual.toLocaleString();
         pBolsa.style.color = cambio > 0 ? "#10b981" : "#ef4444";
     }
-    actualizarVistaCartera();
+    actualizarVista();
     miChart.data.datasets[0].data.push(precioActual);
     if(miChart.data.datasets[0].data.length > 15) miChart.data.datasets[0].data.shift();
     miChart.update('none');
 }, 3000);
 
-// BOLSA E HISTORIAL
+// --- COMPRA / VENTA ---
 function comprarAccion() {
     cantidadAcciones++;
+    registrarLog("COMPRA", "#10b981");
     actualizarXP(100);
-    actualizarVistaCartera();
-    registrarHistorial("COMPRA", "#10b981");
     desbloquearMedalla('med-lobo');
+    actualizarVista();
 }
 
 function venderAccion() {
     if(cantidadAcciones > 0) {
-        registrarHistorial("VENTA", "#ef4444");
+        registrarLog("VENTA", "#ef4444");
+        if(cantidadAcciones * precioActual > 1000000) desbloquearMedalla('med-rico');
         cantidadAcciones = 0;
         actualizarXP(50);
-        actualizarVistaCartera();
+        actualizarVista();
     }
 }
 
-function registrarHistorial(tipo, color) {
-    const contenedor = document.getElementById('historial-bolsa');
-    const ahora = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    const item = `
-        <div style="border-bottom: 1px solid #233554; padding: 10px 0; display:flex; justify-content:space-between">
-            <span style="color:${color}">● ${tipo}</span>
-            <span>$${precioActual.toLocaleString()}</span>
-            <small style="color:var(--gray)">${ahora}</small>
-        </div>`;
-    if(contenedor.innerHTML.includes("No hay movimientos")) contenedor.innerHTML = item;
-    else contenedor.innerHTML = item + contenedor.innerHTML;
+function registrarLog(tipo, color) {
+    const hist = document.getElementById('historial-bolsa');
+    const h = new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2, '0');
+    const linea = `<div style="padding:8px; border-bottom:1px solid #233554; display:flex; justify-content:space-between">
+        <b style="color:${color}">${tipo}</b> <span>$${precioActual.toLocaleString()}</span> <small>${h}</small>
+    </div>`;
+    if(hist.innerHTML.includes("Esperando")) hist.innerHTML = linea;
+    else hist.innerHTML = linea + hist.innerHTML;
 }
 
-function actualizarVistaCartera() {
-    const valTotal = document.getElementById('balance-total');
-    const unidades = document.getElementById('mis-acciones');
-    if(valTotal) valTotal.innerText = "$" + (cantidadAcciones * precioActual).toLocaleString();
-    if(unidades) unidades.innerText = cantidadAcciones + " unidades";
+function actualizarVista() {
+    const bal = document.getElementById('balance-total');
+    const acc = document.getElementById('mis-acciones');
+    if(bal) bal.innerText = "$" + (cantidadAcciones * precioActual).toLocaleString();
+    if(acc) acc.innerText = cantidadAcciones + " unidades";
 }
 
-// ACADEMIA CON FEEDBACK
-const bancoPreguntas = {
-    inflacion: {
-        q: "Si la inflación sube, ¿qué le ocurre a tu poder adquisitivo?",
-        o: ["Aumenta", "Disminuye", "Se queda igual"], a: 1,
-        e: "La inflación es el aumento de precios. Si las cosas cuestan más y tú tienes el mismo dinero, tu poder de compra disminuye porque te alcanza para menos cosas."
-    },
-    etfs: {
-        q: "¿Cuál es la principal ventaja de un ETF?",
-        o: ["Es una apuesta segura", "Diversificación instantánea", "Es dinero físico"], a: 1,
-        e: "Un ETF es una cesta con muchas acciones. Al comprarlo, estás diversificando tu riesgo entre cientos de empresas en lugar de apostar todo a una sola."
-    },
-    cripto: {
-        q: "¿Por qué se dice que Bitcoin es escaso?",
-        o: ["Porque el gobierno lo prohíbe", "Solo existirán 21 millones", "Porque es muy caro"], a: 1,
-        e: "Bitcoin fue diseñado para tener un límite máximo de 21 millones de unidades. A diferencia del dinero normal, nadie puede 'imprimir' más Bitcoins."
-    },
-    interes: {
-        q: "¿Qué requiere el interés compuesto para ser efectivo?",
-        o: ["Mucho dinero inicial", "Mucho tiempo y paciencia", "Suerte en la bolsa"], a: 1,
-        e: "El interés compuesto crece exponencialmente con el tiempo. Entre más años dejes que tus intereses generen nuevos intereses, más explosivo será el crecimiento."
-    }
+// --- ACADEMIA ---
+const preguntas = {
+    inflacion: { q: "¿Qué es la inflación?", o: ["Subida de precios", "Regalo del banco", "Bajada de impuestos"], a: 0, e: "La inflación reduce lo que puedes comprar con tu dinero." },
+    etfs: { q: "¿Qué es un ETF?", o: ["Una moneda", "Un paquete de acciones", "Una sola empresa"], a: 1, e: "Es como una cesta que contiene trozos de muchas empresas para reducir riesgo." },
+    cripto: { q: "¿Cuántos Bitcoins habrá?", o: ["Infinitos", "21 Millones", "1 Billón"], a: 1, e: "Su escasez es lo que le da valor, como el oro digital." },
+    interes: { q: "¿El interés compuesto es...?", o: ["Interés sobre interés", "Un gasto extra", "Solo para ricos"], a: 0, e: "Es reinvertir tus ganancias para que generen más ganancias por sí solas." }
 };
 
 function abrirQuiz(tema) {
-    const data = bancoPreguntas[tema];
+    const d = preguntas[tema];
     document.getElementById('quiz-container').style.display = 'block';
     document.getElementById('quiz-feedback').style.display = 'none';
-    document.getElementById('quiz-titulo').innerText = "Examen: " + tema.toUpperCase();
-    document.getElementById('quiz-pregunta').innerText = data.q;
-    const opcionesDiv = document.getElementById('quiz-opciones');
-    opcionesDiv.innerHTML = "";
-    data.o.forEach((opcion, i) => {
-        opcionesDiv.innerHTML += `<button class="btn-main" style="margin-bottom:5px" onclick="validarRespuesta('${tema}', ${i})">${opcion}</button>`;
+    document.getElementById('quiz-titulo').innerText = "Examen de " + tema.toUpperCase();
+    document.getElementById('quiz-pregunta').innerText = d.q;
+    const opc = document.getElementById('quiz-opciones');
+    opc.innerHTML = "";
+    d.o.forEach((o, i) => {
+        opc.innerHTML += `<button class="btn-main" onclick="verificar('${tema}', ${i})">${o}</button>`;
     });
-    window.scrollTo(0,0);
 }
 
-function validarRespuesta(tema, idx) {
-    const data = bancoPreguntas[tema];
-    const feedbackDiv = document.getElementById('quiz-feedback');
-    const feedbackTexto = document.getElementById('feedback-texto');
-    feedbackDiv.style.display = 'block';
-    if(idx === data.a) {
-        feedbackTexto.innerHTML = `<b style="color:var(--green)">¡CORRECTO!</b><br>${data.e}`;
+function verificar(tema, idx) {
+    const d = preguntas[tema];
+    const feed = document.getElementById('quiz-feedback');
+    const txt = document.getElementById('feedback-texto');
+    feed.style.display = "block";
+    if(idx === d.a) {
+        txt.innerHTML = `<b style="color:#10b981">¡CORRECTO!</b><br>${d.e}`;
         actualizarXP(500);
         desbloquearMedalla('med-genio');
     } else {
-        feedbackTexto.innerHTML = `<b style="color:var(--red)">INCORRECTO</b><br>La respuesta correcta era: "${data.o[data.a]}".<br><br>${data.e}`;
+        txt.innerHTML = `<b style="color:#ef4444">INCORRECTO</b><br>La correcta era: ${d.o[d.a]}. <br>${d.e}`;
     }
 }
 
 function cerrarQuiz() { document.getElementById('quiz-container').style.display = 'none'; }
 function actualizarXP(p) { xp += p; document.getElementById('xp-count').innerText = xp.toLocaleString(); document.getElementById('xp-bar-fill').style.width = Math.min((xp/10000)*100, 100) + "%"; }
-function desbloquearMedalla(id) { document.getElementById(id).classList.add('unlocked'); }
+function desbloquearMedalla(id) { const m = document.getElementById(id); if(m) m.classList.add('unlocked'); }
