@@ -1,271 +1,207 @@
-/* =========================================
-   PALETA DE COLORES MASARI: AZUL PROFESIONAL
-   ========================================= */
+/* 1. VARIABLES Y CONFIGURACIÓN BASE */
 :root {
-    --azul-fondo: #0a192f;       /* Fondo oscuro profundo */
-    --azul-card: #112240;        /* Tarjetas y menú lateral */
-    --azul-resalte: #3b82f6;     /* NUEVO: Azul Real Profesional (reemplaza al aqua) */
-    --azul-hover: #2563eb;       /* Un azul un poco más oscuro para cuando pasas el mouse */
-    --texto-principal: #e2e8f0;   /* Blanco azulado claro */
-    --texto-secundario: #94a3b8; /* Gris azulado para descripciones */
-    --blanco: #ffffff;
-    
-    /* Colores semánticos que mantenemos por seriedad */
-    --verde-exito: #10b981;      /* Un verde más sobrio para BUY */
-    --rojo-alerta: #ef4444;       /* Un rojo más sobrio para SELL */
+    --fondo-oscuro: #0a192f;
+    --fondo-tarjeta: #112240;
+    --azul-resalte: #3b82f6;
+    --texto-principal: #e2e8f0;
+    --texto-secundario: #94a3b8;
+    --verde-exito: #10b981;
+    --rojo-peligro: #ef4444;
 }
 
-/* =========================================
-   ESTILOS GENERALES
-   ========================================= */
-body {
+* {
     margin: 0;
-    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--azul-fondo);
-    color: var(--texto-principal);
-    display: flex;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* =========================================
-   MENÚ LATERAL (NAV)
-   ========================================= */
+body {
+    background-color: var(--fondo-oscuro);
+    color: var(--texto-principal);
+    display: flex; /* Esto pone el menú y el contenido uno al lado del otro */
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* 2. MENÚ LATERAL (Navegación fija a la izquierda) */
 nav {
-    width: 240px;
-    height: 100vh;
-    background-color: var(--azul-card);
-    position: fixed;
-    padding: 30px 20px;
-    border-right: 1px solid rgba(59, 130, 246, 0.2); /* Borde sutil en azul resalte */
+    width: 260px;
+    background-color: #020c1b;
+    padding: 2rem 1rem;
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
-    z-index: 100;
+    position: fixed; /* Se queda quieto mientras el resto se mueve */
+    height: 100vh;
+    border-right: 1px solid #233554;
 }
 
-nav h1 { 
-    color: var(--azul-resalte); /* Usamos el nuevo azul aquí */
-    font-size: 2rem; 
-    margin-bottom: 40px; 
-    letter-spacing: 3px;
+nav h1 {
+    font-size: 1.5rem;
+    color: var(--azul-resalte);
+    margin-bottom: 2rem;
     text-align: center;
-    font-weight: 800;
+    letter-spacing: 2px;
 }
 
-nav a { 
-    color: var(--texto-principal); 
-    text-decoration: none; 
-    padding: 12px 15px; 
-    margin: 5px 0;
+nav a {
+    color: var(--texto-secundario);
+    text-decoration: none;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.5rem;
     border-radius: 8px;
-    transition: all 0.2s ease-in-out; 
     display: flex;
     align-items: center;
-    font-weight: 500;
+    gap: 12px;
+    transition: 0.3s;
 }
 
-nav a:hover { 
-    background-color: rgba(59, 130, 246, 0.1); /* Fondo azul muy suave */
-    color: var(--azul-resalte); 
-    padding-left: 20px; 
+nav a:hover, nav a.active {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--azul-resalte);
 }
 
-nav hr {
-    border: 0;
-    border-top: 1px solid rgba(148, 163, 184, 0.2);
-    margin: 20px 0;
+nav a.active {
+    border-left: 4px solid var(--azul-resalte);
 }
 
-/* Sección de progreso en el Nav */
+/* Barra de progreso en el menú */
 .xp-status {
-    margin-top: auto; /* Empuja esto al fondo del nav */
-    background: rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    border-radius: 10px;
+    margin-top: auto;
+    padding: 1rem;
+    background: var(--fondo-tarjeta);
+    border-radius: 12px;
 }
 
-.xp-status small { color: var(--texto-secundario); }
-.xp-status p { margin: 5px 0; font-weight: bold; font-size: 1.1rem; }
+.xp-container {
+    width: 100%;
+    height: 8px;
+    background: #233554;
+    border-radius: 4px;
+    margin: 10px 0;
+    overflow: hidden;
+}
 
-/* =========================================
-   CONTENEDOR PRINCIPAL (MAIN)
-   ========================================= */
+.xp-bar {
+    height: 100%;
+    background: var(--azul-resalte);
+    transition: width 0.5s ease-in-out;
+}
+
+/* 3. CONTENIDO PRINCIPAL (Derecha) */
 main {
-    margin-left: 240px; /* Ancho del nav */
-    padding: 50px;
-    width: calc(100% - 240px);
-    box-sizing: border-box;
+    margin-left: 260px; /* Deja espacio para el menú lateral */
+    padding: 2rem;
+    width: calc(100% - 260px);
 }
 
-section { 
-    margin-bottom: 50px; 
+/* 4. LÓGICA DE PÁGINAS (Mostrar/Ocultar) */
+section {
+    display: none; /* Oculto por defecto */
+    animation: fadeIn 0.4s ease-out;
 }
 
-h2 { 
-    color: var(--blanco); 
+section.active {
+    display: block; /* Solo se ve la que tiene la clase 'active' */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 5. TARJETAS Y ELEMENTOS */
+.card {
+    background: var(--fondo-tarjeta);
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #233554;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
     font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 25px;
 }
 
-/* Título principal con degradado sutil */
 .main-title {
     font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--blanco);
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
 }
 
 .main-title span {
     color: var(--azul-resalte);
 }
 
-.subtitle {
-    color: var(--texto-secundario);
-    font-size: 1.1rem;
-    margin-top: 0;
-    margin-bottom: 40px;
+.price {
+    font-family: monospace;
+    font-weight: bold;
+    color: var(--verde-exito);
 }
 
-/* =========================================
-   TARJETAS Y GRIDS
-   ========================================= */
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.card {
-    background-color: var(--azul-card);
-    padding: 25px;
-    border-radius: 12px;
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover { 
-    transform: translateY(-3px); 
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-}
-
-.card h3 { color: var(--blanco); margin-top: 0; }
-.card p { color: var(--texto-secundario); font-size: 0.95rem; }
-
-/* =========================================
-   BOTONES
-   ========================================= */
+/* 6. BOTONES */
 button {
-    font-family: inherit;
+    cursor: pointer;
     border: none;
-    padding: 12px 24px;
     border-radius: 8px;
     font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.85rem;
+    transition: 0.2s;
 }
 
-/* Botón principal (Azul serio) */
 .btn-primary {
-    background-color: var(--azul-resalte);
-    color: var(--blanco);
+    background: var(--azul-resalte);
+    color: white;
+    padding: 0.8rem 1.2rem;
+    width: 100%;
 }
 
-.btn-primary:hover {
-    background-color: var(--azul-hover);
-}
-
-/* Botones semánticos (Bolsa) */
 .btn-buy {
-    background-color: var(--verde-exito);
-    color: var(--blanco);
+    background: var(--verde-exito);
+    color: white;
+    padding: 1rem;
 }
-.btn-buy:hover { background-color: #059669; }
 
 .btn-sell {
-    background-color: var(--rojo-alerta);
-    color: var(--blanco);
-}
-.btn-sell:hover { background-color: #dc2626; }
-
-button:active { transform: scale(0.98); }
-
-/* =========================================
-   ELEMENTOS ESPECÍFICOS (XP, IA, BOLSA)
-   ========================================= */
-
-/* Barra de progreso de XP */
-.xp-container {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
-    height: 10px;
-    width: 100%;
-    margin: 10px 0;
-    overflow: hidden;
+    background: transparent;
+    border: 1px solid var(--rojo-peligro);
+    color: var(--rojo-peligro);
+    padding: 1rem;
 }
 
-.xp-bar {
-    background-color: var(--azul-resalte);
-    height: 100%;
-    width: 65%; /* Progreso ejemplo */
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+button:hover {
+    filter: brightness(1.2);
+    transform: scale(1.02);
 }
 
-/* Nubes/Etiquetas de IA */
-.cloud-tags { margin-bottom: 20px; }
-.cloud {
-    background-color: rgba(59, 130, 246, 0.1);
-    color: var(--azul-resalte);
-    padding: 8px 18px;
-    border-radius: 20px;
-    display: inline-block;
-    margin: 5px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border: 1px solid rgba(59, 130, 246, 0.2);
-}
-
-/* Simulador de Bolsa */
-.stock-market {
-    background: linear-gradient(135deg, var(--azul-card) 0%, rgba(10, 25, 47, 0.8) 100%);
-    padding: 30px;
-    border-radius: 12px;
-    border: 1px solid rgba(59, 130, 246, 0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.stock-info h3 { margin: 0; color: var(--texto-secundario); font-size: 1rem; }
-.price { 
-    font-size: 3rem; 
-    color: var(--verde-exito); 
-    font-family: 'Courier New', Courier, monospace; 
-    font-weight: bold; 
-    margin: 10px 0;
-}
-.trend { color: var(--verde-exito); font-weight: bold; }
-
-/* =========================================
-   FORMULARIOS
-   ========================================= */
-input[type="number"] {
-    background-color: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    color: var(--texto-principal);
-    padding: 12px;
+/* 7. INPUTS */
+input {
+    background: #0a192f;
+    border: 1px solid #233554;
+    color: white;
+    padding: 0.8rem;
     border-radius: 8px;
-    margin-right: 10px;
-    font-family: inherit;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
-input[type="number"]:focus {
-    outline: none;
-    border-color: var(--azul-resalte);
+/* 8. DISEÑO PARA MÓVIL (iPad/iPhone) */
+@media (max-width: 768px) {
+    body { flex-direction: column; }
+    nav { 
+        width: 100%; 
+        height: auto; 
+        position: relative; 
+        border-right: none; 
+        border-bottom: 1px solid #233554;
+    }
+    main { 
+        margin-left: 0; 
+        width: 100%; 
+    }
 }
