@@ -31,33 +31,49 @@
 
     <main class="content">
         <section id="inicio" class="page active">
-            <h1 class="title">Bienvenido a <span>Masari</span></h1>
-            <div class="card">
-                <h3>¿Qué es Masari? 🚀</h3>
-                <p>Tu entrenador financiero. Aprende sobre <b>Inflación, ETFs y Cripto</b> mientras simulas inversiones reales.</p>
+            <h1 class="title">Tu Guía <span>Masari</span></h1>
+            
+            <div class="card intro-card">
+                <h3>¿Qué es Masari y cómo te sirve? 🚀</h3>
+                <p>Masari es tu entrenador financiero personal. Aquí no solo juegas a la bolsa, aprendes a <b>dominar el dinero</b> antes de que él te domine a ti. Esta app te sirve para:</p>
+                <ul style="margin: 15px 25px; color: var(--gray);">
+                    <li>Entender conceptos reales (Inflación, ETFs, Cripto).</li>
+                    <li>Practicar inversiones sin riesgo de perder dinero real.</li>
+                    <li>Forjar una mentalidad de ahorro e interés compuesto.</li>
+                </ul>
             </div>
+
             <div class="card-grid">
-                <div class="card"><h4>Cartera</h4><p id="balance-total" class="price-min">$0</p></div>
-                <div class="card"><h4>Acciones</h4><p id="mis-acciones" class="price-min">0</p></div>
+                <div class="card">
+                    <h4>Valor Cartera</h4>
+                    <p id="balance-total" class="price-min">$0</p>
+                </div>
+                <div class="card">
+                    <h4>Acciones Masari</h4>
+                    <p id="mis-acciones" class="price-min">0 unidades</p>
+                </div>
             </div>
         </section>
 
         <section id="clases" class="page">
             <h2 class="title">Maratón de Quizzes 🧠</h2>
-            <div class="card" id="quiz-area">
+            
+            <div id="quiz-area" class="card quiz-card">
                 <div id="quiz-intro" style="text-align:center; padding: 20px;">
-                    <p style="margin-bottom:20px;">Pon a prueba tus conocimientos de forma seguida.</p>
-                    <button class="btn-main" onclick="iniciarMaraton()">¡EMPEZAR AHORA!</button>
+                    <p style="margin-bottom:20px;">Responde preguntas de forma seguida y gana XP.</p>
+                    <button class="btn-main" id="btn-start-maraton">¡EMPEZAR MARATÓN!</button>
                 </div>
+
                 <div id="quiz-play" style="display:none;">
-                    <div style="display:flex; justify-content:space-between; color:gray; margin-bottom:10px;">
-                        <span id="q-tag" style="color:#3b82f6; font-weight:bold;">TEMA</span>
-                        <span id="q-num">1/4</span>
+                    <div style="display:flex; justify-content:space-between; color:gray;">
+                        <span id="quiz-tema" style="color:var(--blue); font-weight:bold;">TEMA</span>
+                        <span id="quiz-conteo">1/4</span>
                     </div>
-                    <h3 id="q-texto">Pregunta...</h3>
-                    <div id="q-opciones" style="display:grid; gap:10px; margin-top:20px;"></div>
-                    <div id="q-feedback" style="display:none; margin-top:20px; padding:15px; background:rgba(255,255,255,0.1); border-radius:10px;">
-                        <p id="f-texto"></p>
+                    <h3 id="quiz-pregunta" style="margin: 20px 0;">Pregunta...</h3>
+                    <div id="quiz-opciones" style="display:grid; gap:10px; margin-top:20px;"></div>
+                    
+                    <div id="quiz-feedback" style="display:none; margin-top:20px; padding:15px; background:rgba(255,255,255,0.1); border-radius:10px;">
+                        <p id="feedback-texto"></p>
                     </div>
                 </div>
             </div>
@@ -89,5 +105,6 @@
     </main>
 
     <script src="script.js"></script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
