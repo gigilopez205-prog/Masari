@@ -1,142 +1,271 @@
-/* PALETA DE COLORES MASARI */
+/* =========================================
+   PALETA DE COLORES MASARI: AZUL PROFESIONAL
+   ========================================= */
 :root {
-    --azul-fondo: #0a192f;       /* Azul marino profundo */
-    --azul-card: #112240;        /* Azul cobalto para tarjetas */
-    --azul-brillante: #3b82f6;   /* Cian para resaltar y botones */
-    --texto: #e2e8f0;            /* Gris azulado claro para lectura */
+    --azul-fondo: #0a192f;       /* Fondo oscuro profundo */
+    --azul-card: #112240;        /* Tarjetas y menú lateral */
+    --azul-resalte: #3b82f6;     /* NUEVO: Azul Real Profesional (reemplaza al aqua) */
+    --azul-hover: #2563eb;       /* Un azul un poco más oscuro para cuando pasas el mouse */
+    --texto-principal: #e2e8f0;   /* Blanco azulado claro */
+    --texto-secundario: #94a3b8; /* Gris azulado para descripciones */
     --blanco: #ffffff;
-    --rojo-alerta: #ff4d4d;      /* Para el botón de SELL */
-    --verde-exito: #00ff88;      /* Para el botón de BUY */
+    
+    /* Colores semánticos que mantenemos por seriedad */
+    --verde-exito: #10b981;      /* Un verde más sobrio para BUY */
+    --rojo-alerta: #ef4444;       /* Un rojo más sobrio para SELL */
 }
 
-/* CONFIGURACIÓN GENERAL */
+/* =========================================
+   ESTILOS GENERALES
+   ========================================= */
 body {
     margin: 0;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--azul-fondo);
-    color: var(--texto);
+    color: var(--texto-principal);
     display: flex;
-    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* MENÚ LATERAL (SIDEBAR) */
+/* =========================================
+   MENÚ LATERAL (NAV)
+   ========================================= */
 nav {
-    width: 220px;
+    width: 240px;
     height: 100vh;
-    background: var(--azul-card);
+    background-color: var(--azul-card);
     position: fixed;
     padding: 30px 20px;
-    border-right: 1px solid #233554;
+    border-right: 1px solid rgba(59, 130, 246, 0.2); /* Borde sutil en azul resalte */
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+    z-index: 100;
 }
 
 nav h1 { 
-    color: var(--azul-brillante); 
-    font-size: 1.8rem; 
+    color: var(--azul-resalte); /* Usamos el nuevo azul aquí */
+    font-size: 2rem; 
     margin-bottom: 40px; 
     letter-spacing: 3px;
     text-align: center;
+    font-weight: 800;
 }
 
 nav a { 
-    color: var(--texto); 
+    color: var(--texto-principal); 
     text-decoration: none; 
     padding: 12px 15px; 
     margin: 5px 0;
     border-radius: 8px;
-    transition: all 0.3s ease; 
+    transition: all 0.2s ease-in-out; 
+    display: flex;
+    align-items: center;
+    font-weight: 500;
 }
 
 nav a:hover { 
-    background: rgba(100, 255, 218, 0.1);
-    color: var(--azul-brillante); 
+    background-color: rgba(59, 130, 246, 0.1); /* Fondo azul muy suave */
+    color: var(--azul-resalte); 
     padding-left: 20px; 
 }
 
-/* CONTENEDOR PRINCIPAL */
+nav hr {
+    border: 0;
+    border-top: 1px solid rgba(148, 163, 184, 0.2);
+    margin: 20px 0;
+}
+
+/* Sección de progreso en el Nav */
+.xp-status {
+    margin-top: auto; /* Empuja esto al fondo del nav */
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.xp-status small { color: var(--texto-secundario); }
+.xp-status p { margin: 5px 0; font-weight: bold; font-size: 1.1rem; }
+
+/* =========================================
+   CONTENEDOR PRINCIPAL (MAIN)
+   ========================================= */
 main {
-    margin-left: 260px;
+    margin-left: 240px; /* Ancho del nav */
     padding: 50px;
-    width: 100%;
-    max-width: 1000px;
+    width: calc(100% - 240px);
+    box-sizing: border-box;
 }
 
 section { 
     margin-bottom: 50px; 
-    padding: 30px; 
-    border-radius: 20px; 
-    background: rgba(17, 34, 64, 0.5);
-    border: 1px solid rgba(100, 255, 218, 0.1);
 }
 
-h2 { color: var(--blanco); border-bottom: 2px solid var(--azul-brillante); display: inline-block; padding-bottom: 5px; }
+h2 { 
+    color: var(--blanco); 
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
 
-/* TARJETAS (CARDS) */
+/* Título principal con degradado sutil */
+.main-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--blanco);
+    margin-bottom: 10px;
+}
+
+.main-title span {
+    color: var(--azul-resalte);
+}
+
+.subtitle {
+    color: var(--texto-secundario);
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 40px;
+}
+
+/* =========================================
+   TARJETAS Y GRIDS
+   ========================================= */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
 .card {
-    background: var(--azul-card);
+    background-color: var(--azul-card);
     padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    transition: transform 0.3s ease;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card:hover { transform: translateY(-5px); }
+.card:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
 
-/* BOTONES */
+.card h3 { color: var(--blanco); margin-top: 0; }
+.card p { color: var(--texto-secundario); font-size: 0.95rem; }
+
+/* =========================================
+   BOTONES
+   ========================================= */
 button {
-    background: var(--azul-brillante);
-    color: var(--azul-fondo);
+    font-family: inherit;
     border: none;
-    padding: 12px 25px;
+    padding: 12px 24px;
     border-radius: 8px;
-    font-weight: bold;
+    font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
     text-transform: uppercase;
-    transition: 0.3s;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
 }
 
-button:hover { 
-    box-shadow: 0 0 20px rgba(100, 255, 218, 0.4); 
-    filter: brightness(1.1);
+/* Botón principal (Azul serio) */
+.btn-primary {
+    background-color: var(--azul-resalte);
+    color: var(--blanco);
 }
 
-/* SISTEMA DE PUNTOS XP */
+.btn-primary:hover {
+    background-color: var(--azul-hover);
+}
+
+/* Botones semánticos (Bolsa) */
+.btn-buy {
+    background-color: var(--verde-exito);
+    color: var(--blanco);
+}
+.btn-buy:hover { background-color: #059669; }
+
+.btn-sell {
+    background-color: var(--rojo-alerta);
+    color: var(--blanco);
+}
+.btn-sell:hover { background-color: #dc2626; }
+
+button:active { transform: scale(0.98); }
+
+/* =========================================
+   ELEMENTOS ESPECÍFICOS (XP, IA, BOLSA)
+   ========================================= */
+
+/* Barra de progreso de XP */
 .xp-container {
-    background: #233554;
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 20px;
-    height: 12px;
+    height: 10px;
     width: 100%;
-    margin: 15px 0;
+    margin: 10px 0;
     overflow: hidden;
 }
 
 .xp-bar {
-    background: var(--azul-brillante);
+    background-color: var(--azul-resalte);
     height: 100%;
-    width: 65%; /* Progreso inicial */
-    box-shadow: 0 0 10px var(--azul-brillante);
-}
-
-/* NUBES DE IA */
-.cloud {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 12px 25px;
-    border-radius: 30px;
-    display: inline-block;
-    margin: 8px;
-    border: 1px dashed var(--azul-brillante);
-    font-size: 0.9rem;
-}
-
-/* JUEGO DE BOLSA */
-.game-box {
-    display: flex;
-    justify-content: space-around;
-    background: linear-gradient(135deg, #112240 0%, #0a192f 100%);
-    padding: 30px;
+    width: 65%; /* Progreso ejemplo */
     border-radius: 20px;
-    border: 1px solid var(--azul-brillante);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 }
 
-.price { font-size: 2.5rem; color: var(--verde-exito); font-family: monospace; }
+/* Nubes/Etiquetas de IA */
+.cloud-tags { margin-bottom: 20px; }
+.cloud {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--azul-resalte);
+    padding: 8px 18px;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 5px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Simulador de Bolsa */
+.stock-market {
+    background: linear-gradient(135deg, var(--azul-card) 0%, rgba(10, 25, 47, 0.8) 100%);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stock-info h3 { margin: 0; color: var(--texto-secundario); font-size: 1rem; }
+.price { 
+    font-size: 3rem; 
+    color: var(--verde-exito); 
+    font-family: 'Courier New', Courier, monospace; 
+    font-weight: bold; 
+    margin: 10px 0;
+}
+.trend { color: var(--verde-exito); font-weight: bold; }
+
+/* =========================================
+   FORMULARIOS
+   ========================================= */
+input[type="number"] {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    color: var(--texto-principal);
+    padding: 12px;
+    border-radius: 8px;
+    margin-right: 10px;
+    font-family: inherit;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--azul-resalte);
+}
