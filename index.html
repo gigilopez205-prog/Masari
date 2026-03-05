@@ -1,225 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari - Invierte Inteligente</title>
+    <title>Masari - Educación Financiera</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* CSS: EL DISEÑO ESTÉTICO EN AZULES */
-        :root {
-            --azul-fondo: #0a192f;
-            --azul-card: #112240;
-            --azul-brillante: #64ffda;
-            --texto: #ccd6f6;
-            --blanco: #ffffff;
-            --rojo: #ff4d4d;
-            --verde: #00ff88;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--azul-fondo);
-            color: var(--texto);
-            display: flex;
-        }
-
-        /* Menú Lateral */
-        nav {
-            width: 200px;
-            height: 100vh;
-            background: var(--azul-card);
-            position: fixed;
-            padding: 20px;
-            border-right: 1px solid #233554;
-        }
-
-        nav h1 { color: var(--azul-brillante); font-size: 1.5rem; margin-bottom: 30px; letter-spacing: 2px; }
-        nav a { display: block; color: var(--texto); text-decoration: none; padding: 10px 0; transition: 0.3s; }
-        nav a:hover { color: var(--azul-brillante); padding-left: 10px; }
-
-        /* Contenedor Principal */
-        main {
-            margin-left: 240px;
-            padding: 40px;
-            width: calc(100% - 240px);
-        }
-
-        section { margin-bottom: 60px; padding: 20px; border-radius: 15px; background: rgba(17, 34, 64, 0.5); }
-
-        /* Estilo de Tarjetas y Botones */
-        .card {
-            background: var(--azul-card);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            margin-top: 15px;
-        }
-
-        button {
-            background: var(--azul-brillante);
-            color: var(--azul-fondo);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(100, 255, 218, 0.3); }
-
-        /* Sección Juegos */
-        .game-box {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            background: #1d2d50;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid var(--azul-brillante);
-        }
-
-        .price { font-size: 2rem; color: var(--verde); font-weight: bold; }
-
-        /* XP Bar */
-        .xp-container {
-            width: 100%;
-            background: #233554;
-            border-radius: 10px;
-            margin: 10px 0;
-        }
-        .xp-bar {
-            height: 20px;
-            background: var(--azul-brillante);
-            width: 65%;
-            border-radius: 10px;
-            text-align: center;
-            color: var(--azul-fondo);
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        /* Nubes de IA */
-        .cloud {
-            background: #ffffff10;
-            padding: 15px;
-            border-radius: 50px;
-            display: inline-block;
-            margin: 10px;
-            border: 1px dashed var(--azul-brillante);
-        }
-
-        input {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            margin-right: 10px;
-            background: #233554;
-            color: white;
-        }
+        /* Estilos rápidos para asegurar que se vea azul desde ya */
+        :root { --azul: #0a192f; --brillante: #64ffda; --texto: #ccd6f6; }
+        body { background-color: var(--azul); color: var(--texto); font-family: sans-serif; display: flex; margin: 0; }
+        nav { width: 200px; height: 100vh; background: #112240; padding: 20px; border-right: 1px solid var(--brillante); position: fixed; }
+        main { margin-left: 250px; padding: 40px; }
+        .card { background: #112240; padding: 20px; border-radius: 10px; border: 1px solid rgba(100,255,218,0.2); margin-top: 20px; }
+        .btn { background: var(--brillante); color: #0a192f; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-
     <nav>
-        <h1>MASARI</h1>
-        <a href="#inicio">Página Inicial</a>
-        <a href="#clases">Clases Online</a>
-        <a href="#ahorro">IA de Ahorro</a>
-        <a href="#juegos">Juegos / Bolsa</a>
-        <div style="margin-top: 50px;">
-            <small>Tu Progreso:</small>
-            <div class="xp-container"><div class="xp-bar">65%</div></div>
-            <p>⭐ <span id="xp-count">2500</span> XP</p>
-        </div>
+        <h1 style="color: var(--brillante)">MASARI</h1>
+        <p>⭐ XP: <span id="xp-count">2500</span></p>
+        <hr>
+        <p>🏠 Inicio</p>
+        <p>📚 Clases</p>
+        <p>🤖 IA Ahorro</p>
+        <p>📈 Bolsa</p>
     </nav>
-
     <main>
-        <section id="inicio">
-            <h2>Bienvenido a Masari</h2>
-            <p><i>"Invierte inteligente, vive tranquilo"</i></p>
-            <div class="card" style="max-width: 300px;">
-                <h3>Acceso Estudiantil</h3>
-                <input type="text" placeholder="Usuario">
-                <br><br>
-                <button onclick="alert('¡Sesión iniciada en Masari!')">Entrar</button>
-            </div>
-        </section>
-
-        <section id="clases">
-            <h2>Clases y Talleres</h2>
-            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                <div class="card">
-                    <div style="width: 200px; height: 110px; background: #233554; border-radius: 8px; display: flex; align-items: center; justify-content: center;">▶️ Video</div>
-                    <h4>Finanzas Básicas</h4>
-                    <button onclick="sumarXP(50)">Inscribirse</button>
-                </div>
-                <div class="card">
-                    <div style="width: 200px; height: 110px; background: #233554; border-radius: 8px; display: flex; align-items: center; justify-content: center;">▶️ Video</div>
-                    <h4>Inversión en Bolsa</h4>
-                    <button onclick="sumarXP(50)">Inscribirse</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="ahorro">
-            <h2>IA de Ahorro 🤖</h2>
-            <div class="cloud">Ingresos estables</div>
-            <div class="cloud">Gasto en ocio alto</div>
-            <div class="card">
-                <p>Ingresa tus gastos para que la IA de Masari los analice:</p>
-                <input type="number" id="gasto" placeholder="Monto $">
-                <button onclick="analizarIA()">Analizar</button>
-                <p id="ia-output"></p>
-            </div>
-        </section>
-
-        <section id="juegos">
-            <h2>Simulador: Bolsa de Valores</h2>
-            <div class="game-box">
-                <div>
-                    <h3>Acción: $MAS</h3>
-                    <div class="price" id="precio">$800.000</div>
-                    <p style="color: var(--verde);">+12.5% ▲</p>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button style="background: var(--verde);" onclick="sumarXP(100)">BUY (Comprar)</button>
-                    <button style="background: var(--rojo); color: white;" onclick="alert('Vendido con éxito en Masari')">SELL (Vender)</button>
-                </div>
-            </div>
-        </section>
+        <h1>Invierte inteligente, <span style="color: var(--brillante)">VIVE tranquilo</span></h1>
+        <div class="card">
+            <h3>Simulador de Bolsa ($MAS)</h3>
+            <p style="font-size: 24px; color: #00ff88;">$800,450</p>
+            <button class="btn" onclick="alert('¡Compra exitosa! +100 XP')">BUY</button>
+        </div>
+        <div class="card">
+            <h3>IA de Ahorro 🤖</h3>
+            <p>"Tu situación actual: Tienes buen flujo para invertir este mes."</p>
+        </div>
     </main>
-
-    <script>
-        let xp = 2500;
-
-        function sumarXP(cantidad) {
-            xp += cantidad;
-            document.getElementById('xp-count').innerText = xp;
-            alert("¡Felicidades! Ganaste " + cantidad + " XP en Masari.");
-        }
-
-        function analizarIA() {
-            const monto = document.getElementById('gasto').value;
-            const output = document.getElementById('ia-output');
-            if(monto > 100) {
-                output.innerText = "🤖 IA Masari: Ese gasto parece alto. Intenta reducir un 10% y guárdalo en tu fondo de emergencia.";
-                output.style.color = "#ff4d4d";
-            } else {
-                output.innerText = "🤖 IA Masari: ¡Buen control de gastos! Estás en el camino correcto.";
-                output.style.color = "#00ff88";
-            }
-        }
-
-        // Simular movimiento de bolsa cada 3 segundos
-        setInterval(() => {
-            const precioBase = 800000;
-            const fluctuacion = Math.floor(Math.random() * 6000) - 2500;
-            document.getElementById('precio').innerText = "$" + (precioBase + fluctuacion).toLocaleString();
-        }, 3000);
-    </script>
 </body>
 </html>
