@@ -1,7 +1,6 @@
 let puntosXP = 2500;
 let precioActual = 800000;
 
-// Función para actualizar los puntos y la barra azul
 function actualizarXP(cantidad) {
     puntosXP += cantidad;
     const xpDisplay = document.getElementById('xp-count');
@@ -9,12 +8,11 @@ function actualizarXP(cantidad) {
     
     if(xpDisplay) xpDisplay.innerText = puntosXP.toLocaleString();
     if(xpBar) {
-        let porcentaje = Math.min((puntosXP / 6000) * 100, 100);
+        let porcentaje = Math.min((puntosXP / 10000) * 100, 100);
         xpBar.style.width = porcentaje + "%";
     }
 }
 
-// Función para comprar acciones
 function comprarAccion() {
     actualizarXP(100);
     const historial = document.getElementById('lista-transacciones');
@@ -22,7 +20,7 @@ function comprarAccion() {
     const ahora = new Date().toLocaleTimeString();
     
     const item = `<p style="border-bottom: 1px solid #233554; padding: 5px 0;">
-        <span style="color: #3b82f6;">●</span> Compraste $MAS a ${pLabel} <small style="float:right;">${ahora}</small>
+        <span style="color: #10b981;">●</span> Compraste $MAS a ${pLabel} <small style="float:right;">${ahora}</small>
     </p>`;
     
     if (historial.innerHTML.includes("No hay movimientos")) {
@@ -32,7 +30,25 @@ function comprarAccion() {
     }
 }
 
-// Función para completar clases
+// NUEVA FUNCIÓN PARA VENDER
+function venderAccion() {
+    actualizarXP(50); // Menos XP por vender, pero igual cuenta como actividad
+    const historial = document.getElementById('lista-transacciones');
+    const pLabel = document.getElementById('precio-bolsa').innerText;
+    const ahora = new Date().toLocaleTimeString();
+    
+    const item = `<p style="border-bottom: 1px solid #233554; padding: 5px 0;">
+        <span style="color: #ef4444;">●</span> Vendiste $MAS a ${pLabel} <small style="float:right;">${ahora}</small>
+    </p>`;
+    
+    if (historial.innerHTML.includes("No hay movimientos")) {
+        historial.innerHTML = item;
+    } else {
+        historial.innerHTML = item + historial.innerHTML;
+    }
+    alert("Venta realizada con éxito.");
+}
+
 function completarClase(nombre, recompensa) {
     actualizarXP(recompensa);
     const historial = document.getElementById('lista-transacciones');
@@ -50,7 +66,6 @@ function completarClase(nombre, recompensa) {
     alert("¡Felicidades! Ganaste " + recompensa + " XP");
 }
 
-// Función de la IA
 function analizarGasto() {
     const monto = document.getElementById('gasto-input').value;
     const res = document.getElementById('ia-resultado');
@@ -64,7 +79,6 @@ function analizarGasto() {
     }
 }
 
-// Simulador de precios (cada 3 segundos)
 setInterval(() => {
     let cambio = Math.floor(Math.random() * 5000) - 2000;
     precioActual += cambio;
