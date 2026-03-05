@@ -1,60 +1,53 @@
-// VARIABLES DE ESTADO
-let xp = 2500;
-let saldoFicticio = 1000000; // Un millón para empezar el simulador
+// VARIABLES INICIALES
+let puntosXP = 2500;
+let precioBase = 800000;
 
-// 1. FUNCIÓN PARA SUMAR PUNTOS XP
-function sumarXP(cantidad) {
-    xp += cantidad;
-    const xpDisplay = document.getElementById('xp-count');
-    if(xpDisplay) {
-        xpDisplay.innerText = xp.toLocaleString();
-        // Animación simple de color al ganar puntos
-        xpDisplay.style.color = "#64ffda";
-        setTimeout(() => xpDisplay.style.color = "#ccd6f6", 500);
-    }
-    console.log("Ganaste " + cantidad + " XP en Masari.");
+// 1. FUNCIÓN PARA ACTUALIZAR XP VISUALMENTE
+function actualizarXP(cantidad) {
+    puntosXP += cantidad;
+    document.getElementById('xp-count').innerText = puntosXP.toLocaleString();
+    
+    // Hacer que la barra de progreso crezca un poquito
+    let nuevaAnchura = Math.min((puntosXP / 5000) * 100, 100); 
+    document.getElementById('xp-bar-inner').style.width = nuevaAnchura + "%";
 }
 
-// 2. LÓGICA DE LA IA DE AHORRO
-function analizarIA() {
-    const montoInput = document.getElementById('gasto');
-    const output = document.getElementById('ia-output');
-    
-    if(!montoInput || !output) return;
+// 2. FUNCIÓN PARA EL BOTÓN BUY
+function comprarAccion() {
+    actualizarXP(100); // Gana 100 XP por invertir
+    alert("¡Compra exitosa! Has invertido en $MAS y ganaste 100 XP.");
+}
 
-    const monto = parseFloat(montoInput.value);
+// 3. FUNCIÓN PARA EL BOTÓN SELL
+function venderAccion() {
+    alert("Has vendido tus acciones. ¡Aseguraste tus ganancias!");
+}
 
-    if (isNaN(monto) || monto <= 0) {
-        output.innerText = "🤖 Por favor, ingresa un monto válido para que Masari te ayude.";
-        output.style.color = "#ffffff";
-    } else if (monto > 500) {
-        output.innerText = "🤖 IA Masari: ¡Cuidado! Este gasto representa una gran parte de tu presupuesto. ¿Es realmente necesario?";
-        output.style.color = "#ff4d4d";
+// 4. FUNCIÓN IA DE AHORRO
+function analizarGasto() {
+    const monto = document.getElementById('gasto-input').value;
+    const feedback = document.getElementById('ia-resultado');
+
+    if (monto === "") {
+        feedback.innerText = "⚠️ Por favor ingresa un monto.";
+        feedback.style.color = "#94a3b8";
+    } else if (monto > 1000) {
+        feedback.innerText = "🤖 IA Masari: ¡Cuidado! Este gasto es muy alto. Podrías invertirlo en la bolsa.";
+        feedback.style.color = "#ef4444";
     } else {
-        output.innerText = "🤖 IA Masari: ¡Excelente control! Has ganado 15 XP por registrar tus finanzas.";
-        output.style.color = "#00ff88";
-        sumarXP(15);
+        feedback.innerText = "🤖 IA Masari: Gasto razonable. ¡Has ganado 10 XP por registrarlo!";
+        feedback.style.color = "#10b981";
+        actualizarXP(10);
     }
 }
 
-// 3. SIMULADOR DE BOLSA (MOVIMIENTO DE PRECIOS)
-function actualizarBolsa() {
-    const precioElemento = document.getElementById('precio');
-    if(!precioElemento) return;
-
-    // Generar un cambio aleatorio entre -$5000 y +$5000
-    const fluctuacion = Math.floor(Math.random() * 10000) - 5000;
-    const precioBase = 800000;
-    const nuevoPrecio = precioBase + fluctuacion;
-
-    precioElemento.innerText = "$" + nuevoPrecio.toLocaleString();
-    
-    // Cambiar color según si sube o baja (opcional)
-    precioElemento.style.color = fluctuacion > 0 ? "#00ff88" : "#ff4d4d";
-}
-
-// Iniciar el movimiento de la bolsa cada 3 segundos
-setInterval(actualizarBolsa, 3000);
-
-// Mensaje de bienvenida en consola
-console.log("Masari Engine: Cargado correctamente. ¡A aprender finanzas!");
+// 5. SIMULADOR DE BOLSA (CAMBIA EL PRECIO SOLO)
+setInterval(() => {
+    let variacion = Math.floor(Math.random() * 4000) - 2000;
+    let precioActual = precioBase + variacion;
+    const precioDoc = document.getElementById('precio-bolsa');
+    if(precioDoc) {
+        precioDoc.innerText = "$" + precioActual.toLocaleString();
+        precioDoc.style.color = variacion > 0 ? "#10b981" : "#ef4444";
+    }
+}, 3000);
