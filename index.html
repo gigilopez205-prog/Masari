@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari Pro</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Masari Ultimate</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -15,67 +15,88 @@
     </div>
 
     <nav class="sidebar">
-        <div class="brand">MASARI</div>
+        <div class="brand">
+            <div class="logo-icon">M</div> MASARI
+        </div>
         <div class="menu">
-            <button onclick="cambiarPagina('inicio')" class="nav-btn active">Inicio</button>
+            <button onclick="cambiarPagina('inicio')" class="nav-btn active">Panel</button>
             <button onclick="cambiarPagina('clases')" class="nav-btn">Academia</button>
-            <button onclick="cambiarPagina('juegos')" class="nav-btn">Bolsa</button>
-            <button onclick="cambiarPagina('perfil')" class="nav-btn">Perfil</button>
+            <button onclick="cambiarPagina('juegos')" class="nav-btn">Mercado</button>
+            <button onclick="cambiarPagina('perfil')" class="nav-btn">Mi Perfil</button>
         </div>
         <div class="xp-footer">
-            <div class="bar-bg"><div id="xp-bar-fill" class="bar-fill" style="width: 20%;"></div></div>
-            <p>⭐ <span id="xp-count">2500</span> XP</p>
+            <div class="bar-bg"><div id="xp-bar-fill" class="bar-fill"></div></div>
+            <p>⭐ <span id="xp-count">0</span> XP</p>
         </div>
     </nav>
 
     <main class="content">
         <section id="inicio" class="page active">
-            <h1 class="title">Panel <span>Principal</span></h1>
-            <div class="card">
-                <h3>¿Qué es Masari?</h3>
-                <p>Tu simulador financiero para aprender a invertir con memes y práctica real.</p>
+            <h1 class="title">Bienvenido a <span>Masari</span></h1>
+            <div class="card intro-card">
+                <h3>Tu futuro financiero empieza aquí 🚀</h3>
+                <p>Masari es un ecosistema educativo diseñado para convertirte en un experto del dinero. Aprende conceptos complejos con humor y practica en un mercado real sin riesgo.</p>
+                <p style="margin-top:10px; color: var(--blue); font-weight: bold;">"El mejor momento para invertir fue ayer, el segundo mejor es AHORA."</p>
             </div>
             <div class="card-grid">
-                <div class="card"><h4>Cartera</h4><p id="balance-total">$0</p></div>
-                <div class="card"><h4>Acciones</h4><p id="mis-acciones">0</p></div>
+                <div class="card"><h4>Cartera Total</h4><p id="balance-total" class="price-min">$0</p></div>
+                <div class="card"><h4>Acciones en Posesión</h4><p id="mis-acciones" class="price-min">0</p></div>
             </div>
         </section>
 
         <section id="clases" class="page">
-            <h2 class="title">Maratón Quiz</h2>
-            <div class="card" id="quiz-area">
-                <div id="quiz-intro">
-                    <button class="btn-main" onclick="iniciarMaraton()">¡EMPEZAR QUIZ!</button>
+            <h2 class="title">Maratón de Quizzes</h2>
+            <div class="card">
+                <div id="quiz-intro" style="text-align:center;">
+                    <p>Supera las 25 preguntas para obtener la medalla de Sabio.</p>
+                    <button class="btn-main" onclick="iniciarMaraton()">COMENZAR DESAFÍO</button>
                 </div>
                 <div id="quiz-play" style="display:none;">
-                    <h3 id="q-texto">Pregunta</h3>
-                    <div id="q-opciones"></div>
-                    <div id="q-feedback" style="display:none; margin-top:15px; color: #3b82f6;"></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <span id="q-num" style="color:var(--blue)">1/25</span>
+                    </div>
+                    <h3 id="q-texto">Cargando pregunta...</h3>
+                    <div id="q-opciones" class="options-grid"></div>
                 </div>
             </div>
         </section>
 
         <section id="juegos" class="page">
-            <h2 class="title">Mercado en Vivo</h2>
+            <h2 class="title">Bolsa de Valores</h2>
             <div class="card">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h2 id="p-bolsa" style="font-size: 40px; color:#10b981;">$800,000</h2>
-                    <div>
+                <div class="market-header">
+                    <h2 id="p-bolsa" class="price-big">$800,000</h2>
+                    <div class="trade-group">
                         <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
                         <button class="btn-sell" onclick="venderAccion()">VENDER</button>
                     </div>
                 </div>
-                <div style="height:300px; margin-top:20px;">
-                    <canvas id="graficaBolsa"></canvas>
+                <div class="chart-container">
+                    <canvas id="graficaPicos"></canvas>
                 </div>
             </div>
         </section>
 
         <section id="perfil" class="page">
-            <h2 class="title">Logros</h2>
-            <div class="card" style="display:flex; justify-content:space-around;">
-                <div class="medalla" id="med-lobo">🐺<br>Trader</div>
-                <div class="medalla" id="med-genio">🧠<br>Sabio</div>
+            <h2 class="title">Configuración de Perfil</h2>
+            <div class="card profile-card">
+                <div class="profile-header">
+                    <div class="avatar-container">
+                        <img id="user-photo" src="https://via.placeholder.com/150" alt="Avatar">
+                        <input type="file" id="upload-photo" hidden accept="image/*">
+                        <button class="btn-edit" onclick="document.getElementById('upload-photo').click()">📸</button>
+                    </div>
+                    <div class="profile-info">
+                        <input type="text" id="user-name" placeholder="Tu nombre de usuario" value="Inversionista Masari">
+                        <textarea id="user-desc" placeholder="Escribe una breve biografía sobre tus metas financieras..."></textarea>
+                        <button class="btn-main" onclick="guardarPerfil()">GUARDAR CAMBIOS</button>
+                    </div>
+                </div>
+                <hr style="margin:20px 0; opacity:0.1;">
+                <div class="medallas-container">
+                    <div class="medalla" id="med-lobo">🐺<br>TRADER</div>
+                    <div class="medalla" id="med-genio">🧠<br>SABIO</div>
+                </div>
             </div>
         </section>
     </main>
