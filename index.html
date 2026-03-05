@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masari - Academia Financiera</title>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,7 +20,7 @@
         <div class="xp-status">
             <small>PROGRESO TOTAL</small>
             <div class="xp-container">
-                <div id="xp-bar-inner" class="xp-bar" style="width: 50%;"></div>
+                <div id="xp-bar-inner" class="xp-bar" style="width: 30%;"></div>
             </div>
             <p>⭐ <span id="xp-count">2500</span> XP</p>
         </div>
@@ -28,7 +29,34 @@
     <main>
         <section id="inicio">
             <h1 class="main-title">Invierte inteligente, <span>vive tranquilo</span></h1>
-            <p class="subtitle">Aprende a manejar tu dinero con Masari.</p>
+            <p class="subtitle">Tu camino al éxito financiero comienza aquí.</p>
+        </section>
+
+        <section id="juegos">
+            <h2>Simulador de Bolsa en Vivo</h2>
+            <div class="card" style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <h3 style="margin:0;">Acción Masari ($MAS)</h3>
+                        <div id="precio-bolsa" class="price" style="font-size: 2.5rem;">$800,000</div>
+                        <div id="trend-label" class="trend">▲ Analizando mercado...</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
+                        <button class="btn-sell" onclick="venderAccion()">VENDER</button>
+                    </div>
+                </div>
+                <div style="height: 300px; width: 100%;">
+                    <canvas id="graficaBolsa"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Historial de Actividad</h3>
+                <div id="lista-transacciones" style="font-size: 0.9rem; color: #94a3b8; max-height: 150px; overflow-y: auto;">
+                    <p>No hay movimientos recientes.</p>
+                </div>
+            </div>
         </section>
 
         <section id="clases">
@@ -37,46 +65,14 @@
                 <div class="card">
                     <i data-lucide="book-open" style="color: #3b82f6; margin-bottom: 10px;"></i>
                     <h3>Interés Compuesto</h3>
-                    <p>La clave para que tu dinero crezca solo con el tiempo.</p>
+                    <p>La magia de hacer crecer tu dinero.</p>
                     <button class="btn-primary" onclick="completarClase('Interés Compuesto', 500)">Completar +500 XP</button>
                 </div>
                 <div class="card">
                     <i data-lucide="shield-check" style="color: #3b82f6; margin-bottom: 10px;"></i>
                     <h3>Ahorro Inteligente</h3>
-                    <p>Estrategias para guardar dinero sin dejar de disfrutar.</p>
+                    <p>Estrategias de ahorro moderno.</p>
                     <button class="btn-primary" onclick="completarClase('Ahorro Inteligente', 500)">Completar +500 XP</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="ahorro">
-            <h2>IA de Ahorro 🤖</h2>
-            <div class="card">
-                <p>Ingresa un gasto para analizar:</p>
-                <input type="number" id="gasto-input" placeholder="Monto $">
-                <button class="btn-primary" onclick="analizarGasto()">Analizar Gasto</button>
-                <p id="ia-resultado" style="margin-top: 15px; font-weight: bold;"></p>
-            </div>
-        </section>
-
-        <section id="juegos">
-            <h2>Simulador de Bolsa</h2>
-            <div class="stock-market">
-                <div class="stock-info">
-                    <h3>Acción Masari ($MAS)</h3>
-                    <div id="precio-bolsa" class="price">$800,000</div>
-                    <div id="trend-label" class="trend">▲ Estable</div>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
-                    <button class="btn-sell" onclick="venderAccion()">VENDER</button>
-                </div>
-            </div>
-
-            <div class="card" style="margin-top: 20px;">
-                <h3>Historial de Actividad</h3>
-                <div id="lista-transacciones" style="font-size: 0.9rem; color: #94a3b8;">
-                    <p>No hay movimientos recientes.</p>
                 </div>
             </div>
         </section>
