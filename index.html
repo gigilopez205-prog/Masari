@@ -49,6 +49,12 @@
         .full-width { grid-column: span 2; }
         input, textarea, select { background: #020c1b; border: 1px solid #233554; color: white; padding: 12px; border-radius: 8px; font-size: 14px; width: 100%; }
         
+        /* ACADEMIA ONLINE CLASSES */
+        .class-form { display: grid; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #233554; }
+        .class-list { margin-top: 25px; display: grid; gap: 20px; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; margin: 10px 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
         /* BOTONES */
         .btn { padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; color: white; }
         .btn:active { transform: scale(0.95); }
@@ -103,10 +109,12 @@
         </section>
 
         <section id="academia" class="page">
-            <h1 class="title">Academia <span>Quiz</span></h1>
+            <h1 class="title">Academia <span>Quiz & Clases</span></h1>
+            
             <div class="card">
                 <div id="quiz-start">
-                    <p style="text-align: center; margin-bottom: 20px;">Completa el Maratón de 25 preguntas para subir de nivel.</p>
+                    <h3 style="margin-bottom: 10px;">Maratón de Conocimiento</h3>
+                    <p style="margin-bottom: 20px; color: var(--gray);">Completa las 25 preguntas para subir de nivel.</p>
                     <button class="btn btn-blue" onclick="startQuiz()">EMPEZAR MARATÓN</button>
                 </div>
                 <div id="quiz-ui" style="display: none;">
@@ -117,6 +125,19 @@
                     <div id="q-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;"></div>
                 </div>
             </div>
+
+            <div class="card">
+                <h3>Añadir Nueva Clase 🎥</h3>
+                <div class="class-form">
+                    <input type="text" id="class-title" placeholder="Título de la clase (Ej: Introducción a Cripto)">
+                    <input type="text" id="class-url" placeholder="URL de YouTube (Ej: https://www.youtube.com/watch?v=...)">
+                    <textarea id="class-desc" placeholder="Descripción o notas de la clase..."></textarea>
+                    <button class="btn btn-buy" onclick="addClass()">GUARDAR CLASE ONLINE</button>
+                </div>
+            </div>
+
+            <div id="class-container" class="class-list">
+                </div>
         </section>
 
         <section id="bolsa" class="page">
@@ -196,12 +217,12 @@
                 labels: Array(30).fill(""),
                 datasets: [{
                     data: Array(30).fill(800000),
-                    borderColor: '#3b82f6', // Color inicial azul
+                    borderColor: '#3b82f6',
                     borderWidth: 3,
                     pointRadius: 0,
                     tension: 0,
                     fill: true,
-                    backgroundColor: 'rgba(59, 130, 246, 0.05)' // Fondo inicial azul
+                    backgroundColor: 'rgba(59, 130, 246, 0.05)'
                 }]
             },
             options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: false }, y: { grid: { color: '#233554' } } }, animation: false }
@@ -213,13 +234,12 @@
             const el = document.getElementById('p-bolsa');
             el.innerText = "$" + Math.floor(price).toLocaleString();
             
-            // Actualizar color del texto y de la gráfica
             if (drift > 0) {
-                el.style.color = "#10b981"; // Verde para subidas
+                el.style.color = "#10b981";
                 chart.data.datasets[0].borderColor = "#10b981";
                 chart.data.datasets[0].backgroundColor = "rgba(16, 185, 129, 0.05)";
             } else {
-                el.style.color = "#ef4444"; // Rojo para bajadas
+                el.style.color = "#ef4444";
                 chart.data.datasets[0].borderColor = "#ef4444";
                 chart.data.datasets[0].backgroundColor = "rgba(239, 68, 68, 0.05)";
             }
@@ -239,6 +259,41 @@
             document.getElementById('meme-msg').style.color = isWin ? "#10b981" : "#ef4444";
             document.getElementById('meme-box').classList.add('active');
             setTimeout(() => document.getElementById('meme-box').classList.remove('active'), 2800);
+        }
+
+        // --- CLASES ONLINE ---
+        function addClass() {
+            const title = document.getElementById('class-title').value;
+            const url = document.getElementById('class-url').value;
+            const desc = document.getElementById('class-desc').value;
+
+            if(!title || !url) { alert("Por favor, pon un título y un link de YouTube"); return; }
+
+            // Extraer ID de YouTube de forma simple
+            let videoId = "";
+            if(url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
+            else if(url.includes("be/")) videoId = url.split("be/")[1].split("?")[0];
+
+            if(!videoId) { alert("Link de YouTube no válido"); return; }
+
+            const classHTML = `
+                <div class="card">
+                    <h3 style="color:var(--blue)">${title}</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
+                    </div>
+                    <p style="color:var(--gray); font-size:14px; margin-top:10px;">${desc}</p>
+                </div>
+            `;
+
+            document.getElementById('class-container').insertAdjacentHTML('afterbegin', classHTML);
+            
+            // Limpiar inputs
+            document.getElementById('class-title').value = "";
+            document.getElementById('class-url').value = "";
+            document.getElementById('class-desc').value = "";
+            
+            meme(true, "¡Clase publicada!");
         }
 
         // --- 25 PREGUNTAS ---
@@ -282,13 +337,10 @@
         function trade(n) { 
             if(n < 0 && stocks <= 0) { meme(false, "No tienes acciones"); return; }
             stocks += n; 
-            
-            // Agregar al historial
             const type = n > 0 ? "COMPRA" : "VENTA";
             const color = n > 0 ? "var(--green)" : "var(--red)";
             const row = `<tr><td style="color:${color}; font-weight:bold;">${type}</td><td>$${Math.floor(price).toLocaleString()}</td><td>1</td><td style="color:var(--gray)">Completado</td></tr>`;
             document.getElementById('trade-history').insertAdjacentHTML('afterbegin', row);
-            
             meme(true, n > 0 ? "¡COMPRA EXITOSA!" : "¡VENTA EXITOSA!"); 
             updateUI(); 
         }
