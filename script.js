@@ -1,10 +1,9 @@
-// VARIABLES DE ESTADO
+// --- ESTADO GLOBAL ---
 let xp = 2500;
-let precio = 800000;
-let misAcciones = 0;
-let precioCompraPromedio = 0;
+let precioActual = 800000;
+let cantidadAcciones = 0;
 
-// 1. NAVEGACIÓN
+// --- NAVEGACIÓN ---
 function cambiarPagina(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
@@ -13,98 +12,115 @@ function cambiarPagina(id) {
     if(id === 'juegos') setTimeout(() => miChart.update(), 100);
 }
 
-// 2. LÓGICA DE BOLSA Y CARTERA
+// --- SIMULADOR DE BOLSA ---
 const ctx = document.getElementById('graficaBolsa').getContext('2d');
 let miChart = new Chart(ctx, {
     type: 'line',
-    data: { labels: ["","","","",""], datasets: [{ data: [790000, 795000, 798000, 800000], borderColor: '#3b82f6', fill: true, tension: 0.4 }] },
+    data: {
+        labels: ["","","","","","","","","",""],
+        datasets: [{
+            data: [790000, 795000, 798000, 800000],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            fill: true,
+            tension: 0.4
+        }]
+    },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
 });
 
 setInterval(() => {
-    let cambio = Math.floor(Math.random() * 10000) - 5000;
-    precio += cambio;
-    document.getElementById('p-bolsa').innerText = "$" + precio.toLocaleString();
-    actualizarCartera();
+    let cambio = Math.floor(Math.random() * 10000) - 4500;
+    precioActual += cambio;
     
-    // Actualizar gráfica
-    miChart.data.datasets[0].borderColor = cambio > 0 ? "#10b981" : "#ef4444";
-    miChart.data.datasets[0].data.push(precio);
+    // Actualizar textos de precio
+    const pBolsa = document.getElementById('p-bolsa');
+    if(pBolsa) {
+        pBolsa.innerText = "$" + precioActual.toLocaleString();
+        pBolsa.style.color = cambio > 0 ? "#10b981" : "#ef4444";
+    }
+    
+    actualizarVistaCartera();
+
+    // Actualizar Gráfica
+    miChart.data.datasets[0].data.push(precioActual);
     if(miChart.data.datasets[0].data.length > 15) miChart.data.datasets[0].data.shift();
     miChart.update('none');
 }, 3000);
 
+// --- COMPRA Y VENTA (CORREGIDO) ---
 function comprarAccion() {
-    misAcciones++;
-    precioCompraPromedio = precio; 
+    cantidadAcciones += 1;
     actualizarXP(100);
+    actualizarVistaCartera();
     desbloquearMedalla('med-lobo');
-    actualizarCartera();
+    console.log("Comprado: " + cantidadAcciones);
 }
 
 function venderAccion() {
-    if(misAcciones > 0) {
-        let ganancia = (precio - precioCompraPromedio) * misAcciones;
-        if(ganancia > 100000) desbloquearMedalla('med-rico');
-        misAcciones = 0;
+    if(cantidadAcciones > 0) {
+        let totalVenta = cantidadAcciones * precioActual;
+        if(totalVenta > 1000000) desbloquearMedalla('med-rico');
+        
+        cantidadAcciones = 0;
         actualizarXP(50);
-        actualizarCartera();
-        alert("Venta realizada");
+        actualizarVistaCartera();
+        alert("¡Acciones vendidas con éxito!");
+    } else {
+        alert("No tienes acciones para vender.");
     }
 }
 
-function actualizarCartera() {
-    const balance = document.getElementById('balance-total');
+function actualizarVistaCartera() {
+    const valTotal = document.getElementById('balance-total');
     const unidades = document.getElementById('mis-acciones');
-    if(balance) {
-        let valorActual = misAcciones * precio;
-        balance.innerText = "$" + valorActual.toLocaleString();
-        unidades.innerText = misAcciones + " unidades";
+    
+    if(valTotal && unidades) {
+        valTotal.innerText = "$" + (cantidadAcciones * precioActual).toLocaleString();
+        unidades.innerText = cantidadAcciones + " unidades";
     }
 }
 
-// 3. SISTEMA DE QUIZ
-const preguntas = {
-    interes: { q: "¿Qué hace el interés compuesto?", o: ["Crece dinero sobre dinero", "Resta dinero", "No hace nada"], a: 0 },
-    ahorro: { q: "¿Cuál es la regla del ahorro?", o: ["Gastar todo", "Ahorrar antes de gastar", "Pedir prestado"], a: 1 }
+// --- ACADEMIA Y QUIZ ---
+const bancoPreguntas = {
+    interes: { q: "¿Qué hace el interés compuesto?", o: ["Crece sobre el capital + intereses", "Resta dinero", "Es un gasto"], a: 0 },
+    ahorro: { q: "¿Cuándo se debe ahorrar?", o: ["Al final del mes", "Antes de gastar", "Nunca"], a: 1 }
 };
 
 function abrirQuiz(tema) {
-    const q = preguntas[tema];
-    document.getElementById('quiz-container').style.display = 'block';
-    document.getElementById('quiz-titulo').innerText = "Examen: " + tema;
-    document.getElementById('quiz-pregunta').innerText = q.q;
-    const divOpciones = document.getElementById('quiz-opciones');
-    divOpciones.innerHTML = "";
-    q.o.forEach((opt, i) => {
-        divOpciones.innerHTML += `<button class="quiz-btn" onclick="validarQuiz(${i}, ${q.a})">${opt}</button>`;
+    const data = bancoPreguntas[tema];
+    const container = document.getElementById('quiz-container');
+    container.style.display = 'block';
+    document.getElementById('quiz-titulo').innerText = "Examen rápido";
+    document.getElementById('quiz-pregunta').innerText = data.q;
+    
+    const opcionesDiv = document.getElementById('quiz-opciones');
+    opcionesDiv.innerHTML = "";
+    data.o.forEach((opcion, i) => {
+        opcionesDiv.innerHTML += `<button class="btn-main" style="margin-bottom:5px" onclick="validarRespuesta(${i}, ${data.a})">${opcion}</button>`;
     });
+    window.scrollTo(0,0);
 }
 
-function validarQuiz(elegida, correcta) {
-    if(elegida === correcta) {
-        alert("¡Correcto! +500 XP");
+function validarRespuesta(idx, correcta) {
+    if(idx === correcta) {
+        alert("¡Excelente! +500 XP");
         actualizarXP(500);
         desbloquearMedalla('med-genio');
     } else {
-        alert("Incorrecto. Estudia más.");
+        alert("Respuesta incorrecta, vuelve a intentarlo.");
     }
     document.getElementById('quiz-container').style.display = 'none';
 }
 
-// 4. LOGROS Y XP
-function desbloquearMedalla(id) {
-    document.getElementById(id).classList.add('unlocked');
-}
-
-function actualizarXP(n) {
-    xp += n;
+// --- XP Y MEDALLAS ---
+function actualizarXP(puntos) {
+    xp += puntos;
     document.getElementById('xp-count').innerText = xp.toLocaleString();
     document.getElementById('xp-bar-fill').style.width = Math.min((xp/10000)*100, 100) + "%";
 }
 
-function analizarGasto() {
-    const m = document.getElementById('gasto-input').value;
-    const res = document.getElementById('ia-resultado');
-    res.innerText = m > 1000 ? "🤖 IA: ¡Demasiado! Mejor compra acciones." : "🤖 IA: Gasto aceptable.";
+function desbloquearMedalla(id) {
+    const m = document.getElementById(id);
+    if(m) m.classList.add('unlocked');
 }
