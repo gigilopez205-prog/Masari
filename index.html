@@ -188,7 +188,7 @@
         let xp = 2500, price = 800000, stocks = 0, qIdx = 0;
         let historyData = [];
 
-        // --- BOLSA (PICOS REALES) ---
+        // --- BOLSA (PICOS REALES CON COLOR) ---
         const ctx = document.getElementById('graficaReal').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'line',
@@ -196,12 +196,12 @@
                 labels: Array(30).fill(""),
                 datasets: [{
                     data: Array(30).fill(800000),
-                    borderColor: '#3b82f6',
+                    borderColor: '#3b82f6', // Color inicial azul
                     borderWidth: 3,
                     pointRadius: 0,
                     tension: 0,
                     fill: true,
-                    backgroundColor: 'rgba(59, 130, 246, 0.05)'
+                    backgroundColor: 'rgba(59, 130, 246, 0.05)' // Fondo inicial azul
                 }]
             },
             options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: false }, y: { grid: { color: '#233554' } } }, animation: false }
@@ -212,7 +212,18 @@
             price += drift;
             const el = document.getElementById('p-bolsa');
             el.innerText = "$" + Math.floor(price).toLocaleString();
-            el.style.color = drift > 0 ? "#10b981" : "#ef4444";
+            
+            // Actualizar color del texto y de la gráfica
+            if (drift > 0) {
+                el.style.color = "#10b981"; // Verde para subidas
+                chart.data.datasets[0].borderColor = "#10b981";
+                chart.data.datasets[0].backgroundColor = "rgba(16, 185, 129, 0.05)";
+            } else {
+                el.style.color = "#ef4444"; // Rojo para bajadas
+                chart.data.datasets[0].borderColor = "#ef4444";
+                chart.data.datasets[0].backgroundColor = "rgba(239, 68, 68, 0.05)";
+            }
+            
             chart.data.datasets[0].data.push(price);
             chart.data.datasets[0].data.shift();
             chart.update();
