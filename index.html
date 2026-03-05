@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari - Educación Financiera</title>
+    <title>Masari - Inversión Inteligente</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <nav>
         <h1>MASARI</h1>
-        <a href="#inicio">🏠 Inicio</a>
-        <a href="#clases">📚 Clases Online</a>
-        <a href="#ahorro">🤖 IA de Ahorro</a>
-        <a href="#juegos">📈 Bolsa / Juegos</a>
+        <a href="#inicio"><i data-lucide="home"></i> Inicio</a>
+        <a href="#clases"><i data-lucide="book-open"></i> Clases</a>
+        <a href="#ahorro"><i data-lucide="brain-circuit"></i> IA de Ahorro</a>
+        <a href="#juegos"><i data-lucide="trending-up"></i> Bolsa</a>
         
         <div class="xp-status">
-            <small>TU PROGRESO:</small>
+            <small>PROGRESO DEL ESTUDIANTE</small>
             <div class="xp-container">
-                <div id="xp-bar-inner" class="xp-bar" style="width: 65%;"></div>
+                <div id="xp-bar-inner" class="xp-bar" style="width: 50%;"></div>
             </div>
             <p>⭐ <span id="xp-count">2500</span> XP</p>
         </div>
@@ -27,7 +28,7 @@
     <main>
         <section id="inicio">
             <h1 class="main-title">Invierte inteligente, <span>vive tranquilo</span></h1>
-            <p class="subtitle">La plataforma educativa para los inversionistas del futuro.</p>
+            <p class="subtitle">Plataforma educativa Masari: Aprende a dominar tus finanzas.</p>
         </section>
 
         <section id="ahorro">
@@ -36,12 +37,11 @@
                 <div class="cloud-tags">
                     <span class="cloud">Ingresos estables</span>
                     <span class="cloud">Gasto en ocio alto</span>
-                    <span class="cloud">Ahorro: 10%</span>
                 </div>
-                <p>Ingresa un gasto para que la IA de Masari lo analice:</p>
+                <p>¿Cuánto gastaste hoy?</p>
                 <input type="number" id="gasto-input" placeholder="Monto $">
                 <button class="btn-primary" onclick="analizarGasto()">Analizar con IA</button>
-                <p id="ia-resultado" style="margin-top: 15px; font-weight: bold;"></p>
+                <p id="ia-resultado" style="margin-top: 15px;"></p>
             </div>
         </section>
 
@@ -51,16 +51,26 @@
                 <div class="stock-info">
                     <h3>Acción Masari ($MAS)</h3>
                     <div id="precio-bolsa" class="price">$800,000</div>
-                    <div class="trend">▲ +12.5% hoy</div>
+                    <div id="trend-label" class="trend">▲ Estabilizando...</div>
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button class="btn-buy" onclick="comprarAccion()">BUY (Comprar)</button>
-                    <button class="btn-sell" onclick="venderAccion()">SELL (Vender)</button>
+                    <button class="btn-buy" onclick="comprarAccion()">COMPRAR</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h3>Historial de Actividad</h3>
+                <div id="lista-transacciones" style="font-size: 0.9rem; color: #94a3b8;">
+                    <p>No hay movimientos recientes.</p>
                 </div>
             </div>
         </section>
     </main>
 
     <script src="script.js"></script>
+    <script>
+        // Inicializa los iconos de Lucide
+        lucide.createIcons();
+    </script>
 </body>
 </html>
