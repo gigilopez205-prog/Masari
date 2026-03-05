@@ -1,9 +1,7 @@
-// --- ESTADO GLOBAL ---
 let xp = 2500;
 let precioActual = 800000;
 let cantidadAcciones = 0;
 
-// --- NAVEGACIÓN ---
 function cambiarPagina(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
@@ -12,19 +10,13 @@ function cambiarPagina(id) {
     if(id === 'juegos') setTimeout(() => miChart.update(), 100);
 }
 
-// --- SIMULADOR DE BOLSA ---
+// SIMULADOR
 const ctx = document.getElementById('graficaBolsa').getContext('2d');
 let miChart = new Chart(ctx, {
     type: 'line',
     data: {
         labels: ["","","","","","","","","",""],
-        datasets: [{
-            data: [790000, 795000, 798000, 800000],
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-            fill: true,
-            tension: 0.4
-        }]
+        datasets: [{ data: [790000, 795000, 798000, 800000], borderColor: '#3b82f6', fill: true, tension: 0.4 }]
     },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
 });
@@ -32,95 +24,107 @@ let miChart = new Chart(ctx, {
 setInterval(() => {
     let cambio = Math.floor(Math.random() * 10000) - 4500;
     precioActual += cambio;
-    
-    // Actualizar textos de precio
     const pBolsa = document.getElementById('p-bolsa');
     if(pBolsa) {
         pBolsa.innerText = "$" + precioActual.toLocaleString();
         pBolsa.style.color = cambio > 0 ? "#10b981" : "#ef4444";
     }
-    
     actualizarVistaCartera();
-
-    // Actualizar Gráfica
     miChart.data.datasets[0].data.push(precioActual);
     if(miChart.data.datasets[0].data.length > 15) miChart.data.datasets[0].data.shift();
     miChart.update('none');
 }, 3000);
 
-// --- COMPRA Y VENTA (CORREGIDO) ---
+// BOLSA E HISTORIAL
 function comprarAccion() {
-    cantidadAcciones += 1;
+    cantidadAcciones++;
     actualizarXP(100);
     actualizarVistaCartera();
+    registrarHistorial("COMPRA", "#10b981");
     desbloquearMedalla('med-lobo');
-    console.log("Comprado: " + cantidadAcciones);
 }
 
 function venderAccion() {
     if(cantidadAcciones > 0) {
-        let totalVenta = cantidadAcciones * precioActual;
-        if(totalVenta > 1000000) desbloquearMedalla('med-rico');
-        
+        registrarHistorial("VENTA", "#ef4444");
         cantidadAcciones = 0;
         actualizarXP(50);
         actualizarVistaCartera();
-        alert("¡Acciones vendidas con éxito!");
-    } else {
-        alert("No tienes acciones para vender.");
     }
+}
+
+function registrarHistorial(tipo, color) {
+    const contenedor = document.getElementById('historial-bolsa');
+    const ahora = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const item = `
+        <div style="border-bottom: 1px solid #233554; padding: 10px 0; display:flex; justify-content:space-between">
+            <span style="color:${color}">● ${tipo}</span>
+            <span>$${precioActual.toLocaleString()}</span>
+            <small style="color:var(--gray)">${ahora}</small>
+        </div>`;
+    if(contenedor.innerHTML.includes("No hay movimientos")) contenedor.innerHTML = item;
+    else contenedor.innerHTML = item + contenedor.innerHTML;
 }
 
 function actualizarVistaCartera() {
     const valTotal = document.getElementById('balance-total');
     const unidades = document.getElementById('mis-acciones');
-    
-    if(valTotal && unidades) {
-        valTotal.innerText = "$" + (cantidadAcciones * precioActual).toLocaleString();
-        unidades.innerText = cantidadAcciones + " unidades";
-    }
+    if(valTotal) valTotal.innerText = "$" + (cantidadAcciones * precioActual).toLocaleString();
+    if(unidades) unidades.innerText = cantidadAcciones + " unidades";
 }
 
-// --- ACADEMIA Y QUIZ ---
+// ACADEMIA CON FEEDBACK
 const bancoPreguntas = {
-    interes: { q: "¿Qué hace el interés compuesto?", o: ["Crece sobre el capital + intereses", "Resta dinero", "Es un gasto"], a: 0 },
-    ahorro: { q: "¿Cuándo se debe ahorrar?", o: ["Al final del mes", "Antes de gastar", "Nunca"], a: 1 }
+    inflacion: {
+        q: "Si la inflación sube, ¿qué le ocurre a tu poder adquisitivo?",
+        o: ["Aumenta", "Disminuye", "Se queda igual"], a: 1,
+        e: "La inflación es el aumento de precios. Si las cosas cuestan más y tú tienes el mismo dinero, tu poder de compra disminuye porque te alcanza para menos cosas."
+    },
+    etfs: {
+        q: "¿Cuál es la principal ventaja de un ETF?",
+        o: ["Es una apuesta segura", "Diversificación instantánea", "Es dinero físico"], a: 1,
+        e: "Un ETF es una cesta con muchas acciones. Al comprarlo, estás diversificando tu riesgo entre cientos de empresas en lugar de apostar todo a una sola."
+    },
+    cripto: {
+        q: "¿Por qué se dice que Bitcoin es escaso?",
+        o: ["Porque el gobierno lo prohíbe", "Solo existirán 21 millones", "Porque es muy caro"], a: 1,
+        e: "Bitcoin fue diseñado para tener un límite máximo de 21 millones de unidades. A diferencia del dinero normal, nadie puede 'imprimir' más Bitcoins."
+    },
+    interes: {
+        q: "¿Qué requiere el interés compuesto para ser efectivo?",
+        o: ["Mucho dinero inicial", "Mucho tiempo y paciencia", "Suerte en la bolsa"], a: 1,
+        e: "El interés compuesto crece exponencialmente con el tiempo. Entre más años dejes que tus intereses generen nuevos intereses, más explosivo será el crecimiento."
+    }
 };
 
 function abrirQuiz(tema) {
     const data = bancoPreguntas[tema];
-    const container = document.getElementById('quiz-container');
-    container.style.display = 'block';
-    document.getElementById('quiz-titulo').innerText = "Examen rápido";
+    document.getElementById('quiz-container').style.display = 'block';
+    document.getElementById('quiz-feedback').style.display = 'none';
+    document.getElementById('quiz-titulo').innerText = "Examen: " + tema.toUpperCase();
     document.getElementById('quiz-pregunta').innerText = data.q;
-    
     const opcionesDiv = document.getElementById('quiz-opciones');
     opcionesDiv.innerHTML = "";
     data.o.forEach((opcion, i) => {
-        opcionesDiv.innerHTML += `<button class="btn-main" style="margin-bottom:5px" onclick="validarRespuesta(${i}, ${data.a})">${opcion}</button>`;
+        opcionesDiv.innerHTML += `<button class="btn-main" style="margin-bottom:5px" onclick="validarRespuesta('${tema}', ${i})">${opcion}</button>`;
     });
     window.scrollTo(0,0);
 }
 
-function validarRespuesta(idx, correcta) {
-    if(idx === correcta) {
-        alert("¡Excelente! +500 XP");
+function validarRespuesta(tema, idx) {
+    const data = bancoPreguntas[tema];
+    const feedbackDiv = document.getElementById('quiz-feedback');
+    const feedbackTexto = document.getElementById('feedback-texto');
+    feedbackDiv.style.display = 'block';
+    if(idx === data.a) {
+        feedbackTexto.innerHTML = `<b style="color:var(--green)">¡CORRECTO!</b><br>${data.e}`;
         actualizarXP(500);
         desbloquearMedalla('med-genio');
     } else {
-        alert("Respuesta incorrecta, vuelve a intentarlo.");
+        feedbackTexto.innerHTML = `<b style="color:var(--red)">INCORRECTO</b><br>La respuesta correcta era: "${data.o[data.a]}".<br><br>${data.e}`;
     }
-    document.getElementById('quiz-container').style.display = 'none';
 }
 
-// --- XP Y MEDALLAS ---
-function actualizarXP(puntos) {
-    xp += puntos;
-    document.getElementById('xp-count').innerText = xp.toLocaleString();
-    document.getElementById('xp-bar-fill').style.width = Math.min((xp/10000)*100, 100) + "%";
-}
-
-function desbloquearMedalla(id) {
-    const m = document.getElementById(id);
-    if(m) m.classList.add('unlocked');
-}
+function cerrarQuiz() { document.getElementById('quiz-container').style.display = 'none'; }
+function actualizarXP(p) { xp += p; document.getElementById('xp-count').innerText = xp.toLocaleString(); document.getElementById('xp-bar-fill').style.width = Math.min((xp/10000)*100, 100) + "%"; }
+function desbloquearMedalla(id) { document.getElementById(id).classList.add('unlocked'); }
