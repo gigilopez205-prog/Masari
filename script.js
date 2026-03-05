@@ -1,66 +1,36 @@
-// ==========================================
-// 1. VARIABLES GLOBALES Y ESTADO INICIAL
-// ==========================================
 let puntosXP = 2500;
 let precioActual = 800000;
-let historialPrecios = [790000, 795000, 798000, 800000];
-let etiquetas = ["T-3", "T-2", "T-1", "Actual"];
 
-// ==========================================
-// 2. SISTEMA DE NAVEGACIÓN (PÁGINAS)
-// ==========================================
-function cambiarPagina(idSeccion) {
-    // Ocultar todas las secciones
-    const secciones = document.querySelectorAll('main section');
-    secciones.forEach(s => s.classList.remove('active'));
-
-    // Quitar estado activo de los links del menú
-    const links = document.querySelectorAll('nav a');
-    links.forEach(l => l.classList.remove('active'));
-
-    // Mostrar la sección seleccionada
-    const seccionActiva = document.getElementById(idSeccion);
-    if (seccionActiva) {
-        seccionActiva.classList.add('active');
-    }
-
-    // Marcar como activo el link clickeado
-    const linkActivo = document.getElementById('link-' + idSeccion);
-    if (linkActivo) {
-        linkActivo.classList.add('active');
-    }
-}
-
-// ==========================================
-// 3. LÓGICA DE PUNTOS XP
-// ==========================================
-function actualizarXP(cantidad) {
-    puntosXP += cantidad;
-    const xpDisplay = document.getElementById('xp-count');
-    const xpBar = document.getElementById('xp-bar-inner');
+// NAVEGACIÓN ENTRE SECCIONES
+function cambiarPagina(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
     
-    if(xpDisplay) xpDisplay.innerText = puntosXP.toLocaleString();
-    if(xpBar) {
-        // La barra se llena llegando a los 10,000 XP
-        let porcentaje = Math.min((puntosXP / 10000) * 100, 100);
-        xpBar.style.width = porcentaje + "%";
+    document.getElementById(id).classList.add('active');
+    document.getElementById('link-' + id).classList.add('active');
+    
+    if(id === 'juegos') {
+        setTimeout(() => miGrafica.update(), 100);
     }
 }
 
-// ==========================================
-// 4. SIMULADOR DE BOLSA Y GRÁFICA
-// ==========================================
+// LÓGICA DE PUNTOS
+function actualizarXP(n) {
+    puntosXP += n;
+    document.getElementById('xp-count').innerText = puntosXP.toLocaleString();
+    document.getElementById('xp-bar-inner').style.width = Math.min((puntosXP/10000)*100, 100) + "%";
+}
+
+// GRÁFICA DE BOLSA
 const ctx = document.getElementById('graficaBolsa').getContext('2d');
 let miGrafica = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: etiquetas,
+        labels: ["T-3", "T-2", "T-1", "T-0"],
         datasets: [{
-            label: 'Precio $MAS',
-            data: historialPrecios,
+            data: [790000, 795000, 798000, 800000],
             borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-            borderWidth: 3,
+            backgroundColor: 'rgba(59, 130, 246, 0.05)',
             fill: true,
             tension: 0.4,
             pointRadius: 2
@@ -70,13 +40,32 @@ let miGrafica = new Chart(ctx, {
         responsive: true,
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
-        scales: {
-            x: { display: false },
-            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
-        }
+        scales: { x: { display: false }, y: { ticks: { color: '#94a3b8' } } }
     }
 });
 
+// SIMULADOR DE MERCADO
+setInterval(() => {
+    let cambio = Math.floor(Math.random() * 10000) - 5000;
+    precioActual += cambio;
+    const pLabel = document.getElementById('precio-bolsa');
+    const tLabel = document.getElementById('trend-label');
+    
+    let color = cambio > 0 ? "#10b981" : "#ef4444";
+    pLabel.innerText = "$" + precioActual.toLocaleString();
+    pLabel.style.color = color;
+    tLabel.innerText = cambio > 0 ? "▲ SUBIENDO" : "▼ BAJANDO";
+    tLabel.style.color = color;
+
+    miGrafica.data.datasets[0].borderColor = color;
+    miGrafica.data.datasets[0].data.push(precioActual);
+    if(miGrafica.data.datasets[0].data.length > 15) miGrafica.data.datasets[0].data.shift();
+    miGrafica.data.labels.push("");
+    if(miGrafica.data.labels.length > 15) miGrafica.data.labels.shift();
+    miGrafica.update('none');
+}, 3000);
+
+// ACCIONES DE BOTONES
 function comprarAccion() {
     actualizarXP(100);
     registrarHistorial("COMPRA", "#10b981");
@@ -85,84 +74,30 @@ function comprarAccion() {
 function venderAccion() {
     actualizarXP(50);
     registrarHistorial("VENTA", "#ef4444");
-    alert("¡Venta exitosa! Has asegurado tus ganancias.");
+}
+
+function completarClase(clase, xp) {
+    actualizarXP(xp);
+    alert(`¡Has aprendido sobre ${clase}! +${xp} XP`);
 }
 
 function registrarHistorial(tipo, color) {
-    const historial = document.getElementById('lista-transacciones');
-    const pLabel = document.getElementById('precio-bolsa').innerText;
-    const ahora = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    
-    const item = `
-        <p style="border-bottom: 1px solid #233554; padding: 10px 0; display: flex; justify-content: space-between;">
-            <span><strong style="color: ${color}">${tipo}:</strong> $MAS a ${pLabel}</span>
-            <small style="color: #64748b">${ahora}</small>
-        </p>`;
-    
-    if (historial.innerHTML.includes("No hay actividad")) {
-        historial.innerHTML = item;
-    } else {
-        historial.innerHTML = item + historial.innerHTML;
-    }
-}
-
-// Actualización automática del mercado
-setInterval(() => {
-    let cambio = Math.floor(Math.random() * 12000) - 5000;
-    precioActual += cambio;
-    
-    const pDoc = document.getElementById('precio-bolsa');
-    const tDoc = document.getElementById('trend-label');
-    
-    if(pDoc) {
-        pDoc.innerText = "$" + precioActual.toLocaleString();
-        
-        let colorMercado = cambio > 0 ? "#10b981" : "#ef4444";
-        pDoc.style.color = colorMercado;
-        tDoc.innerText = cambio > 0 ? "▲ SUBIENDO" : "▼ BAJANDO";
-        tDoc.style.color = colorMercado;
-
-        // Actualizar color de la gráfica
-        miGrafica.data.datasets[0].borderColor = colorMercado;
-        miGrafica.data.datasets[0].backgroundColor = colorMercado + "1A"; // Transparencia
-    }
-
-    // Añadir nuevo punto a la gráfica
-    miGrafica.data.labels.push("");
-    miGrafica.data.datasets[0].data.push(precioActual);
-    
-    if(miGrafica.data.labels.length > 15) {
-        miGrafica.data.labels.shift();
-        miGrafica.data.datasets[0].data.shift();
-    }
-    miGrafica.update('none');
-}, 3000);
-
-// ==========================================
-// 5. ACADEMIA E IA
-// ==========================================
-function completarClase(nombre, recompensa) {
-    actualizarXP(recompensa);
-    registrarHistorial("LOGRO", "#facc15");
-    alert(`🎉 ¡Felicidades! Has completado la clase de ${nombre} y ganaste ${recompensa} XP.`);
+    const list = document.getElementById('lista-transacciones');
+    const precio = document.getElementById('precio-bolsa').innerText;
+    const item = `<p style="border-bottom: 1px solid #233554; padding: 8px 0;">
+        <span style="color:${color}">● ${tipo}</span> a ${precio}
+    </p>`;
+    if(list.innerHTML.includes("Sin actividad")) list.innerHTML = item;
+    else list.innerHTML = item + list.innerHTML;
 }
 
 function analizarGasto() {
-    const monto = document.getElementById('gasto-input').value;
+    const m = document.getElementById('gasto-input').value;
     const res = document.getElementById('ia-resultado');
-    
-    if (!monto) {
-        res.innerText = "🤖 Introduce un monto para analizar.";
-        res.style.color = "#94a3b8";
-        return;
-    }
-
-    if (monto > 1500) {
-        res.innerText = "🤖 IA: ¡Gasto peligroso! Eso equivale a muchas acciones de $MAS. Intenta ahorrarlo.";
-        res.style.color = "#ef4444";
+    if(m > 2000) {
+        res.innerHTML = "🤖 <span style='color:#ef4444'>Gasto excesivo. Inviértelo en $MAS.</span>";
     } else {
-        res.innerText = "🤖 IA: Gasto bajo control. Mantener este hábito te llevará a la libertad financiera.";
-        res.style.color = "#10b981";
-        actualizarXP(15);
+        res.innerHTML = "🤖 <span style='color:#10b981'>Buen control. ¡Has ganado +10 XP!</span>";
+        actualizarXP(10);
     }
 }
