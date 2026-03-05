@@ -90,3 +90,47 @@ body { background: var(--bg-main); color: var(--white); display: flex; min-heigh
     .sidebar span, .brand, .xp-footer { display: none; }
     .content { margin-left: 80px; }
 }
+/* ... (Mantener lo anterior y añadir/actualizar esto) ... */
+
+.intro-card { border-left: 5px solid var(--blue); }
+
+.options-grid { display: grid; gap: 10px; margin-top: 20px; }
+
+.quiz-header { display: flex; justify-content: space-between; color: var(--gray); font-weight: bold; }
+
+#quiz-tema-tag { color: var(--blue); background: rgba(59, 130, 246, 0.1); padding: 2px 10px; border-radius: 5px; }
+
+.feedback-box { 
+    margin-top: 20px; 
+    padding: 15px; 
+    background: rgba(0,0,0,0.2); 
+    border-radius: 10px; 
+    display: none; 
+    animation: slideUp 0.3s;
+}
+
+@keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* POPUP DE MEMES */
+.meme-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: var(--bg-card);
+    padding: 20px;
+    border: 3px solid var(--blue);
+    border-radius: 20px;
+    z-index: 2000;
+    text-align: center;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+
+.meme-popup.active { transform: translate(-50%, -50%) scale(1); }
+
+.meme-popup img { max-width: 300px; border-radius: 10px; margin-bottom: 10px; }
+
+.meme-popup p { font-weight: bold; font-size: 1.2rem; }
+
+.medallas-row { display: flex; gap: 20px; justify-content: space-around; flex-wrap: wrap; }
