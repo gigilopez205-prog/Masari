@@ -32,47 +32,30 @@
         .title { font-size: 32px; margin-bottom: 30px; }
         .title span { color: var(--blue); }
 
-        /* BOLSA & HISTORIAL */
-        .market-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        /* ACADEMIA & CLASSES */
+        .class-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .full { grid-column: span 2; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; margin: 15px 0; background: #000; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .badge-info { background: rgba(59, 130, 246, 0.1); color: var(--blue); padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+
+        /* BOLSA & SOCIAL */
         #p-bolsa { font-size: 48px; font-family: 'Courier New', monospace; font-weight: bold; transition: 0.2s; }
         .chart-box { height: 350px; width: 100%; background: #020c1b; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
-        .history-table th { text-align: left; color: var(--gray); padding-bottom: 10px; border-bottom: 1px solid #233554; }
-        .history-table td { padding: 10px 0; border-bottom: 1px solid rgba(35, 53, 84, 0.5); }
-
-        /* PERFIL */
-        .profile-flex { display: flex; gap: 30px; align-items: flex-start; }
-        .avatar-wrap { position: relative; width: 130px; height: 130px; flex-shrink: 0; }
-        #user-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--blue); background: #1d2d50; }
-        .edit-badge { position: absolute; bottom: 5px; right: 5px; background: var(--blue); border: none; color: white; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .profile-inputs { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .full-width { grid-column: span 2; }
-        input, textarea, select { background: #020c1b; border: 1px solid #233554; color: white; padding: 12px; border-radius: 8px; font-size: 14px; width: 100%; }
-        
-        /* ACADEMIA ONLINE CLASSES */
-        .class-form { display: grid; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #233554; }
-        .class-list { margin-top: 25px; display: grid; gap: 20px; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; margin: 10px 0; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-
-        /* SECCIÓN COMUNIDAD (RED SOCIAL) */
         .social-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .user-social-card { background: var(--bg-card); border-radius: 15px; padding: 20px; border: 1px solid #233554; text-align: center; transition: 0.3s; }
-        .user-social-card:hover { border-color: var(--blue); transform: translateY(-5px); }
-        .social-img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--blue); margin-bottom: 10px; }
-        .social-status { font-size: 12px; padding: 4px 10px; border-radius: 20px; background: rgba(59, 130, 246, 0.1); color: var(--blue); display: inline-block; margin-bottom: 10px; }
+        .user-social-card { background: var(--bg-card); border-radius: 15px; padding: 20px; border: 1px solid #233554; text-align: center; }
 
         /* BOTONES */
         .btn { padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; color: white; }
-        .btn:active { transform: scale(0.95); }
         .btn-buy { background: var(--green); }
         .btn-sell { background: transparent; border: 2px solid var(--red); color: var(--red); }
         .btn-blue { background: var(--blue); width: 100%; margin-top: 10px; }
+        .btn-delete { background: var(--red); padding: 8px 15px; font-size: 12px; margin-top: 10px; }
 
         /* MEMES */
-        .meme-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: var(--bg-card); padding: 25px; border: 3px solid var(--blue); border-radius: 25px; z-index: 1000; text-align: center; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 0 100px rgba(0,0,0,0.8); }
+        .meme-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: var(--bg-card); padding: 25px; border: 3px solid var(--blue); border-radius: 25px; z-index: 1000; text-align: center; transition: 0.4s; box-shadow: 0 0 100px rgba(0,0,0,0.8); }
         .meme-popup.active { transform: translate(-50%, -50%) scale(1); }
-        .meme-popup img { max-width: 280px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #233554; }
+        .meme-popup img { max-width: 280px; border-radius: 15px; }
     </style>
 </head>
 <body>
@@ -99,20 +82,12 @@
         <section id="inicio" class="page active">
             <h1 class="title">Bienvenido, <span id="display-name">Inversionista</span></h1>
             <div class="card" style="border-left: 6px solid var(--blue);">
-                <h3>¿Por qué Masari? 🚀</h3>
-                <p style="margin-top: 10px; line-height: 1.6; color: var(--gray);">
-                    Masari es tu simulador financiero de alto rendimiento. En un mundo donde la inflación devora tus ahorros, aprender a invertir no es un lujo, es una necesidad. Aquí aprenderás a dominar el mercado real sin riesgo.
-                </p>
-                <button class="btn btn-blue" style="width:auto; margin-top:15px;" onclick="goto('academia')">¡Empezar a Ganar XP!</button>
+                <h3>Panel de Control Masari 🚀</h3>
+                <p style="margin-top: 10px; line-height: 1.6; color: var(--gray);">Domina el mercado, aprende de los mejores y gestiona tus inversiones con inteligencia.</p>
             </div>
-            
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="card"><h4>Cartera Estimada</h4><h2 id="ui-cartera" style="color: var(--green); margin-top:10px;">$0</h2></div>
                 <div class="card"><h4>Acciones Masari</h4><h2 id="ui-acciones" style="margin-top:10px;">0</h2></div>
-                <div class="card full-width" style="text-align: center;">
-                    <h4 style="color:var(--blue)">CONSEJO DEL DÍA</h4>
-                    <p id="daily-tip" style="font-style: italic; margin-top: 10px;">"No trabajes por el dinero, haz que el dinero trabaje por ti."</p>
-                </div>
             </div>
         </section>
 
@@ -120,187 +95,124 @@
             <h1 class="title">Comunidad <span>Masari</span></h1>
             <div class="social-grid" id="users-container">
                 <div class="user-social-card">
-                    <img src="https://i.pravatar.cc/150?u=1" class="social-img">
+                    <img src="https://i.pravatar.cc/150?u=1" style="width:70px; border-radius:50%; border:2px solid var(--blue)">
                     <h3>Carlos Trader</h3>
-                    <span class="social-status">Scalping Pro</span>
-                    <p style="font-size: 13px; color: var(--gray); margin-bottom:15px;">"Buscando el 1% diario."</p>
-                    <button class="btn btn-blue" style="font-size:12px; padding:8px;" onclick="meme(true, '¡Sigues a Carlos!')">Seguir</button>
-                </div>
-                <div class="user-social-card">
-                    <img src="https://i.pravatar.cc/150?u=2" class="social-img">
-                    <h3>Ana Crypt</h3>
-                    <span class="social-status">HODL Master</span>
-                    <p style="font-size: 13px; color: var(--gray); margin-bottom:15px;">"Bitcoin a la luna 🚀"</p>
-                    <button class="btn btn-blue" style="font-size:12px; padding:8px;" onclick="meme(true, '¡Sigues a Ana!')">Seguir</button>
+                    <span class="badge-info">Scalping Pro</span>
+                    <button class="btn btn-blue" onclick="meme(true, 'Siguiendo a Carlos')">Seguir</button>
                 </div>
                 <div class="user-social-card" id="my-social-card">
-                    <img id="my-social-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="social-img">
+                    <img id="my-social-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:70px; border-radius:50%; border:2px solid var(--blue)">
                     <h3 id="my-social-name">Tú</h3>
-                    <span class="social-status">Nuevo Miembro</span>
-                    <p style="font-size: 13px; color: var(--gray); margin-bottom:15px;">Estudiante Masari</p>
-                    <button class="btn btn-sell" style="font-size:12px; padding:8px; border-color:var(--gray); color:var(--gray)">Perfil Propio</button>
+                    <span class="badge-info">Nuevo Miembro</span>
                 </div>
             </div>
         </section>
 
         <section id="academia" class="page">
-            <h1 class="title">Academia <span>Quiz & Clases</span></h1>
+            <h1 class="title">Academia <span>Elite</span></h1>
+            
             <div class="card">
-                <div id="quiz-start">
-                    <h3 style="margin-bottom: 10px;">Maratón de Conocimiento</h3>
-                    <p style="margin-bottom: 20px; color: var(--gray);">Completa las 25 preguntas para subir de nivel.</p>
-                    <button class="btn btn-blue" onclick="startQuiz()">EMPEZAR MARATÓN</button>
-                </div>
-                <div id="quiz-ui" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; color: var(--blue); font-weight: bold; margin-bottom: 15px;">
-                        <span>DESAFÍO FINANCIERO</span> <span id="q-count">1/25</span>
-                    </div>
-                    <h3 id="q-text" style="margin-bottom: 25px; min-height: 60px;">Pregunta...</h3>
-                    <div id="q-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;"></div>
-                </div>
-            </div>
-            <div class="card">
-                <h3>Añadir Nueva Clase 🎥</h3>
+                <h3>Subir Nueva Clase Online 🎥</h3>
                 <div class="class-form">
-                    <input type="text" id="class-title" placeholder="Título de la clase">
-                    <input type="text" id="class-url" placeholder="URL de YouTube">
-                    <textarea id="class-desc" placeholder="Descripción..."></textarea>
-                    <button class="btn btn-buy" onclick="addClass()">GUARDAR CLASE ONLINE</button>
+                    <input type="text" id="cl-title" placeholder="Título de la clase" class="full">
+                    <input type="text" id="cl-url" placeholder="Link de YouTube">
+                    <input type="number" id="cl-limit" placeholder="Límite de alumnos">
+                    <textarea id="cl-desc" placeholder="Descripción de la clase" class="full"></textarea>
+                    <textarea id="cl-prof" placeholder="Sobre el profesor (Experiencia, redes...)" class="full"></textarea>
+                    <button class="btn btn-buy full" onclick="saveClass()">PUBLICAR CLASE</button>
                 </div>
             </div>
-            <div id="class-container" class="class-list"></div>
+
+            <div id="classes-list">
+                </div>
         </section>
 
         <section id="bolsa" class="page">
             <h1 class="title">Mercado <span>en Vivo</span></h1>
             <div class="card">
-                <div class="market-header">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h2 id="p-bolsa" style="color: var(--green);">$800,000</h2>
-                    <div style="display: flex; gap: 15px;">
+                    <div>
                         <button class="btn btn-buy" onclick="trade(1)">COMPRAR</button>
                         <button class="btn btn-sell" onclick="trade(-1)">VENDER</button>
                     </div>
                 </div>
                 <div class="chart-box"><canvas id="graficaReal"></canvas></div>
             </div>
-            <div class="card">
-                <h3 style="margin-bottom: 15px;">Historial de Transacciones</h3>
-                <table class="history-table">
-                    <thead><tr><th>Tipo</th><th>Precio</th><th>Cantidad</th><th>Estado</th></tr></thead>
-                    <tbody id="trade-history"></tbody>
-                </table>
-            </div>
         </section>
 
         <section id="perfil" class="page">
             <h1 class="title">Mi <span>Perfil</span></h1>
             <div class="card">
-                <div class="profile-flex">
-                    <div class="avatar-wrap">
-                        <img id="user-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-                        <input type="file" id="img-input" style="display:none" onchange="upload(this)">
-                        <button class="edit-badge" onclick="document.getElementById('img-input').click()">📷</button>
-                    </div>
-                    <div class="profile-inputs">
-                        <div>
-                            <label style="font-size:12px; color:var(--gray)">Nombre de Usuario</label>
-                            <input type="text" id="user-name" value="Inversionista Masari">
-                        </div>
-                        <div>
-                            <label style="font-size:12px; color:var(--gray)">País / Región</label>
-                            <input type="text" id="user-country" placeholder="Ej. México">
-                        </div>
-                        <div>
-                            <label style="font-size:12px; color:var(--gray)">Estrategia</label>
-                            <select id="user-strategy">
-                                <option>Agresiva (Trading)</option>
-                                <option>Moderada (ETFs)</option>
-                                <option>Conservadora (Ahorro)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label style="font-size:12px; color:var(--gray)">Red Social / Link</label>
-                            <input type="text" id="user-link" placeholder="@tu_usuario">
-                        </div>
-                        <div class="full-width">
-                            <label style="font-size:12px; color:var(--gray)">Mi Biografía Financiera</label>
-                            <textarea id="user-bio" placeholder="Describe tu meta"></textarea>
-                        </div>
-                        <button class="btn btn-blue full-width" onclick="saveP()">GUARDAR PERFIL COMPLETO</button>
-                    </div>
-                </div>
+                <input type="text" id="user-name" value="Inversionista Masari" style="background:#020c1b; border:1px solid #233554; color:white; padding:12px; border-radius:8px; width:100%; margin-bottom:15px;">
+                <button class="btn btn-blue" onclick="saveP()">GUARDAR CAMBIOS</button>
             </div>
         </section>
     </main>
 
     <script>
-        let xp = 2500, price = 800000, stocks = 0, qIdx = 0;
+        let xp = 2500, price = 800000, stocks = 0;
 
         // --- BOLSA ---
         const ctx = document.getElementById('graficaReal').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: Array(30).fill(""),
-                datasets: [{
-                    data: Array(30).fill(800000),
-                    borderColor: '#3b82f6',
-                    borderWidth: 3,
-                    pointRadius: 0,
-                    tension: 0,
-                    fill: true,
-                    backgroundColor: 'rgba(59, 130, 246, 0.05)'
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: false }, y: { grid: { color: '#233554' } } }, animation: false }
+            data: { labels: Array(30).fill(""), datasets: [{ data: Array(30).fill(800000), borderColor: '#3b82f6', tension: 0, fill: true, backgroundColor: 'rgba(59, 130, 246, 0.05)' }] },
+            options: { responsive: true, maintainAspectRatio: false, animation: false }
         });
-
         setInterval(() => {
-            let drift = (Math.random() - 0.48) * 14000;
-            price += drift;
-            const el = document.getElementById('p-bolsa');
-            el.innerText = "$" + Math.floor(price).toLocaleString();
-            if (drift > 0) {
-                el.style.color = "#10b981"; chart.data.datasets[0].borderColor = "#10b981";
-                chart.data.datasets[0].backgroundColor = "rgba(16, 185, 129, 0.05)";
-            } else {
-                el.style.color = "#ef4444"; chart.data.datasets[0].borderColor = "#ef4444";
-                chart.data.datasets[0].backgroundColor = "rgba(239, 68, 68, 0.05)";
-            }
-            chart.data.datasets[0].data.push(price);
-            chart.data.datasets[0].data.shift();
-            chart.update();
+            let drift = (Math.random() - 0.48) * 14000; price += drift;
+            const el = document.getElementById('p-bolsa'); el.innerText = "$" + Math.floor(price).toLocaleString();
+            el.style.color = drift > 0 ? "#10b981" : "#ef4444";
+            chart.data.datasets[0].borderColor = el.style.color;
+            chart.data.datasets[0].data.push(price); chart.data.datasets[0].data.shift(); chart.update();
             updateUI();
         }, 1200);
 
-        // --- MEMES ---
-        function meme(isWin, txt) {
-            const ok = ["https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif", "https://media.giphy.com/media/3o6gDWzmAzrpi5DQU8/giphy.gif"];
-            const no = ["https://media.giphy.com/media/9pZw57AyqOHy47uAdZ/giphy.gif", "https://media.giphy.com/media/hStvd5LiWCFzXYZAzM/giphy.gif"];
-            document.getElementById('meme-img').src = isWin ? ok[Math.floor(Math.random()*ok.length)] : no[Math.floor(Math.random()*no.length)];
-            document.getElementById('meme-msg').innerText = txt;
-            document.getElementById('meme-box').classList.add('active');
-            setTimeout(() => document.getElementById('meme-box').classList.remove('active'), 2800);
-        }
+        // --- GESTIÓN DE CLASES ---
+        function saveClass() {
+            const title = document.getElementById('cl-title').value;
+            const url = document.getElementById('cl-url').value;
+            const limit = document.getElementById('cl-limit').value;
+            const desc = document.getElementById('cl-desc').value;
+            const prof = document.getElementById('cl-prof').value;
+            const id = "c-" + Date.now();
 
-        // --- CLASES ---
-        function addClass() {
-            const title = document.getElementById('class-title').value, url = document.getElementById('class-url').value;
+            if(!title || !url || !limit) return alert("Completa los campos básicos");
+
             let vId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : (url.includes("be/") ? url.split("be/")[1] : "");
-            if(!vId) return alert("Link no válido");
-            document.getElementById('class-container').insertAdjacentHTML('afterbegin', `<div class="card"><h3>${title}</h3><div class="video-container"><iframe src="https://www.youtube.com/embed/${vId}"></iframe></div></div>`);
+
+            const html = `
+                <div class="card" id="${id}">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div>
+                            <h2 style="color:var(--blue)">${title}</h2>
+                            <span class="badge-info">Profesor: ${prof}</span>
+                        </div>
+                        <button class="btn btn-delete" onclick="document.getElementById('${id}').remove()">BORRAR CLASE</button>
+                    </div>
+                    <div class="video-container"><iframe src="https://www.youtube.com/embed/${vId}"></iframe></div>
+                    <p style="margin:10px 0; color:var(--gray)">${desc}</p>
+                    <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <span>Cupo: <b id="reg-${id}">0</b> / ${limit}</span>
+                        <button class="btn btn-buy" style="padding:8px 15px;" onclick="enroll('${id}', ${limit})">INSCRIBIRME</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('classes-list').insertAdjacentHTML('afterbegin', html);
+            meme(true, "¡Clase subida!");
         }
 
-        // --- QUIZ ---
-        const questions = [{q:"¿Qué es el interés compuesto?", o:["Gastar","Interés sobre interés","Impuesto","Deuda"], a:1}];
-        while(questions.length < 25) { questions.push(questions[0]); }
-        function startQuiz() { document.getElementById('quiz-start').style.display='none'; document.getElementById('quiz-ui').style.display='block'; loadQ(); }
-        function loadQ() {
-            const q = questions[qIdx]; document.getElementById('q-count').innerText = `${qIdx+1}/25`; document.getElementById('q-text').innerText = q.q;
-            const ops = document.getElementById('q-options'); ops.innerHTML = "";
-            q.o.forEach((opt, i) => ops.innerHTML += `<button class="btn btn-blue" onclick="ans(${i})">${opt}</button>`);
+        function enroll(id, limit) {
+            let el = document.getElementById('reg-'+id);
+            let current = parseInt(el.innerText);
+            if(current < limit) {
+                el.innerText = current + 1;
+                meme(true, "¡Inscripción Exitosa!");
+            } else {
+                alert("Clase llena");
+            }
         }
-        function ans(i) { if(i === questions[qIdx].a) { xp += 100; meme(true, "+100 XP"); } else meme(false, "Sigue intentando"); qIdx++; if(qIdx < 25) loadQ(); updateUI(); }
 
         // --- GENERAL ---
         function goto(id) {
@@ -309,29 +221,23 @@
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('n-'+id).classList.add('active');
         }
-        function trade(n) { 
-            if(n < 0 && stocks <= 0) return; stocks += n;
-            document.getElementById('trade-history').insertAdjacentHTML('afterbegin', `<tr><td>${n>0?'COMPRA':'VENTA'}</td><td>$${price.toFixed(0)}</td><td>1</td><td>OK</td></tr>`);
-            updateUI(); 
-        }
+        function trade(n) { if(n < 0 && stocks <= 0) return; stocks += n; updateUI(); }
         function updateUI() {
             document.getElementById('ui-cartera').innerText = "$" + Math.floor(stocks * price).toLocaleString();
             document.getElementById('ui-acciones').innerText = stocks;
             document.getElementById('xp-display').innerText = xp;
         }
-        function upload(input) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('user-img').src = e.target.result;
-                document.getElementById('my-social-img').src = e.target.result; // Actualiza en comunidad
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
         function saveP() { 
             const name = document.getElementById('user-name').value;
             document.getElementById('display-name').innerText = name;
-            document.getElementById('my-social-name').innerText = name; // Actualiza en comunidad
+            document.getElementById('my-social-name').innerText = name;
             alert("Perfil Guardado"); 
+        }
+        function meme(isWin, txt) {
+            document.getElementById('meme-img').src = isWin ? "https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif" : "";
+            document.getElementById('meme-msg').innerText = txt;
+            document.getElementById('meme-box').classList.add('active');
+            setTimeout(() => document.getElementById('meme-box').classList.remove('active'), 2000);
         }
     </script>
 </body>
