@@ -51,12 +51,12 @@
         .btn-blue { background: var(--blue); color: white; width: 100%; }
         .btn-delete { background: #fee2e2; color: var(--red); font-size: 12px; padding: 8px 16px; border-radius: 8px; font-weight: 700; position: absolute; top: 25px; right: 25px; }
 
-        /* BOLSA & HISTORIAL */
+        /* BOLSA & HISTORIALES */
         #p-bolsa { font-size: 44px; font-weight: 800; letter-spacing: -1px; }
-        .chart-box { height: 350px; width: 100%; background: #ffffff; border-radius: 20px; padding: 10px; }
-        #ticker-history { overflow-y: auto; height: 380px; padding-right: 5px; }
-        #ticker-history::-webkit-scrollbar { width: 4px; }
-        #ticker-history::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
+        .chart-box { height: 320px; width: 100%; background: #ffffff; border-radius: 20px; padding: 10px; }
+        .history-list { overflow-y: auto; height: 200px; padding-right: 5px; font-size: 13px; }
+        .history-list::-webkit-scrollbar { width: 4px; }
+        .history-list::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
 
         /* INPUTS */
         input, textarea, select { background: #f9fafb; border: 1.5px solid #e5e7eb; padding: 14px; border-radius: 12px; width: 100%; font-family: 'Inter'; }
@@ -95,7 +95,7 @@
                 <div class="card" style="background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: white; border: none;">
                     <p style="opacity: 0.8; font-size: 14px;">Balance Estimado</p>
                     <h1 id="ui-cartera" style="font-size: 42px; margin: 10px 0;">$0</h1>
-                    <p style="font-size: 12px;">Terminal Pro v4.0 Active</p>
+                    <p style="font-size: 12px;">Terminal Pro v4.5 Active</p>
                 </div>
                 <div class="card">
                     <p style="color: var(--gray); font-size: 14px;">Posiciones Abiertas</p>
@@ -145,10 +145,18 @@
                     <div class="chart-box"><canvas id="graficaReal"></canvas></div>
                 </div>
 
-                <div class="card" style="display: flex; flex-direction: column;">
-                    <h3 style="font-size: 14px; margin-bottom: 20px; color: var(--gray);">HISTORIAL DE MERCADO</h3>
-                    <div id="ticker-history">
-                        <div style="color: var(--gray); text-align: center; margin-top: 20px; font-size: 13px;">Conectando con el servidor...</div>
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="card" style="margin-bottom: 0; padding: 20px;">
+                        <h3 style="font-size: 13px; margin-bottom: 15px; color: var(--gray);">MARKET TICKS</h3>
+                        <div id="ticker-history" class="history-list">
+                            <div style="color: var(--gray); text-align: center; margin-top: 10px;">Cargando mercado...</div>
+                        </div>
+                    </div>
+                    <div class="card" style="padding: 20px;">
+                        <h3 style="font-size: 13px; margin-bottom: 15px; color: var(--blue);">MY TRADING LOG</h3>
+                        <div id="trade-history" class="history-list">
+                            <div style="color: var(--gray); text-align: center; margin-top: 10px;">Sin operaciones hoy.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -186,28 +194,35 @@
     <script>
         let price = 800000, stocks = 0, lastPrice = 800000;
 
-        // --- HISTORIAL ---
+        // --- HISTORIAL MERCADO ---
         function updateHistory(currentPrice, isUp) {
-            const historyContainer = document.getElementById('ticker-history');
+            const container = document.getElementById('ticker-history');
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            const color = isUp ? 'var(--green)' : 'var(--red)';
-            const icon = isUp ? '▲' : '▼';
+            if (container.innerText.includes("Cargando")) container.innerHTML = '';
+            
+            const entry = document.createElement('div');
+            entry.style = "display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f9fafb;";
+            entry.innerHTML = `<span style="color:var(--gray)">${time}</span><span style="color:${isUp?'var(--green)':'var(--red)'}; font-weight:700;">${isUp?'▲':'▼'} $${Math.floor(currentPrice).toLocaleString()}</span>`;
+            
+            container.prepend(entry);
+            if (container.children.length > 10) container.removeChild(container.lastChild);
+        }
 
-            if (historyContainer.innerText.includes("Conectando")) historyContainer.innerHTML = '';
+        // --- HISTORIAL COMPRAS/VENTAS ---
+        function logTrade(type, tradePrice) {
+            const container = document.getElementById('trade-history');
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            if (container.innerText.includes("Sin operaciones")) container.innerHTML = '';
 
             const entry = document.createElement('div');
-            entry.style.display = 'flex';
-            entry.style.justifyContent = 'space-between';
-            entry.style.padding = '10px 0';
-            entry.style.borderBottom = '1px solid #f9fafb';
-            entry.style.fontSize = '13px';
+            const color = type === 'BUY' ? 'var(--green)' : 'var(--red)';
+            entry.style = "display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f4f8; border-left:3px solid " + color + "; padding-left:10px; margin-bottom:4px;";
             entry.innerHTML = `
-                <span style="color: var(--gray); font-weight:500;">${time}</span>
-                <span style="color: ${color}; font-weight: 700;">${icon} $${Math.floor(currentPrice).toLocaleString()}</span>
+                <div><b style="color:${color}">${type}</b> <br><small style="color:var(--gray)">${time}</small></div>
+                <div style="text-align:right"><b>$${Math.floor(tradePrice).toLocaleString()}</b><br><small>1 unit</small></div>
             `;
-
-            historyContainer.prepend(entry);
-            if (historyContainer.children.length > 12) historyContainer.removeChild(historyContainer.lastChild);
+            container.prepend(entry);
+            if (container.children.length > 8) container.removeChild(container.lastChild);
         }
 
         // --- FAVORITOS ---
@@ -259,15 +274,10 @@
             price += (Math.random() - 0.485) * 16000;
             const isUp = price >= lastPrice;
             const color = isUp ? '#10b981' : '#ef4444';
-            
             document.getElementById('p-bolsa').innerText = "$" + Math.floor(price).toLocaleString();
             document.getElementById('p-bolsa').style.color = color;
-            
             chart.data.datasets[0].borderColor = color;
-            chart.data.datasets[0].data.push(price); 
-            chart.data.datasets[0].data.shift(); 
-            chart.update();
-
+            chart.data.datasets[0].data.push(price); chart.data.datasets[0].data.shift(); chart.update();
             updateHistory(price, isUp);
             updateUI();
         }, 1200);
@@ -279,7 +289,12 @@
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('n-'+id).classList.add('active');
         }
-        function trade(n) { if(n < 0 && stocks <= 0) return; stocks += n; updateUI(); }
+        function trade(n) { 
+            if(n < 0 && stocks <= 0) return; 
+            stocks += n; 
+            logTrade(n > 0 ? 'BUY' : 'SELL', price);
+            updateUI(); 
+        }
         function updateUI() {
             document.getElementById('ui-cartera').innerText = "$" + Math.floor(stocks * price).toLocaleString();
             document.getElementById('ui-acciones').innerText = stocks;
