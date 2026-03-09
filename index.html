@@ -50,12 +50,14 @@
         .btn-buy { background: var(--green); }
         .btn-sell { background: transparent; border: 2px solid var(--red); color: var(--red); }
         .btn-blue { background: var(--blue); width: 100%; margin-top: 10px; }
-        .btn-delete { background: var(--red); padding: 8px 15px; font-size: 12px; margin-top: 10px; }
+        .btn-delete { background: var(--red); padding: 8px 15px; font-size: 12px; border: none; color: white; border-radius: 8px; cursor: pointer; }
 
         /* MEMES */
         .meme-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: var(--bg-card); padding: 25px; border: 3px solid var(--blue); border-radius: 25px; z-index: 1000; text-align: center; transition: 0.4s; box-shadow: 0 0 100px rgba(0,0,0,0.8); }
         .meme-popup.active { transform: translate(-50%, -50%) scale(1); }
         .meme-popup img { max-width: 280px; border-radius: 15px; }
+        
+        input, textarea { background: #020c1b; border: 1px solid #233554; color: white; padding: 12px; border-radius: 8px; font-size: 14px; width: 100%; }
     </style>
 </head>
 <body>
@@ -82,12 +84,12 @@
         <section id="inicio" class="page active">
             <h1 class="title">Bienvenido, <span id="display-name">Inversionista</span></h1>
             <div class="card" style="border-left: 6px solid var(--blue);">
-                <h3>Panel de Control Masari 🚀</h3>
-                <p style="margin-top: 10px; line-height: 1.6; color: var(--gray);">Domina el mercado, aprende de los mejores y gestiona tus inversiones con inteligencia.</p>
+                <h3>Panel Masari 🚀</h3>
+                <p style="color: var(--gray);">Gestiona tus clases y tu capital en tiempo real.</p>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="card"><h4>Cartera Estimada</h4><h2 id="ui-cartera" style="color: var(--green); margin-top:10px;">$0</h2></div>
-                <div class="card"><h4>Acciones Masari</h4><h2 id="ui-acciones" style="margin-top:10px;">0</h2></div>
+                <div class="card"><h4>Cartera</h4><h2 id="ui-cartera" style="color: var(--green);">$0</h2></div>
+                <div class="card"><h4>Acciones</h4><h2 id="ui-acciones">0</h2></div>
             </div>
         </section>
 
@@ -95,36 +97,27 @@
             <h1 class="title">Comunidad <span>Masari</span></h1>
             <div class="social-grid" id="users-container">
                 <div class="user-social-card">
-                    <img src="https://i.pravatar.cc/150?u=1" style="width:70px; border-radius:50%; border:2px solid var(--blue)">
-                    <h3>Carlos Trader</h3>
-                    <span class="badge-info">Scalping Pro</span>
-                    <button class="btn btn-blue" onclick="meme(true, 'Siguiendo a Carlos')">Seguir</button>
-                </div>
-                <div class="user-social-card" id="my-social-card">
                     <img id="my-social-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:70px; border-radius:50%; border:2px solid var(--blue)">
                     <h3 id="my-social-name">Tú</h3>
-                    <span class="badge-info">Nuevo Miembro</span>
+                    <span class="badge-info">Miembro Activo</span>
                 </div>
             </div>
         </section>
 
         <section id="academia" class="page">
-            <h1 class="title">Academia <span>Elite</span></h1>
-            
+            <h1 class="title">Academia <span>Pro</span></h1>
             <div class="card">
-                <h3>Subir Nueva Clase Online 🎥</h3>
+                <h3>Crear Nueva Clase 🎥</h3>
                 <div class="class-form">
                     <input type="text" id="cl-title" placeholder="Título de la clase" class="full">
                     <input type="text" id="cl-url" placeholder="Link de YouTube">
                     <input type="number" id="cl-limit" placeholder="Límite de alumnos">
                     <textarea id="cl-desc" placeholder="Descripción de la clase" class="full"></textarea>
-                    <textarea id="cl-prof" placeholder="Sobre el profesor (Experiencia, redes...)" class="full"></textarea>
+                    <textarea id="cl-prof" placeholder="Sobre el profesor" class="full"></textarea>
                     <button class="btn btn-buy full" onclick="saveClass()">PUBLICAR CLASE</button>
                 </div>
             </div>
-
-            <div id="classes-list">
-                </div>
+            <div id="classes-list"></div>
         </section>
 
         <section id="bolsa" class="page">
@@ -144,14 +137,54 @@
         <section id="perfil" class="page">
             <h1 class="title">Mi <span>Perfil</span></h1>
             <div class="card">
-                <input type="text" id="user-name" value="Inversionista Masari" style="background:#020c1b; border:1px solid #233554; color:white; padding:12px; border-radius:8px; width:100%; margin-bottom:15px;">
-                <button class="btn btn-blue" onclick="saveP()">GUARDAR CAMBIOS</button>
+                <input type="text" id="user-name" value="Inversionista Masari">
+                <button class="btn btn-blue" style="margin-top:15px" onclick="saveP()">GUARDAR</button>
             </div>
         </section>
     </main>
 
     <script>
         let xp = 2500, price = 800000, stocks = 0;
+
+        // --- ELIMINAR CLASE (CORREGIDO) ---
+        function removeClass(button) {
+            const card = button.closest('.card');
+            if(card) {
+                card.remove();
+                meme(false, "Clase eliminada");
+            }
+        }
+
+        // --- GUARDAR CLASE ---
+        function saveClass() {
+            const title = document.getElementById('cl-title').value;
+            const url = document.getElementById('cl-url').value;
+            const limit = document.getElementById('cl-limit').value;
+            const desc = document.getElementById('cl-desc').value;
+            const prof = document.getElementById('cl-prof').value;
+
+            if(!title || !url || !limit) return alert("Faltan datos");
+
+            let vId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : (url.includes("be/") ? url.split("be/")[1] : "");
+            
+            const html = `
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between;">
+                        <h2 style="color:var(--blue)">${title}</h2>
+                        <button class="btn-delete" onclick="removeClass(this)">BORRAR</button>
+                    </div>
+                    <p style="margin:10px 0; color:var(--gray)"><b>Profesor:</b> ${prof}</p>
+                    <div class="video-container"><iframe src="https://www.youtube.com/embed/${vId}"></iframe></div>
+                    <p>${desc}</p>
+                    <div style="margin-top:15px; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <span>Inscritos: <b id="count">0</b> / ${limit}</span>
+                        <button class="btn btn-buy" style="padding:5px 10px;" onclick="this.previousElementSibling.querySelector('b').innerText = parseInt(this.previousElementSibling.querySelector('b').innerText)+1; this.disabled=true; this.innerText='INSCRITO';">INSCRIBIRME</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('classes-list').insertAdjacentHTML('afterbegin', html);
+            meme(true, "Clase subida");
+        }
 
         // --- BOLSA ---
         const ctx = document.getElementById('graficaReal').getContext('2d');
@@ -162,59 +195,12 @@
         });
         setInterval(() => {
             let drift = (Math.random() - 0.48) * 14000; price += drift;
-            const el = document.getElementById('p-bolsa'); el.innerText = "$" + Math.floor(price).toLocaleString();
-            el.style.color = drift > 0 ? "#10b981" : "#ef4444";
-            chart.data.datasets[0].borderColor = el.style.color;
+            document.getElementById('p-bolsa').innerText = "$" + Math.floor(price).toLocaleString();
             chart.data.datasets[0].data.push(price); chart.data.datasets[0].data.shift(); chart.update();
             updateUI();
         }, 1200);
 
-        // --- GESTIÓN DE CLASES ---
-        function saveClass() {
-            const title = document.getElementById('cl-title').value;
-            const url = document.getElementById('cl-url').value;
-            const limit = document.getElementById('cl-limit').value;
-            const desc = document.getElementById('cl-desc').value;
-            const prof = document.getElementById('cl-prof').value;
-            const id = "c-" + Date.now();
-
-            if(!title || !url || !limit) return alert("Completa los campos básicos");
-
-            let vId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : (url.includes("be/") ? url.split("be/")[1] : "");
-
-            const html = `
-                <div class="card" id="${id}">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                        <div>
-                            <h2 style="color:var(--blue)">${title}</h2>
-                            <span class="badge-info">Profesor: ${prof}</span>
-                        </div>
-                        <button class="btn btn-delete" onclick="document.getElementById('${id}').remove()">BORRAR CLASE</button>
-                    </div>
-                    <div class="video-container"><iframe src="https://www.youtube.com/embed/${vId}"></iframe></div>
-                    <p style="margin:10px 0; color:var(--gray)">${desc}</p>
-                    <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
-                        <span>Cupo: <b id="reg-${id}">0</b> / ${limit}</span>
-                        <button class="btn btn-buy" style="padding:8px 15px;" onclick="enroll('${id}', ${limit})">INSCRIBIRME</button>
-                    </div>
-                </div>
-            `;
-            document.getElementById('classes-list').insertAdjacentHTML('afterbegin', html);
-            meme(true, "¡Clase subida!");
-        }
-
-        function enroll(id, limit) {
-            let el = document.getElementById('reg-'+id);
-            let current = parseInt(el.innerText);
-            if(current < limit) {
-                el.innerText = current + 1;
-                meme(true, "¡Inscripción Exitosa!");
-            } else {
-                alert("Clase llena");
-            }
-        }
-
-        // --- GENERAL ---
+        // --- FUNCIONES EXTRA ---
         function goto(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -231,10 +217,10 @@
             const name = document.getElementById('user-name').value;
             document.getElementById('display-name').innerText = name;
             document.getElementById('my-social-name').innerText = name;
-            alert("Perfil Guardado"); 
+            alert("Guardado"); 
         }
         function meme(isWin, txt) {
-            document.getElementById('meme-img').src = isWin ? "https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif" : "";
+            document.getElementById('meme-img').src = isWin ? "https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif" : "https://media.giphy.com/media/hStvd5LiWCFzXYZAzM/giphy.gif";
             document.getElementById('meme-msg').innerText = txt;
             document.getElementById('meme-box').classList.add('active');
             setTimeout(() => document.getElementById('meme-box').classList.remove('active'), 2000);
