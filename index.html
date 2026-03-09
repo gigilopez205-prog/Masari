@@ -55,8 +55,6 @@
         #p-bolsa { font-size: 44px; font-weight: 800; letter-spacing: -1px; }
         .chart-box { height: 320px; width: 100%; background: #ffffff; border-radius: 20px; padding: 10px; }
         .history-list { overflow-y: auto; height: 200px; padding-right: 5px; font-size: 13px; }
-        .history-list::-webkit-scrollbar { width: 4px; }
-        .history-list::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
 
         /* INPUTS */
         input, textarea, select { background: #f9fafb; border: 1.5px solid #e5e7eb; padding: 14px; border-radius: 12px; width: 100%; font-family: 'Inter'; }
@@ -66,6 +64,9 @@
 
         .meme-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: white; padding: 35px; border-radius: 30px; z-index: 1000; text-align: center; transition: 0.4s; box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
         .meme-popup.active { transform: translate(-50%, -50%) scale(1); }
+
+        /* FACT CARDS */
+        .fact-bubble { background: #eff6ff; border-left: 4px solid var(--blue); padding: 15px; border-radius: 12px; font-size: 14px; line-height: 1.5; color: #1e40af; }
     </style>
 </head>
 <body>
@@ -91,16 +92,32 @@
     <main>
         <section id="inicio" class="page active">
             <h1 class="title">Bienvenido, <span id="display-name">Inversionista</span></h1>
-            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px;">
-                <div class="card" style="background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: white; border: none;">
+            
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; margin-bottom: 25px;">
+                <div class="card" style="background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: white; border: none; margin-bottom: 0;">
                     <p style="opacity: 0.8; font-size: 14px;">Balance Estimado</p>
                     <h1 id="ui-cartera" style="font-size: 42px; margin: 10px 0;">$0</h1>
-                    <p style="font-size: 12px;">Terminal Pro v4.5 Active</p>
+                    <p style="font-size: 12px;">Terminal Pro v5.0 • Live</p>
                 </div>
-                <div class="card">
+                <div class="card" style="margin-bottom: 0;">
                     <p style="color: var(--gray); font-size: 14px;">Posiciones Abiertas</p>
                     <h2 id="ui-acciones" style="font-size: 32px; margin: 10px 0;">0</h2>
                     <span style="color: var(--blue); font-weight: bold; font-size: 12px;">CUENTA VERIFICADA</span>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="card">
+                    <h3 style="font-size: 14px; margin-bottom: 15px; color: var(--blue);">💡 FACT FINANCIERO</h3>
+                    <div id="fact-content" class="fact-bubble">
+                        Cargando dato curioso para impresionar a tus amigos...
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="font-size: 14px; margin-bottom: 15px; color: #f59e0b;">☕ TRADER PRO-TIP</h3>
+                    <div id="meme-fact-content" style="font-style: italic; color: var(--gray); font-size: 14px;">
+                        "Si el mercado cae y no tienes miedo, o eres un genio o no tienes dinero."
+                    </div>
                 </div>
             </div>
         </section>
@@ -148,15 +165,11 @@
                 <div style="display: flex; flex-direction: column; gap: 20px;">
                     <div class="card" style="margin-bottom: 0; padding: 20px;">
                         <h3 style="font-size: 13px; margin-bottom: 15px; color: var(--gray);">MARKET TICKS</h3>
-                        <div id="ticker-history" class="history-list">
-                            <div style="color: var(--gray); text-align: center; margin-top: 10px;">Cargando mercado...</div>
-                        </div>
+                        <div id="ticker-history" class="history-list"></div>
                     </div>
                     <div class="card" style="padding: 20px;">
                         <h3 style="font-size: 13px; margin-bottom: 15px; color: var(--blue);">MY TRADING LOG</h3>
-                        <div id="trade-history" class="history-list">
-                            <div style="color: var(--gray); text-align: center; margin-top: 10px;">Sin operaciones hoy.</div>
-                        </div>
+                        <div id="trade-history" class="history-list"></div>
                     </div>
                 </div>
             </div>
@@ -194,38 +207,66 @@
     <script>
         let price = 800000, stocks = 0, lastPrice = 800000;
 
-        // --- HISTORIAL MERCADO ---
+        // --- MEMES & FACTS DATA ---
+        const facts = [
+            "Apple gana más de $3,000 por SEGUNDO. Mientras leías esto, ya ganaron $15,000.",
+            "El nombre 'Wall Street' viene de un muro real construido por holandeses para alejar a los piratas.",
+            "La moneda más cara del mundo no es el Dólar ni el Euro, es el Dinar Kuwaití.",
+            "Warren Buffett compró su primera acción a los 11 años. Dice que empezó tarde.",
+            "El 90% de los traders pierden dinero en los primeros 90 días por falta de educación."
+        ];
+        const tips = [
+            "No inviertas dinero que necesites para el alquiler. El mercado huele el miedo.",
+            "Aprende a amar las pérdidas pequeñas o pronto conocerás las pérdidas grandes.",
+            "La paciencia paga más que cualquier indicador técnico.",
+            "Si todo el mundo habla de una acción en TikTok, probablemente ya sea tarde para comprar.",
+            "Tu activo más grande es tu capacidad de aprender, no tu cuenta bancaria."
+        ];
+
+        function rotateWisdom() {
+            document.getElementById('fact-content').innerText = facts[Math.floor(Math.random() * facts.length)];
+            document.getElementById('meme-fact-content').innerText = `"${tips[Math.floor(Math.random() * tips.length)]}"`;
+        }
+        setInterval(rotateWisdom, 10000); // Cambia cada 10 seg
+        rotateWisdom();
+
+        // --- RESTO DE LÓGICA ---
         function updateHistory(currentPrice, isUp) {
             const container = document.getElementById('ticker-history');
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            if (container.innerText.includes("Cargando")) container.innerHTML = '';
-            
             const entry = document.createElement('div');
             entry.style = "display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f9fafb;";
             entry.innerHTML = `<span style="color:var(--gray)">${time}</span><span style="color:${isUp?'var(--green)':'var(--red)'}; font-weight:700;">${isUp?'▲':'▼'} $${Math.floor(currentPrice).toLocaleString()}</span>`;
-            
-            container.prepend(entry);
-            if (container.children.length > 10) container.removeChild(container.lastChild);
-        }
-
-        // --- HISTORIAL COMPRAS/VENTAS ---
-        function logTrade(type, tradePrice) {
-            const container = document.getElementById('trade-history');
-            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            if (container.innerText.includes("Sin operaciones")) container.innerHTML = '';
-
-            const entry = document.createElement('div');
-            const color = type === 'BUY' ? 'var(--green)' : 'var(--red)';
-            entry.style = "display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f4f8; border-left:3px solid " + color + "; padding-left:10px; margin-bottom:4px;";
-            entry.innerHTML = `
-                <div><b style="color:${color}">${type}</b> <br><small style="color:var(--gray)">${time}</small></div>
-                <div style="text-align:right"><b>$${Math.floor(tradePrice).toLocaleString()}</b><br><small>1 unit</small></div>
-            `;
             container.prepend(entry);
             if (container.children.length > 8) container.removeChild(container.lastChild);
         }
 
-        // --- FAVORITOS ---
+        function logTrade(type, tradePrice) {
+            const container = document.getElementById('trade-history');
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const entry = document.createElement('div');
+            const color = type === 'BUY' ? 'var(--green)' : 'var(--red)';
+            entry.style = "display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f4f8; border-left:3px solid " + color + "; padding-left:10px; margin-bottom:4px;";
+            entry.innerHTML = `<div><b style="color:${color}">${type}</b> <br><small style="color:var(--gray)">${time}</small></div><div style="text-align:right"><b>$${Math.floor(tradePrice).toLocaleString()}</b></div>`;
+            container.prepend(entry);
+            if (container.children.length > 5) container.removeChild(container.lastChild);
+        }
+
+        function saveClass() {
+            const title = document.getElementById('cl-title').value;
+            const url = document.getElementById('cl-url').value;
+            if(!title || !url) return alert("Faltan datos");
+            let vId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : (url.includes("be/") ? url.split("be/")[1] : "");
+            const html = `<div class="card">
+                <button class="fav-btn" onclick="toggleFav(this)">❤️</button>
+                <button class="btn-delete" onclick="this.closest('.card').remove()">BORRAR</button>
+                <h3>${title}</h3><div class="video-container"><iframe src="https://www.youtube.com/embed/${vId}"></iframe></div>
+                <button class="btn btn-blue" onclick="this.innerText='INSCRITO';this.disabled=true;">INSCRIBIRME</button>
+            </div>`;
+            document.getElementById('classes-list').insertAdjacentHTML('afterbegin', html);
+            meme(true, "Clase Publicada");
+        }
+
         function toggleFav(btn) {
             const card = btn.closest('.card').cloneNode(true);
             const favList = document.getElementById('fav-list');
@@ -233,35 +274,11 @@
             card.querySelector('.fav-btn').remove();
             const rm = document.createElement('button');
             rm.className = 'btn-delete'; rm.innerText = 'QUITAR';
-            rm.onclick = function() { this.closest('.card').remove(); if(favList.children.length === 0) favList.innerHTML = '<p style="color: var(--gray); text-align: center; margin-top: 40px;">No has marcado favoritos todavía.</p>'; };
-            card.appendChild(rm);
-            favList.prepend(card);
-            meme(true, "Guardado en Favoritos ❤️");
+            rm.onclick = function() { this.closest('.card').remove(); };
+            card.appendChild(rm); favList.prepend(card);
+            meme(true, "Añadido a Favoritos");
         }
 
-        // --- ACADEMIA ---
-        function saveClass() {
-            const title = document.getElementById('cl-title').value;
-            const url = document.getElementById('cl-url').value;
-            const prof = document.getElementById('cl-prof').value;
-            const desc = document.getElementById('cl-desc').value;
-            if(!title || !url) return alert("Faltan datos");
-            let vId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : (url.includes("be/") ? url.split("be/")[1] : "");
-            const html = `
-                <div class="card">
-                    <button class="fav-btn" onclick="toggleFav(this)">❤️</button>
-                    <button class="btn-delete" onclick="this.closest('.card').remove()">ELIMINAR</button>
-                    <h3>${title}</h3>
-                    <p style="font-size:12px; color:var(--gray); margin-top:5px;"><b>Profesor:</b> ${prof}</p>
-                    <div class="video-container"><iframe src="https://www.youtube.com/embed/${vId}"></iframe></div>
-                    <p style="font-size:14px; margin-bottom:15px; color:#4b5563;">${desc}</p>
-                    <button class="btn btn-blue" onclick="this.innerText='ACCESO CONCEDIDO';this.disabled=true;">VER MÓDULO</button>
-                </div>`;
-            document.getElementById('classes-list').insertAdjacentHTML('afterbegin', html);
-            meme(true, "Clase Publicada");
-        }
-
-        // --- BOLSA ---
         const ctx = document.getElementById('graficaReal').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'line',
@@ -273,37 +290,28 @@
             lastPrice = price;
             price += (Math.random() - 0.485) * 16000;
             const isUp = price >= lastPrice;
-            const color = isUp ? '#10b981' : '#ef4444';
             document.getElementById('p-bolsa').innerText = "$" + Math.floor(price).toLocaleString();
-            document.getElementById('p-bolsa').style.color = color;
-            chart.data.datasets[0].borderColor = color;
+            document.getElementById('p-bolsa').style.color = isUp ? 'var(--green)' : 'var(--red)';
+            chart.data.datasets[0].borderColor = isUp ? 'var(--green)' : 'var(--red)';
             chart.data.datasets[0].data.push(price); chart.data.datasets[0].data.shift(); chart.update();
             updateHistory(price, isUp);
             updateUI();
         }, 1200);
 
-        // --- CORE ---
         function goto(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('n-'+id).classList.add('active');
         }
-        function trade(n) { 
-            if(n < 0 && stocks <= 0) return; 
-            stocks += n; 
-            logTrade(n > 0 ? 'BUY' : 'SELL', price);
-            updateUI(); 
-        }
+        function trade(n) { if(n < 0 && stocks <= 0) return; stocks += n; logTrade(n > 0 ? 'BUY' : 'SELL', price); updateUI(); }
         function updateUI() {
             document.getElementById('ui-cartera').innerText = "$" + Math.floor(stocks * price).toLocaleString();
             document.getElementById('ui-acciones').innerText = stocks;
         }
         function saveP() { 
-            const n = document.getElementById('user-name').value;
-            document.getElementById('display-name').innerText = n;
-            document.getElementById('my-social-name').innerText = n;
-            meme(true, "Perfil Actualizado");
+            document.getElementById('display-name').innerText = document.getElementById('user-name').value;
+            meme(true, "Perfil Guardado");
         }
         function meme(win, txt) {
             document.getElementById('meme-img').src = win ? "https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif" : "https://media.giphy.com/media/hStvd5LiWCFzXYZAzM/giphy.gif";
