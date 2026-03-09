@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari Elite Terminal</title>
+    <title>Masari Elite Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #f2f0eb; --bg-main: #faf9f6; --bg-card: #ffffff;
-            --blue: #2c3e50; --white: #1a1a1a; --gray: #5d5d5d;
-            --green: #27ae60; --red: #c0392b;
-            --accent: #d4af37; /* Toque dorado para seriedad */
+            /* Regreso al Azul Masari con fondo Cozy */
+            --bg-dark: #f0eee9; --bg-main: #faf9f6; --bg-card: #ffffff;
+            --blue: #3b82f6; /* El azul original */
+            --white: #1a1a1a; --gray: #636e72;
+            --green: #10b981; --red: #ef4444;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -20,61 +21,60 @@
             color: var(--white); 
             display: flex; 
             min-height: 100vh; 
-            font-family: 'Inter', sans-serif; /* Letra seria y limpia */
+            font-family: 'Inter', sans-serif; 
         }
 
         /* SIDEBAR */
-        nav { width: 260px; background: var(--bg-dark); padding: 30px 20px; border-right: 1px solid #e0ddd5; position: fixed; height: 100vh; z-index: 100; }
+        nav { width: 260px; background: var(--bg-dark); padding: 30px 20px; border-right: 1px solid #dcdde1; position: fixed; height: 100vh; z-index: 100; }
         
-        /* LOGO INTEGRADO */
-        .logo { margin-bottom: 40px; display: flex; align-items: center; gap: 10px; font-family: 'Playfair Display', serif; font-size: 22px; letter-spacing: 1px; color: var(--blue); }
-        .logo img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid #dcdde1; }
+        .logo { margin-bottom: 40px; display: flex; align-items: center; gap: 10px; font-family: 'Playfair Display', serif; font-size: 22px; color: var(--blue); }
+        .logo img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--blue); }
 
-        .nav-btn { width: 100%; padding: 14px; background: none; border: none; color: var(--gray); text-align: left; cursor: pointer; font-size: 15px; border-radius: 8px; margin-bottom: 5px; transition: 0.3s; font-weight: 600; }
-        .nav-btn:hover, .nav-btn.active { background: #ffffff; color: var(--blue); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .nav-btn.active { border-left: 4px solid var(--accent); }
+        .nav-btn { width: 100%; padding: 14px; background: none; border: none; color: var(--gray); text-align: left; cursor: pointer; font-size: 15px; border-radius: 10px; margin-bottom: 5px; transition: 0.3s; font-weight: 600; }
+        .nav-btn:hover, .nav-btn.active { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
+        .nav-btn.active { border-left: 4px solid var(--blue); }
 
         /* CONTENT */
         main { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
-        .page { display: none; max-width: 950px; margin: 0 auto; animation: fadeIn 0.5s; }
+        .page { display: none; max-width: 950px; margin: 0 auto; animation: fadeIn 0.4s; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         h1, h2, h3 { font-family: 'Playfair Display', serif; }
-        .title { font-size: 36px; margin-bottom: 30px; border-bottom: 2px solid var(--bg-dark); padding-bottom: 10px; }
-        .title span { color: var(--accent); }
+        .title { font-size: 34px; margin-bottom: 30px; }
+        .title span { color: var(--blue); }
 
-        .card { background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid #e1e1e1; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .card { background: var(--bg-card); padding: 25px; border-radius: 18px; border: 1px solid #e1e1e1; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
 
         /* ACADEMIA */
         .class-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .full { grid-column: span 2; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; margin: 15px 0; background: #000; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
         /* BOLSA */
-        #p-bolsa { font-size: 52px; font-family: 'Playfair Display', serif; font-weight: bold; }
-        .chart-box { height: 380px; width: 100%; background: #ffffff; border-radius: 12px; padding: 20px; border: 1px solid #eee; }
+        #p-bolsa { font-size: 48px; font-family: 'Playfair Display', serif; font-weight: bold; }
+        .chart-box { height: 380px; width: 100%; background: #ffffff; border-radius: 15px; padding: 20px; border: 1px solid #eee; }
 
-        /* INPUTS SERIOS */
-        input, textarea, select { background: #ffffff; border: 1px solid #ccc; color: var(--white); padding: 12px; border-radius: 5px; font-size: 14px; width: 100%; font-family: 'Inter', sans-serif; }
-        label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; color: var(--gray); margin-bottom: 6px; display: block; }
+        /* INPUTS */
+        input, textarea, select { background: #f9f9f9; border: 1px solid #ddd; color: var(--white); padding: 12px; border-radius: 8px; font-size: 14px; width: 100%; }
+        label { font-size: 12px; font-weight: bold; color: var(--gray); margin-bottom: 6px; display: block; text-transform: uppercase; }
 
         /* BOTONES */
-        .btn { padding: 12px 22px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn { padding: 12px 22px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.2s; }
         .btn-buy { background: var(--green); color: white; }
-        .btn-sell { border: 1px solid var(--red); color: var(--red); background: transparent; }
+        .btn-sell { border: 2px solid var(--red); color: var(--red); background: transparent; }
         .btn-blue { background: var(--blue); color: white; width: 100%; }
-        .btn-delete { background: var(--red); color: white; font-size: 11px; padding: 6px 12px; }
+        .btn-delete { background: var(--red); color: white; font-size: 11px; padding: 6px 12px; border-radius: 6px; }
 
-        .meme-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: white; padding: 30px; border-radius: 15px; z-index: 1000; text-align: center; transition: 0.4s; border: 1px solid #ddd; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .meme-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: white; padding: 30px; border-radius: 25px; z-index: 1000; text-align: center; transition: 0.4s; border: 3px solid var(--blue); box-shadow: 0 15px 50px rgba(0,0,0,0.2); }
         .meme-popup.active { transform: translate(-50%, -50%) scale(1); }
     </style>
 </head>
 <body>
 
     <div id="meme-box" class="meme-popup">
-        <img id="meme-img" src="" alt="Status" style="max-width:240px; border-radius:10px;">
+        <img id="meme-img" src="" alt="Status" style="max-width:240px; border-radius:15px;">
         <h3 id="meme-msg" style="margin-top:15px;"></h3>
     </div>
 
@@ -87,46 +87,46 @@
         <button onclick="goto('comunidad')" class="nav-btn" id="n-comunidad">Network</button>
         <button onclick="goto('academia')" class="nav-btn" id="n-academia">Academy</button>
         <button onclick="goto('bolsa')" class="nav-btn" id="n-bolsa">Markets</button>
-        <button onclick="goto('perfil')" class="nav-btn" id="n-perfil">User Profile</button>
+        <button onclick="goto('perfil')" class="nav-btn" id="n-perfil">Profile</button>
     </nav>
 
     <main>
         <section id="inicio" class="page active">
-            <h1 class="title">Principal Overview, <span id="display-name">Investor</span></h1>
-            <div class="card" style="border-left: 4px solid var(--accent);">
-                <h3>Institutional Access</h3>
-                <p style="color: var(--gray); margin-top: 10px;">Welcome to the Masari terminal. Monitor your performance and educational progress with precision.</p>
+            <h1 class="title">Welcome, <span id="display-name">Investor</span></h1>
+            <div class="card" style="border-left: 6px solid var(--blue);">
+                <h3>Capital Overview 🚀</h3>
+                <p style="color: var(--gray); margin-top: 5px;">Manage your assets and education with the original Masari performance.</p>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="card"><h4>Portfolio Value</h4><h2 id="ui-cartera" style="color: var(--green);">$0</h2></div>
-                <div class="card"><h4>Asset Balance</h4><h2 id="ui-acciones">0</h2></div>
+                <div class="card"><h4>Estimated Portfolio</h4><h2 id="ui-cartera" style="color: var(--green);">$0</h2></div>
+                <div class="card"><h4>Equity Balance</h4><h2 id="ui-acciones">0</h2></div>
             </div>
         </section>
 
         <section id="academia" class="page">
-            <h1 class="title">Educational <span>Modules</span></h1>
+            <h1 class="title">Learning <span>Center</span></h1>
             <div class="card">
-                <h3>Submit Professional Module</h3>
+                <h3>Deploy New Class 🎥</h3>
                 <div class="class-form">
-                    <input type="text" id="cl-title" placeholder="Module Title" class="full">
-                    <input type="text" id="cl-url" placeholder="Video Link (YouTube)">
-                    <input type="number" id="cl-limit" placeholder="Capacity">
-                    <textarea id="cl-desc" placeholder="Module Description" class="full"></textarea>
-                    <textarea id="cl-prof" placeholder="Instructor Background" class="full"></textarea>
-                    <button class="btn btn-blue full" onclick="saveClass()">Deploy Module</button>
+                    <input type="text" id="cl-title" placeholder="Class Title" class="full">
+                    <input type="text" id="cl-url" placeholder="YouTube Link">
+                    <input type="number" id="cl-limit" placeholder="Student Limit">
+                    <textarea id="cl-desc" placeholder="Class Description" class="full"></textarea>
+                    <textarea id="cl-prof" placeholder="Instructor Info" class="full"></textarea>
+                    <button class="btn btn-blue full" onclick="saveClass()">PUBLISH MODULE</button>
                 </div>
             </div>
             <div id="classes-list"></div>
         </section>
 
         <section id="bolsa" class="page">
-            <h1 class="title">Live <span>Execution</span></h1>
+            <h1 class="title">Live <span>Trading</span></h1>
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <h2 id="p-bolsa">$800,000</h2>
+                    <h2 id="p-bolsa" style="color: var(--green);">$800,000</h2>
                     <div>
-                        <button class="btn btn-buy" onclick="trade(1)">Buy</button>
-                        <button class="btn btn-sell" style="margin-left:10px" onclick="trade(-1)">Sell</button>
+                        <button class="btn btn-buy" onclick="trade(1)">BUY</button>
+                        <button class="btn btn-sell" style="margin-left:10px" onclick="trade(-1)">SELL</button>
                     </div>
                 </div>
                 <div class="chart-box"><canvas id="graficaReal"></canvas></div>
@@ -134,24 +134,24 @@
         </section>
 
         <section id="perfil" class="page">
-            <h1 class="title">Account <span>Settings</span></h1>
+            <h1 class="title">My <span>Account</span></h1>
             <div class="card">
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                    <div><label>Full Name</label><input type="text" id="user-name" value="Investor"></div>
+                    <div><label>User Name</label><input type="text" id="user-name" value="Investor"></div>
                     <div><label>Birth Date</label><input type="date"></div>
-                    <div><label>City</label><input type="text" placeholder="London, UK"></div>
-                    <div><label>Phone</label><input type="tel" placeholder="+00 000 000 000"></div>
+                    <div><label>Gender</label><select><option>Male</option><option>Female</option><option>Other</option></select></div>
+                    <div><label>Phone</label><input type="tel" placeholder="+00 000 000"></div>
                 </div>
-                <button class="btn btn-blue" style="margin-top:30px" onclick="saveP()">Update Registry</button>
+                <button class="btn btn-blue" style="margin-top:25px" onclick="saveP()">SAVE CHANGES</button>
             </div>
         </section>
 
         <section id="comunidad" class="page">
-            <h1 class="title">Masari <span>Network</span></h1>
-            <div id="users-container" class="card" style="text-align:center;">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:80px; border-radius:50%; border:1px solid #ddd; margin-bottom:10px;">
+            <h1 class="title">Social <span>Network</span></h1>
+            <div class="card" style="text-align:center;">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:80px; border-radius:50%; border:2px solid var(--blue); margin-bottom:10px;">
                 <h3 id="my-social-name">Investor</h3>
-                <p style="color:var(--gray); font-size:14px;">Active Portfolio Manager</p>
+                <span style="color:var(--blue); font-weight:bold; font-size:12px;">ACTIVE TRADER</span>
             </div>
         </section>
     </main>
@@ -163,14 +163,14 @@
         const ctx = document.getElementById('graficaReal').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'line',
-            data: { labels: Array(30).fill(""), datasets: [{ data: Array(30).fill(800000), borderColor: '#27ae60', borderWidth: 2, tension: 0.2, fill: true, backgroundColor: 'rgba(39, 174, 96, 0.05)', pointRadius: 0 }] },
+            data: { labels: Array(30).fill(""), datasets: [{ data: Array(30).fill(800000), borderColor: '#10b981', borderWidth: 3, tension: 0.3, fill: true, backgroundColor: 'rgba(16, 185, 129, 0.05)', pointRadius: 0 }] },
             options: { responsive: true, maintainAspectRatio: false, animation: false, scales: { y: { ticks: { font: { family: 'Inter' } } } } }
         });
 
         setInterval(() => {
             lastPrice = price;
-            price += (Math.random() - 0.49) * 12000;
-            const color = price >= lastPrice ? '#27ae60' : '#c0392b';
+            price += (Math.random() - 0.48) * 14000;
+            const color = price >= lastPrice ? '#10b981' : '#ef4444';
             document.getElementById('p-bolsa').innerText = "$" + Math.floor(price).toLocaleString();
             document.getElementById('p-bolsa').style.color = color;
             chart.data.datasets[0].borderColor = color;
@@ -183,14 +183,13 @@
         function saveClass() {
             const title = document.getElementById('cl-title').value;
             const url = document.getElementById('cl-url').value;
-            const prof = document.getElementById('cl-prof').value;
+            const limit = document.getElementById('cl-limit').value;
             if(!title || !url) return;
             let vId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : (url.includes("be/") ? url.split("be/")[1] : "");
             const html = `<div class="card">
-                <div style="display:flex; justify-content:space-between;"><h3>${title}</h3><button class="btn-delete" onclick="this.closest('.card').remove()">Delete</button></div>
-                <p style="font-size:13px; margin:10px 0;"><b>Instructor:</b> ${prof}</p>
+                <div style="display:flex; justify-content:space-between;"><h3>${title}</h3><button class="btn-delete" onclick="this.closest('.card').remove()">DELETE</button></div>
                 <div class="video-container"><iframe src="https://www.youtube.com/embed/${vId}"></iframe></div>
-                <button class="btn btn-buy" style="width:100%" onclick="this.innerText='Registered'; this.disabled=true;">Enroll in Module</button>
+                <button class="btn btn-blue" style="width:100%" onclick="this.innerText='ENROLLED'; this.disabled=true;">ENROLL NOW</button>
             </div>`;
             document.getElementById('classes-list').insertAdjacentHTML('afterbegin', html);
             meme(true, "Module Published");
@@ -211,7 +210,7 @@
             const n = document.getElementById('user-name').value;
             document.getElementById('display-name').innerText = n;
             document.getElementById('my-social-name').innerText = n;
-            meme(true, "Registry Updated");
+            meme(true, "Profile Updated");
         }
         function meme(win, txt) {
             document.getElementById('meme-img').src = win ? "https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif" : "https://media.giphy.com/media/hStvd5LiWCFzXYZAzM/giphy.gif";
