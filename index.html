@@ -3,61 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari Fintech Terminal Pro</title>
+    <title>Masari Fintech Terminal | Professional Suite</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #3b82f6; --accent: #10b981; --danger: #ef4444;
-            --bg-deep: #0f172a; --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary: #3b82f6; --primary-glow: rgba(59, 130, 246, 0.5);
+            --accent: #10b981; --danger: #ef4444; --warning: #f59e0b;
+            --bg-deep: #0a0f1d; --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
-        body { margin: 0; background: var(--bg-deep); color: #f8fafc; font-family: 'Inter', sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
+        * { box-sizing: border-box; outline: none; }
+        body { 
+            margin: 0; background: var(--bg-deep); color: #f8fafc; 
+            font-family: 'Inter', sans-serif; display: flex; 
+            min-height: 100vh; overflow-x: hidden; 
+        }
 
-        /* FONDO INTERACTIVO NEURONAL */
-        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #0a0f1d; }
+        /* FONDO INTERACTIVO */
+        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        /* SIDEBAR */
-        nav { width: 280px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); padding: 40px 20px; border-right: 1px solid var(--glass-border); position: fixed; height: 100vh; z-index: 100; }
-        .logo { display: flex; align-items: center; gap: 15px; font-family: 'Montserrat'; font-weight: 800; font-size: 22px; margin-bottom: 50px; color: var(--primary); }
+        /* NAVEGACIÓN LATERAL */
+        nav { 
+            width: 280px; background: rgba(10, 15, 29, 0.9); backdrop-filter: blur(30px); 
+            padding: 40px 20px; border-right: 1px solid var(--glass-border); 
+            position: fixed; height: 100vh; z-index: 100; 
+        }
+        .logo { 
+            display: flex; align-items: center; gap: 15px; font-family: 'Montserrat'; 
+            font-weight: 800; font-size: 24px; margin-bottom: 50px; color: var(--primary);
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
         .logo img { width: 50px; height: 50px; border-radius: 12px; border: 2px solid var(--primary); }
         
-        .nav-btn { width: 100%; padding: 15px; margin-bottom: 8px; background: transparent; border: none; color: #94a3b8; text-align: left; cursor: pointer; border-radius: 12px; font-weight: 600; transition: 0.3s; }
-        .nav-btn:hover { background: var(--glass); color: white; transform: translateX(5px); }
-        .nav-btn.active { background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), transparent); border-left: 4px solid var(--primary); color: white; }
+        .nav-btn { 
+            width: 100%; padding: 14px 18px; margin-bottom: 10px; background: transparent; 
+            border: none; color: #64748b; text-align: left; cursor: pointer; 
+            border-radius: 14px; font-weight: 600; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .nav-btn:hover { background: var(--glass); color: white; transform: translateX(8px); }
+        .nav-btn.active { 
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), transparent); 
+            border-left: 4px solid var(--primary); color: white; 
+        }
 
-        /* MAIN CONTENT */
-        main { margin-left: 280px; padding: 60px; width: calc(100% - 280px); }
-        .page { display: none; animation: fadeIn 0.5s ease-out; }
+        /* ÁREA PRINCIPAL */
+        main { margin-left: 280px; padding: 50px; width: calc(100% - 280px); }
+        .page { display: none; animation: pageEntry 0.6s ease-out; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pageEntry { from { opacity: 0; transform: translateY(15px); filter: blur(10px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
 
-        /* CARDS */
-        .card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 30px; margin-bottom: 30px; transition: 0.4s; }
-        .card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        /* COMPONENTES UI */
+        .card { 
+            background: var(--glass); backdrop-filter: blur(20px); 
+            border: 1px solid var(--glass-border); border-radius: 28px; 
+            padding: 30px; margin-bottom: 25px; transition: 0.4s;
+            position: relative; overflow: hidden;
+        }
+        .card:hover { border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
 
-        .title { font-size: 38px; margin-bottom: 40px; font-family: 'Montserrat'; }
+        .title { font-size: 42px; margin-bottom: 35px; font-family: 'Montserrat'; letter-spacing: -1px; }
         .title span { color: var(--primary); }
 
-        /* BUTTONS & INPUTS */
-        .btn { padding: 16px 24px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .btn-buy { background: var(--accent); color: white; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
-        .btn-sell { background: var(--danger); color: white; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3); }
+        .btn { 
+            padding: 14px 28px; border-radius: 14px; border: none; font-weight: 700; 
+            cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 13px;
+        }
+        .btn-buy { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); }
+        .btn-sell { background: var(--danger); color: white; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2); }
         .btn-blue { background: var(--primary); color: white; width: 100%; }
+        .btn:active { transform: scale(0.96); }
 
-        input { background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 12px; border-radius: 10px; color: white; width: 100%; box-sizing: border-box; }
+        /* GRID LAYOUTS */
+        .dashboard-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 25px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .academy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 
-        /* GRID SYSTEM PARA NUEVAS SECCIONES */
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .course-card { background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 15px; padding: 15px; }
-        .badge { font-size: 10px; padding: 4px 8px; border-radius: 5px; background: var(--primary); color: white; }
-
+        /* DETALLES DE DATOS */
+        .ticker-item { 
+            display: flex; justify-content: space-between; padding: 12px; 
+            border-bottom: 1px solid var(--glass-border); font-family: 'JetBrains Mono'; font-size: 12px;
+        }
+        .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 800; background: rgba(16, 185, 129, 0.1); color: var(--accent); }
+        
         /* MEME POPUP */
-        .meme-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: #1e293b; border: 2px solid var(--primary); padding: 40px; border-radius: 30px; z-index: 1000; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .meme-popup { 
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); 
+            background: #111827; border: 2px solid var(--primary); padding: 40px; 
+            border-radius: 32px; z-index: 1000; box-shadow: 0 0 100px rgba(0,0,0,0.8);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center;
+        }
         .meme-popup.active { transform: translate(-50%, -50%) scale(1); }
 
-        .history-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid var(--glass-border); font-size: 13px; font-family: monospace; }
+        /* CUSTOM SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -65,174 +107,238 @@
     <canvas id="canvas-bg"></canvas>
 
     <div id="meme-box" class="meme-popup">
-        <img id="meme-img" src="" style="max-width:260px; border-radius:20px;">
-        <h3 id="meme-msg" style="margin-top:20px; text-align:center;"></h3>
+        <img id="meme-img" src="" style="max-width:280px; border-radius:20px; margin-bottom:20px;">
+        <h3 id="meme-msg" style="font-family: 'Montserrat';"></h3>
     </div>
 
     <nav>
-        <div class="logo"><img src="uploaded:IMG_2353.jpeg-00f59935-b6de-41ed-bc9f-dc09f1346ac5" alt="Logo"> MASARI</div>
-        <button onclick="goto('inicio')" class="nav-btn active" id="n-inicio">DASHBOARD</button>
-        <button onclick="goto('bolsa')" class="nav-btn" id="n-bolsa">MERCADOS</button>
-        <button onclick="goto('academia')" class="nav-btn" id="n-academia">ACADEMIA</button>
-        <button onclick="goto('favoritos')" class="nav-btn" id="n-favoritos">FAVORITOS ❤️</button>
-        <button onclick="goto('comunidad')" class="nav-btn" id="n-comunidad">COMUNIDAD</button>
-        <button onclick="goto('perfil')" class="nav-btn" id="n-perfil">PERFIL</button>
+        <div class="logo">
+            <img src="uploaded:IMG_2353.jpeg-00f59935-b6de-41ed-bc9f-dc09f1346ac5" alt="Logo">
+            MASARI
+        </div>
+        <button onclick="goto('inicio')" class="nav-btn active" id="n-inicio">📊 DASHBOARD</button>
+        <button onclick="goto('bolsa')" class="nav-btn" id="n-bolsa">📈 MERCADOS</button>
+        <button onclick="goto('academia')" class="nav-btn" id="n-academia">🎓 ACADEMIA</button>
+        <button onclick="goto('favoritos')" class="nav-btn" id="n-favoritos">⭐ FAVORITOS</button>
+        <button onclick="goto('comunidad')" class="nav-btn" id="n-comunidad">🌐 COMUNIDAD</button>
+        <button onclick="goto('perfil')" class="nav-btn" id="n-perfil">👤 MI PERFIL</button>
     </nav>
 
     <main>
         <section id="inicio" class="page active">
-            <h1 class="title">Terminal <span>Operativa</span></h1>
-            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px;">
-                <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #1e40af);">
-                    <p style="opacity: 0.7;">PATRIMONIO NETO</p>
-                    <h1 id="ui-cartera" style="font-size: 55px; margin: 15px 0;">$0</h1>
-                    <div style="font-size: 12px; opacity: 0.6;">ALGORITMO MASARI V6.2 ACTIVE</div>
+            <h1 class="title">Terminal <span>Control</span></h1>
+            <div class="dashboard-grid">
+                <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #1e40af); border: none;">
+                    <p style="text-transform: uppercase; font-size: 11px; letter-spacing: 2px; opacity: 0.8;">Net Worth Tracking</p>
+                    <h1 id="ui-cartera" style="font-size: 60px; margin: 15px 0; font-family: 'Montserrat';">$0</h1>
+                    <div style="display: flex; gap: 20px;">
+                        <span id="trend-indicator" style="color: var(--accent); font-weight: 700;">+2.45% ▲</span>
+                        <span style="opacity: 0.5;">Global Node: 04-B</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <p style="color: #94a3b8;">ACTIVOS EN HOLD</p>
-                    <h2 id="ui-acciones" style="font-size: 40px; color: var(--primary);">0</h2>
-                    <p style="font-size: 11px; color: var(--accent);">CONEXIÓN SEGURA ●</p>
+                    <h3>Holdings</h3>
+                    <div style="display: flex; align-items: baseline; gap: 10px; margin-top: 20px;">
+                        <h1 id="ui-acciones" style="font-size: 45px; margin: 0; color: var(--primary);">0</h1>
+                        <p style="color: #64748b; margin: 0;">MASARI UNITS</p>
+                    </div>
+                    <div class="status-pill" style="margin-top: 15px; display: inline-block;">NETWORK SECURED</div>
                 </div>
             </div>
-            <div class="card" style="border-left: 5px solid var(--primary);">
-                <h3>Misión del Día</h3>
-                <p id="fact-content" style="color: #cbd5e1; line-height: 1.6;">Sincronizando flujos de datos...</p>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>System Insights</h3>
+                    <span id="system-time" style="font-family: 'JetBrains Mono'; font-size: 12px; color: var(--primary);">00:00:00</span>
+                </div>
+                <p id="fact-content" style="color: #94a3b8; font-size: 15px; margin-top: 15px;">Iniciando protocolos de seguridad Masari v6...</p>
             </div>
         </section>
 
         <section id="bolsa" class="page">
-            <h1 class="title">Live <span>Trading</span></h1>
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+            <h1 class="title">Market <span>Engine</span></h1>
+            <div class="dashboard-grid">
                 <div class="card">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
                         <div>
-                            <span style="font-size: 12px; color: #94a3b8;">PRECIO MASARI/USD</span>
-                            <h2 id="p-bolsa" style="font-size: 45px; color: var(--accent);">$800,000</h2>
+                            <p style="font-size: 11px; color: #64748b; text-transform: uppercase;">Real-Time Price (USD)</p>
+                            <h2 id="p-bolsa" style="font-size: 48px; color: var(--accent); letter-spacing: -2px;">$800,000</h2>
                         </div>
                         <div style="display: flex; gap: 12px;">
-                            <button class="btn btn-sell" onclick="trade(-1)">Vender</button>
-                            <button class="btn btn-buy" onclick="trade(1)">Comprar</button>
+                            <button class="btn btn-sell" onclick="trade(-1)">Short</button>
+                            <button class="btn btn-buy" onclick="trade(1)">Long</button>
                         </div>
                     </div>
-                    <div style="height: 380px;"><canvas id="graficaReal"></canvas></div>
+                    <div style="height: 350px;"><canvas id="graficaReal"></canvas></div>
                 </div>
                 <div class="card" style="padding: 20px;">
-                    <h3 style="font-size: 14px; margin-bottom: 15px;">LIBRO DE ÓRDENES</h3>
-                    <div id="ticker-history" style="height: 350px; overflow-y: auto;"></div>
+                    <h3 style="font-size: 14px; margin-bottom: 20px;">ORDER BOOK FEED</h3>
+                    <div id="ticker-history" style="height: 380px; overflow-y: auto;"></div>
                 </div>
             </div>
         </section>
 
         <section id="academia" class="page">
             <h1 class="title">Masari <span>Academy</span></h1>
-            <div class="grid-3">
-                <div class="course-card">
-                    <span class="badge">Básico</span>
-                    <h4>Gestión de Riesgo</h4>
-                    <p style="font-size:12px; color:#94a3b8;">Cómo no perderlo todo en un trade.</p>
-                    <button class="btn btn-blue" style="margin-top:10px;">Ver Clase</button>
+            <div class="academy-grid">
+                <div class="card" style="padding: 20px;">
+                    <div style="height: 150px; background: rgba(59, 130, 246, 0.1); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 40px;">📉</div>
+                    <h4 style="margin: 15px 0 10px 0;">Market Psych</h4>
+                    <p style="font-size: 12px; color: #94a3b8;">Domina el miedo y la codicia en el mercado.</p>
+                    <button class="btn btn-blue" style="margin-top: 15px;">Iniciar Módulo</button>
                 </div>
-                <div class="course-card">
-                    <span class="badge" style="background:#f59e0b">Pro</span>
-                    <h4>Order Flow Avanzado</h4>
-                    <p style="font-size:12px; color:#94a3b8;">Lectura de huella institucional.</p>
-                    <button class="btn btn-blue" style="margin-top:10px;">Ver Clase</button>
-                </div>
-                <div class="course-card">
-                    <span class="badge" style="background:#ef4444">Master</span>
-                    <h4>Redes Neuronales</h4>
-                    <p style="font-size:12px; color:#94a3b8;">Automatización con IA Masari.</p>
-                    <button class="btn btn-blue" style="margin-top:10px;">Ver Clase</button>
+                <div class="card" style="padding: 20px;">
+                    <div style="height: 150px; background: rgba(16, 185, 129, 0.1); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 40px;">⚡</div>
+                    <h4 style="margin: 15px 0 10px 0;">Scalping 101</h4>
+                    <p style="font-size: 12px; color: #94a3b8;">Operaciones rápidas con alta precisión.</p>
+                    <button class="btn btn-blue" style="margin-top: 15px;">Iniciar Módulo</button>
                 </div>
             </div>
         </section>
 
         <section id="favoritos" class="page">
-            <h1 class="title">Mis <span>Favoritos</span></h1>
+            <h1 class="title">Watch <span>List</span></h1>
             <div class="card">
-                <h3>Watchlist de Monitoreo</h3>
-                <div id="watchlist" style="margin-top:15px;">
-                    <div class="history-item"><span>BTC/USD</span><b style="color:var(--accent)">+2.4%</b></div>
-                    <div class="history-item"><span>ETH/USD</span><b style="color:var(--accent)">+1.1%</b></div>
-                    <div class="history-item"><span>GOLD</span><b style="color:var(--danger)">-0.4%</b></div>
-                </div>
+                <div class="ticker-item"><span>BITCOIN</span><b style="color:var(--accent)">$64,210.50</b></div>
+                <div class="ticker-item"><span>ETHEREUM</span><b style="color:var(--accent)">$3,452.12</b></div>
+                <div class="ticker-item"><span>MASARI TOKEN</span><b id="fav-masari-price" style="color:var(--accent)">$800,000</b></div>
             </div>
         </section>
 
         <section id="comunidad" class="page">
-            <h1 class="title">Masari <span>Network</span></h1>
+            <h1 class="title">Masari <span>Social</span></h1>
             <div class="card">
-                <h3>Feed Global</h3>
-                <div id="com-feed" style="height: 250px; overflow-y: auto;">
-                    <div class="history-item"><b>@TraderPro:</b> "Masari rompiendo máximos, ¡vamos!"</div>
-                    <div class="history-item"><b>@Alpha_AI:</b> "Detección de ballena en 815k."</div>
+                <div id="chat-feed" style="height: 300px; overflow-y: auto; margin-bottom: 20px;">
+                    <div class="ticker-item" style="border:none;"><span><b>@System:</b> Bienvenida a la terminal global.</span></div>
                 </div>
-                <input type="text" placeholder="Escribe un mensaje..." style="margin-top:15px;">
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="chat-msg" placeholder="Enviar análisis..." style="flex:1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 14px; border-radius: 12px; color: white;">
+                    <button class="btn btn-buy" onclick="sendMessage()">ENVIAR</button>
+                </div>
             </div>
         </section>
 
         <section id="perfil" class="page">
-            <h1 class="title">Mi <span>Perfil</span></h1>
-            <div class="card">
-                <h3>Estadísticas de Rendimiento</h3>
-                <div class="grid-3" style="margin-top:20px;">
-                    <div><p style="font-size:12px; color:#94a3b8;">Win Rate</p><h2>72%</h2></div>
-                    <div><p style="font-size:12px; color:#94a3b8;">Nivel</p><h2 style="color:var(--primary)">Elite</h2></div>
-                    <div><p style="font-size:12px; color:#94a3b8;">Saldo Masari</p><h2>1.2M</h2></div>
+            <h1 class="title">User <span>Settings</span></h1>
+            <div class="stats-grid">
+                <div class="card" style="text-align: center;">
+                    <p style="font-size: 11px; color: #64748b;">Win Rate</p>
+                    <h2 style="color: var(--accent);">74.2%</h2>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <p style="font-size: 11px; color: #64748b;">Trader Tier</p>
+                    <h2 style="color: var(--primary);">ELITE</h2>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <p style="font-size: 11px; color: #64748b;">Security</p>
+                    <h2 style="color: var(--warning);">2FA</h2>
                 </div>
             </div>
         </section>
     </main>
 
     <script>
-        // --- MOTOR DE PARTÍCULAS ---
+        // --- MOTOR DE PARTÍCULAS (FONDO) ---
         const canvas = document.getElementById('canvas-bg');
         const ctx = canvas.getContext('2d');
         let particles = [];
+        let mouse = { x: null, y: null, radius: 100 };
+
+        window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
-        class P { constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-0.5)*0.6; this.vy=(Math.random()-0.5)*0.6; } update(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; } draw(){ ctx.fillStyle='rgba(59,130,246,0.3)'; ctx.beginPath(); ctx.arc(this.x,this.y,1.2,0,Math.PI*2); ctx.fill(); } }
-        for(let i=0; i<80; i++) particles.push(new P());
-        function anim(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(anim); } anim();
 
-        // --- LÓGICA DE TRADING ---
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.4)';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
+            }
+        }
+        for(let i=0; i<100; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        } animate();
+
+        // --- LÓGICA DE TRADING & GRÁFICAS ---
         let price = 800000, stocks = 0, chart;
 
         function initChart() {
             const ctxC = document.getElementById('graficaReal').getContext('2d');
-            const g = ctxC.createLinearGradient(0,0,0,400); g.addColorStop(0, 'rgba(59,130,246,0.2)'); g.addColorStop(1, 'transparent');
+            const g = ctxC.createLinearGradient(0, 0, 0, 400);
+            g.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
+            g.addColorStop(1, 'transparent');
+
             chart = new Chart(ctxC, {
                 type: 'line',
-                data: { labels: Array(40).fill(""), datasets: [{ data: Array(40).fill(800000), borderColor: '#3b82f6', borderWidth: 4, pointRadius: 0, fill: true, backgroundColor: g, tension: 0.4 }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { x:{display:false}, y:{display:false} }, plugins: { legend: {display:false} } }
+                data: {
+                    labels: Array(40).fill(""),
+                    datasets: [{
+                        data: Array(40).fill(800000),
+                        borderColor: '#3b82f6',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        fill: true,
+                        backgroundColor: g,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { x: { display: false }, y: { display: false } },
+                    plugins: { legend: { display: false } }
+                }
             });
         }
 
         setInterval(() => {
             let last = price;
-            price += (Math.random() - 0.49) * 15000;
+            price += (Math.random() - 0.485) * 14000;
             const up = price >= last;
+            
+            // Updates
             document.getElementById('p-bolsa').innerText = "$" + Math.floor(price).toLocaleString();
             document.getElementById('p-bolsa').style.color = up ? 'var(--accent)' : 'var(--danger)';
+            document.getElementById('fav-masari-price').innerText = "$" + Math.floor(price).toLocaleString();
+            document.getElementById('fav-masari-price').style.color = up ? 'var(--accent)' : 'var(--danger)';
+
             chart.data.datasets[0].borderColor = up ? '#10b981' : '#ef4444';
             chart.data.datasets[0].data.push(price); chart.data.datasets[0].data.shift();
             chart.update('none');
+            
             addHistory(price, up);
             updateUI();
-        }, 1500);
+        }, 1200);
 
         function addHistory(p, up) {
-            const div = document.createElement('div'); div.className = 'history-item';
-            div.innerHTML = `<span style="color:#64748b">${new Date().toLocaleTimeString()}</span><b style="color:${up?'var(--accent)':'var(--danger)'}">$${Math.floor(p).toLocaleString()}</b>`;
+            const div = document.createElement('div');
+            div.className = 'ticker-item';
+            div.style.borderLeft = `3px solid ${up ? 'var(--accent)' : 'var(--danger)'}`;
+            div.innerHTML = `<span>${new Date().toLocaleTimeString()}</span> <b>${up ? 'BUY' : 'SELL'} $${Math.floor(p).toLocaleString()}</b>`;
             const container = document.getElementById('ticker-history');
             container.prepend(div);
-            if(container.children.length > 10) container.removeChild(container.lastChild);
+            if(container.children.length > 12) container.removeChild(container.lastChild);
         }
 
         function trade(n) {
             if(n < 0 && stocks <= 0) return;
-            stocks += n; updateUI();
-            meme(true, n > 0 ? "ORDEN DE COMPRA EJECUTADA" : "ORDEN DE VENTA EJECUTADA");
+            stocks += n;
+            updateUI();
+            meme(true, n > 0 ? "LONG ORDER FILLED" : "SHORT ORDER FILLED");
         }
 
         function updateUI() {
@@ -240,6 +346,7 @@
             document.getElementById('ui-acciones').innerText = stocks;
         }
 
+        // --- SISTEMA ---
         function goto(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -254,8 +361,20 @@
             setTimeout(() => document.getElementById('meme-box').classList.remove('active'), 2500);
         }
 
-        const facts = ["La paciencia paga.", "El mercado es un ciclo.", "Masari v6 detecta ballenas.", "Controla tus emociones."];
-        setInterval(() => { document.getElementById('fact-content').innerText = facts[Math.floor(Math.random()*facts.length)]; }, 6000);
+        function sendMessage() {
+            const inp = document.getElementById('chat-msg');
+            if(!inp.value) return;
+            const feed = document.getElementById('chat-feed');
+            feed.innerHTML += `<div class="ticker-item"><span><b>@You:</b> ${inp.value}</span></div>`;
+            inp.value = "";
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        setInterval(() => {
+            const facts = ["La volatilidad es tu aliada.", "Algoritmo Masari V6: 99.8% Uptime.", "Detectando órdenes institucionales...", "Asegurando red de nodos..."];
+            document.getElementById('fact-content').innerText = facts[Math.floor(Math.random()*facts.length)];
+            document.getElementById('system-time').innerText = new Date().toLocaleTimeString();
+        }, 5000);
 
         window.onload = initChart;
     </script>
