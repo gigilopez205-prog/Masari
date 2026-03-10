@@ -8,16 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00d2ff; /* Neón Cyan */
-            --accent: #00ff88;  /* Neón Verde */
-            --danger: #ff0055;  /* Neón Rojo */
-            --warning: #f7ff00; /* Neón Amarillo */
-            --bg: #050a14;      /* Fondo Ultra Oscuro */
-            --sidebar: #0a1120; 
-            --card: rgba(15, 23, 42, 0.8);
-            --border: rgba(0, 210, 255, 0.2);
-            --text: #e2e8f0;
-            --neon-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+            --primary: #00d2ff; --accent: #00ff88; --danger: #ff0055; --warning: #f7ff00;
+            --bg: #050a14; --sidebar: #0a1120; --card: rgba(15, 23, 42, 0.8);
+            --border: rgba(0, 210, 255, 0.2); --text: #e2e8f0; --neon-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
@@ -25,13 +18,11 @@
         
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.8; }
 
-        /* NAVEGACIÓN NEÓN */
         nav { width: 240px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 5px; z-index: 100; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
         .logo-box { padding: 10px; margin-bottom: 20px; text-align: center; border-bottom: 1px solid var(--border); }
         .nav-btn { background: transparent; border: none; color: #64748b; padding: 12px 15px; border-radius: 10px; text-align: left; cursor: pointer; font-weight: 500; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
         .nav-btn:hover, .nav-btn.active { background: rgba(0, 210, 255, 0.1); color: var(--primary); font-weight: 600; box-shadow: var(--neon-shadow); border-left: 3px solid var(--primary); }
 
-        /* LAYOUT */
         main { flex: 1; overflow-y: auto; padding: 30px; display: flex; gap: 20px; background: radial-gradient(circle at top right, #0a192f, #050a14); }
         .content-area { flex: 3; }
         .sidebar-right { flex: 1; display: flex; flex-direction: column; gap: 20px; }
@@ -40,31 +31,27 @@
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-        /* CARDS NEÓN */
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; backdrop-filter: blur(10px); margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
         h3 { font-family: 'Montserrat'; font-size: 16px; margin-bottom: 15px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* TRADING NEÓN */
         .trading-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .asset-stat { border: 1px solid var(--border); border-radius: 12px; padding: 15px; background: rgba(0,0,0,0.3); position: relative; overflow: hidden; }
-        .asset-stat::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .asset-stat { border: 1px solid var(--border); border-radius: 12px; padding: 15px; background: rgba(0,0,0,0.3); position: relative; }
         .price-tag { font-family: 'JetBrains Mono'; font-size: 28px; font-weight: 700; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
         .btn-neon { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 8px; width: 100%; font-weight: 600; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
         .btn-neon:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
         
-        /* CATEGORÍAS */
-        .category-item { background: rgba(0, 210, 255, 0.05); padding: 12px; border-radius: 10px; margin-bottom: 8px; font-size: 13px; color: var(--text); cursor: pointer; border: 1px solid var(--border); transition: 0.3s; }
-        .category-item:hover { background: rgba(0, 210, 255, 0.15); border-color: var(--primary); transform: translateX(5px); }
-
-        /* MEMES Y BIENVENIDA */
-        .cta-box { background: linear-gradient(45deg, #00d2ff, #0044ff); padding: 25px; border-radius: 20px; text-align: center; color: white; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0, 68, 255, 0.4); }
-        .meme-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .meme-img { width: 100%; border-radius: 10px; height: 100px; object-fit: cover; filter: grayscale(20%) brightness(0.9); border: 1px solid var(--border); }
+        /* PERFIL EDITABLE */
+        .profile-pic-container { width: 120px; height: 120px; border: 3px solid var(--primary); border-radius: 50%; margin: 0 auto 20px; position: relative; cursor: pointer; overflow: hidden; box-shadow: 0 0 20px var(--primary); }
+        #profile-img { width: 100%; height: 100%; object-fit: cover; }
+        .edit-overlay { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); color: var(--primary); font-size: 10px; padding: 5px 0; text-align: center; opacity: 0; transition: 0.3s; }
+        .profile-pic-container:hover .edit-overlay { opacity: 1; }
         
-        /* SLIDER NEÓN */
-        input[type="range"] { -webkit-appearance: none; background: #1e293b; height: 4px; border-radius: 2px; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 10px var(--primary); cursor: pointer; }
+        .profile-input { background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: white; padding: 10px; border-radius: 8px; width: 100%; margin-bottom: 10px; font-family: inherit; }
+        .profile-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 10px var(--primary); }
+
+        .meme-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .meme-img { width: 100%; border-radius: 10px; height: 100px; object-fit: cover; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -87,107 +74,75 @@
         <div class="content-area">
             
             <section id="inicio" class="page active">
-                <div class="cta-box">
-                    <h1 style="margin:0; font-size: 32px; font-family:'Montserrat';">DOMINA EL CIBER-MERCADO</h1>
-                    <p>No seas un simple espectador. Únete a la terminal de inteligencia financiera más avanzada. Aprende, opera y conquista sin riesgo real.</p>
-                    <button class="btn-neon" style="width: auto; padding: 10px 40px; background:white; color:black; border:none;" onclick="goto('trading')">EMPEZAR AHORA ⚡</button>
+                <div class="card" style="background: linear-gradient(45deg, #00d2ff22, #0044ff22); border: 2px solid var(--primary);">
+                    <h1 style="margin:0; font-size: 28px;">BIENVENIDO AL FUTURO</h1>
+                    <p>Acceso concedido a la terminal Masari. Optimiza tu capital digital hoy.</p>
                 </div>
-
                 <div class="card">
-                    <h3>Cultura Masari (Memes 4K)</h3>
+                    <h3>Cultura & Memes</h3>
                     <div class="meme-gallery">
                         <img src="https://i.imgflip.com/4/30zz5g.jpg" class="meme-img">
                         <img src="https://i.imgflip.com/4/1otk96.jpg" class="meme-img">
                         <img src="https://i.imgflip.com/4/26am.jpg" class="meme-img">
                     </div>
                 </div>
-
-                <div class="card" style="border-left: 4px solid var(--accent);">
-                    <h3>Misión del Protocolo</h3>
-                    <p style="color:#94a3b8; font-size:14px">Democratizar el acceso a la educación financiera mediante simulación de alta fidelidad. Tu futuro comienza en el código.</p>
-                </div>
             </section>
 
             <section id="trading" class="page">
-                <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h1 style="margin:0; color:var(--primary); text-shadow: 0 0 15px rgba(0,210,255,0.4);">LIVE <span style="color:#fff">TERMINAL</span></h1>
-                    <span style="font-family:'JetBrains Mono'; font-size:12px; color:var(--accent)">STATUS: ONLINE // ENCRYPTED</span>
-                </div>
-                
-                <div class="card" style="background: rgba(0,0,0,0.4);">
-                    <div style="height: 300px;"><canvas id="mainChart"></canvas></div>
-                </div>
-
+                <h1 style="color:var(--primary)">LIVE <span style="color:white">MARKET</span></h1>
+                <div class="card"><div style="height: 300px;"><canvas id="mainChart"></canvas></div></div>
                 <div class="trading-grid">
                     <div class="card">
-                        <h3>STECK // CORE</h3>
-                        <div class="asset-stat">
-                            <span style="font-size:11px; color:#64748b">INDEX PRICE</span>
-                            <div class="price-tag" id="price-steck" style="color:var(--primary)">59.00</div>
-                        </div>
-                        <button class="btn-neon" style="margin-top:15px" onclick="trade('BUY')">EXECUTE BUY</button>
+                        <h3>STECK</h3>
+                        <div class="price-tag" id="price-steck">59.00</div>
+                        <button class="btn-neon" style="margin-top:10px" onclick="trade('BUY')">COMPRAR</button>
                     </div>
                     <div class="card">
-                        <h3>STOCK2 // ENERGY</h3>
-                        <div class="asset-stat">
-                            <span style="font-size:11px; color:#64748b">INDEX PRICE</span>
-                            <div class="price-tag" id="price-stock2" style="color:var(--danger)">31.00</div>
-                        </div>
-                        <button class="btn-neon" style="border-color:var(--danger); color:var(--danger); margin-top:15px" onclick="trade('SELL')">EXECUTE SELL</button>
+                        <h3>STOCK2</h3>
+                        <div class="price-tag" id="price-stock2">31.00</div>
+                        <button class="btn-neon" style="border-color:var(--danger); color:var(--danger); margin-top:10px" onclick="trade('SELL')">VENDER</button>
                     </div>
-                </div>
-            </section>
-
-            <section id="academia" class="page">
-                <h1>NEURAL <span style="color:var(--warning)">ACADEMY</span></h1>
-                <div class="card" style="border-top: 2px solid var(--warning);">
-                    <div class="category-item">💠 Masterclass: Esquivando Ballenas en el Mercado</div>
-                    <div class="category-item">💠 El Arte de la Guerra: Versión Trading</div>
-                    <div class="category-item">💠 Criptomonedas: De 0 a Héroe (o a 0)</div>
-                </div>
-            </section>
-
-            <section id="network" class="page">
-                <h1>GLOBAL <span style="color:var(--accent)">CHANNELS</span></h1>
-                <div class="card">
-                    <p style="color:var(--accent)">[SISTEMA]: Escribe tu mensaje para la red global...</p>
-                    <textarea style="background:rgba(0,0,0,0.5); border-color:var(--border); color:white;"></textarea>
-                    <button class="btn-neon" style="margin-top:10px">TRANSMITIR</button>
                 </div>
             </section>
 
             <section id="perfil" class="page">
-                <h1>USER <span style="color:var(--primary)">DATA</span></h1>
+                <h1 style="color:var(--primary)">USER <span style="color:white">IDENTITY</span></h1>
                 <div class="card" style="text-align:center;">
-                    <div style="width:70px; height:70px; border: 2px solid var(--primary); border-radius:50%; margin: 0 auto; box-shadow: 0 0 15px var(--primary);"></div>
-                    <h2>TRADER_MASARI_01</h2>
-                    <p style="color:var(--accent)">RANK: CYBER_WOLF</p>
+                    <div class="profile-pic-container" onclick="document.getElementById('file-upload').click()">
+                        <img id="profile-img" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Felix" alt="Avatar">
+                        <div class="edit-overlay">CAMBIAR FOTO</div>
+                    </div>
+                    <input type="file" id="file-upload" hidden accept="image/*" onchange="previewImage(event)">
+                    
+                    <div style="max-width: 400px; margin: 0 auto;">
+                        <label style="font-size: 10px; color: var(--primary); display: block; text-align: left;">NOMBRE DEL AGENTE</label>
+                        <input type="text" id="user-name" class="profile-input" value="TRADER_MASARI_01" oninput="updateProfileDisplay()">
+                        
+                        <label style="font-size: 10px; color: var(--primary); display: block; text-align: left;">RANGO / NIVEL</label>
+                        <input type="text" id="user-rank" class="profile-input" value="CYBER_WOLF" oninput="updateProfileDisplay()">
+                        
+                        <label style="font-size: 10px; color: var(--primary); display: block; text-align: left;">BIO DEL SISTEMA</label>
+                        <textarea id="user-bio" class="profile-input" rows="3">Operando en las sombras del mercado digital. Diversificación nivel experto.</textarea>
+                        
+                        <button class="btn-neon" onclick="saveProfile()">GUARDAR CONFIGURACIÓN</button>
+                    </div>
                 </div>
             </section>
+
+            <section id="academia" class="page"><h1>NEURAL ACADEMY</h1></section>
+            <section id="network" class="page"><h1>GLOBAL FEED</h1></section>
         </div>
 
         <div class="sidebar-right">
-            <div class="card" style="border-color: var(--accent);">
-                <h3>ASSET PORTFOLIO</h3>
-                <div style="height: 150px;"><canvas id="pieChart"></canvas></div>
-                <p style="font-size:12px; color:#64748b; margin-top:10px;">
-                    <b style="color:var(--accent)">ANÁLISIS:</b> Tu portafolio es la representación digital de tu poder. Diversifica para proteger tu capital de la volatilidad del sistema.
-                </p>
+            <div class="card" style="border-color: var(--accent); text-align: center;">
+                <h3>Status de Agente</h3>
+                <h2 id="display-name" style="margin: 5px 0; color: white;">TRADER_MASARI_01</h2>
+                <p id="display-rank" style="color: var(--accent); font-size: 12px; margin-top: 0;">RANK: CYBER_WOLF</p>
+                <div style="height: 140px;"><canvas id="pieChart"></canvas></div>
             </div>
-
             <div class="card">
-                <h3>RISK THRESHOLD</h3>
-                <div style="display:flex; justify-content: space-between; font-size:11px; margin-bottom:10px; color:var(--primary)">
-                    <span>STABLE</span><span>MAX OVERDRIVE</span>
-                </div>
-                <input type="range" min="1" max="100" value="70">
-            </div>
-
-            <div class="card">
-                <h3>PROTOCOLES ACTIVOS</h3>
-                <div class="category-item">⚡ High Frequency Training</div>
-                <div class="category-item">⚡ Sentiment Analysis 2.0</div>
-                <div class="category-item">⚡ Risk Mitigation Module</div>
+                <h3>RIESGO PERMITIDO</h3>
+                <input type="range" min="1" max="100" value="70" style="width: 100%;">
             </div>
         </div>
     </main>
@@ -211,15 +166,7 @@
                         pointRadius: 0
                     }]
                 },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    scales: { 
-                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } },
-                        x: { grid: { display: false }, ticks: { color: '#64748b' } }
-                    },
-                    plugins: { legend: { display: false } } 
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
 
             const ctxPie = document.getElementById('pieChart').getContext('2d');
@@ -230,25 +177,32 @@
                     datasets: [{
                         data: [40, 30, 30],
                         backgroundColor: ['#00d2ff', '#00ff88', '#ff0055'],
-                        borderWidth: 0,
-                        hoverOffset: 10
+                        borderWidth: 0
                     }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, cutout: '80%', plugins: { legend: { display: false } } }
             });
         }
 
-        setInterval(() => {
-            const s1 = (50 + Math.random() * 20).toFixed(2);
-            const s2 = (25 + Math.random() * 15).toFixed(2);
-            document.getElementById('price-steck').innerText = s1;
-            document.getElementById('price-stock2').innerText = s2;
-            
-            mainChart.data.datasets[0].data.push(50 + Math.random() * 60);
-            mainChart.data.datasets[0].data.shift();
-            mainChart.update('none');
-        }, 2000);
+        // LÓGICA DE PERFIL
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('profile-img').src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
 
+        function updateProfileDisplay() {
+            document.getElementById('display-name').innerText = document.getElementById('user-name').value;
+            document.getElementById('display-rank').innerText = "RANK: " + document.getElementById('user-rank').value;
+        }
+
+        function saveProfile() {
+            alert("SISTEMA: Identidad actualizada con éxito.");
+        }
+
+        // UTILIDADES
         function goto(id, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -258,11 +212,18 @@
             }
         }
 
-        function trade(t) { alert("SISTEMA: Orden " + t + " procesada en la blockchain Masari."); }
+        setInterval(() => {
+            document.getElementById('price-steck').innerText = (50 + Math.random() * 20).toFixed(2);
+            document.getElementById('price-stock2').innerText = (25 + Math.random() * 15).toFixed(2);
+            mainChart.data.datasets[0].data.push(50 + Math.random() * 60);
+            mainChart.data.datasets[0].data.shift();
+            mainChart.update('none');
+        }, 2000);
+
+        function trade(t) { alert("Orden procesada: " + t); }
 
         window.onload = () => {
             initCharts();
-            // Partículas de fondo neón
             const canvas = document.getElementById('bg-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
