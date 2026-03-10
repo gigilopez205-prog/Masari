@@ -12,35 +12,62 @@
             --bg-deep: #0f172a; --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
         }
+
         body { margin: 0; background: var(--bg-deep); color: #f8fafc; font-family: 'Inter', sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        /* FONDO INTERACTIVO NEURONAL */
         #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #0a0f1d; }
+
+        /* SIDEBAR */
         nav { width: 280px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); padding: 40px 20px; border-right: 1px solid var(--glass-border); position: fixed; height: 100vh; z-index: 100; }
         .logo { display: flex; align-items: center; gap: 15px; font-family: 'Montserrat'; font-weight: 800; font-size: 22px; margin-bottom: 50px; color: var(--primary); }
         .logo img { width: 50px; height: 50px; border-radius: 12px; border: 2px solid var(--primary); }
+        
         .nav-btn { width: 100%; padding: 15px; margin-bottom: 8px; background: transparent; border: none; color: #94a3b8; text-align: left; cursor: pointer; border-radius: 12px; font-weight: 600; transition: 0.3s; }
-        .nav-btn:hover { background: var(--glass); color: white; }
+        .nav-btn:hover { background: var(--glass); color: white; transform: translateX(5px); }
         .nav-btn.active { background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), transparent); border-left: 4px solid var(--primary); color: white; }
+
+        /* MAIN CONTENT */
         main { margin-left: 280px; padding: 60px; width: calc(100% - 280px); }
         .page { display: none; animation: fadeIn 0.5s ease-out; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 30px; margin-bottom: 30px; }
+
+        /* CARDS */
+        .card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 30px; margin-bottom: 30px; transition: 0.4s; }
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); }
+
         .title { font-size: 38px; margin-bottom: 40px; font-family: 'Montserrat'; }
         .title span { color: var(--primary); }
-        .btn { padding: 12px 20px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .btn-blue { background: var(--primary); color: white; }
-        
-        /* ESTILOS ESPECÍFICOS SECCIONES */
+
+        /* BUTTONS & INPUTS */
+        .btn { padding: 16px 24px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .btn-buy { background: var(--accent); color: white; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
+        .btn-sell { background: var(--danger); color: white; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3); }
+        .btn-blue { background: var(--primary); color: white; width: 100%; }
+
+        input { background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 12px; border-radius: 10px; color: white; width: 100%; box-sizing: border-box; }
+
+        /* GRID SYSTEM PARA NUEVAS SECCIONES */
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .course-card { background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 15px; padding: 15px; transition: 0.3s; }
-        .course-card:hover { border-color: var(--primary); background: rgba(59,130,246,0.05); }
-        .badge { font-size: 10px; padding: 4px 8px; border-radius: 5px; background: var(--primary); color: white; text-transform: uppercase; }
-        .chat-msg { margin-bottom: 15px; padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.03); font-size: 14px; }
+        .course-card { background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 15px; padding: 15px; }
+        .badge { font-size: 10px; padding: 4px 8px; border-radius: 5px; background: var(--primary); color: white; }
+
+        /* MEME POPUP */
+        .meme-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: #1e293b; border: 2px solid var(--primary); padding: 40px; border-radius: 30px; z-index: 1000; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .meme-popup.active { transform: translate(-50%, -50%) scale(1); }
+
+        .history-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid var(--glass-border); font-size: 13px; font-family: monospace; }
     </style>
 </head>
 <body>
 
     <canvas id="canvas-bg"></canvas>
+
+    <div id="meme-box" class="meme-popup">
+        <img id="meme-img" src="" style="max-width:260px; border-radius:20px;">
+        <h3 id="meme-msg" style="margin-top:20px; text-align:center;"></h3>
+    </div>
 
     <nav>
         <div class="logo"><img src="uploaded:IMG_2353.jpeg-00f59935-b6de-41ed-bc9f-dc09f1346ac5" alt="Logo"> MASARI</div>
@@ -54,18 +81,45 @@
 
     <main>
         <section id="inicio" class="page active">
-            <h1 class="title">Terminal <span>Masari</span></h1>
-            <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #1e40af);">
-                <p>PATRIMONIO NETO</p>
-                <h1 id="ui-cartera" style="font-size: 50px; margin: 10px 0;">$0</h1>
+            <h1 class="title">Terminal <span>Operativa</span></h1>
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px;">
+                <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #1e40af);">
+                    <p style="opacity: 0.7;">PATRIMONIO NETO</p>
+                    <h1 id="ui-cartera" style="font-size: 55px; margin: 15px 0;">$0</h1>
+                    <div style="font-size: 12px; opacity: 0.6;">ALGORITMO MASARI V6.2 ACTIVE</div>
+                </div>
+                <div class="card">
+                    <p style="color: #94a3b8;">ACTIVOS EN HOLD</p>
+                    <h2 id="ui-acciones" style="font-size: 40px; color: var(--primary);">0</h2>
+                    <p style="font-size: 11px; color: var(--accent);">CONEXIÓN SEGURA ●</p>
+                </div>
+            </div>
+            <div class="card" style="border-left: 5px solid var(--primary);">
+                <h3>Misión del Día</h3>
+                <p id="fact-content" style="color: #cbd5e1; line-height: 1.6;">Sincronizando flujos de datos...</p>
             </div>
         </section>
 
         <section id="bolsa" class="page">
-            <h1 class="title">Trading <span>Floor</span></h1>
-            <div class="card">
-                <h2 id="p-bolsa" style="font-size: 40px; color: var(--accent);">$800,000</h2>
-                <div style="height: 300px;"><canvas id="graficaReal"></canvas></div>
+            <h1 class="title">Live <span>Trading</span></h1>
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <div>
+                            <span style="font-size: 12px; color: #94a3b8;">PRECIO MASARI/USD</span>
+                            <h2 id="p-bolsa" style="font-size: 45px; color: var(--accent);">$800,000</h2>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <button class="btn btn-sell" onclick="trade(-1)">Vender</button>
+                            <button class="btn btn-buy" onclick="trade(1)">Comprar</button>
+                        </div>
+                    </div>
+                    <div style="height: 380px;"><canvas id="graficaReal"></canvas></div>
+                </div>
+                <div class="card" style="padding: 20px;">
+                    <h3 style="font-size: 14px; margin-bottom: 15px;">LIBRO DE ÓRDENES</h3>
+                    <div id="ticker-history" style="height: 350px; overflow-y: auto;"></div>
+                </div>
             </div>
         </section>
 
@@ -73,126 +127,136 @@
             <h1 class="title">Masari <span>Academy</span></h1>
             <div class="grid-3">
                 <div class="course-card">
-                    <span class="badge">Principiante</span>
-                    <h4 style="margin: 10px 0;">Introducción a Masari</h4>
-                    <p style="font-size: 12px; color: #94a3b8;">Domina las herramientas básicas de la terminal en 15 min.</p>
-                    <button class="btn btn-blue" style="width:100%; margin-top:10px;">Ver Clase</button>
+                    <span class="badge">Básico</span>
+                    <h4>Gestión de Riesgo</h4>
+                    <p style="font-size:12px; color:#94a3b8;">Cómo no perderlo todo en un trade.</p>
+                    <button class="btn btn-blue" style="margin-top:10px;">Ver Clase</button>
                 </div>
                 <div class="course-card">
-                    <span class="badge" style="background: #f59e0b;">Intermedio</span>
-                    <h4 style="margin: 10px 0;">Análisis de Liquidez</h4>
-                    <p style="font-size: 12px; color: #94a3b8;">Aprende a identificar dónde operan las instituciones.</p>
-                    <button class="btn btn-blue" style="width:100%; margin-top:10px;">Ver Clase</button>
+                    <span class="badge" style="background:#f59e0b">Pro</span>
+                    <h4>Order Flow Avanzado</h4>
+                    <p style="font-size:12px; color:#94a3b8;">Lectura de huella institucional.</p>
+                    <button class="btn btn-blue" style="margin-top:10px;">Ver Clase</button>
                 </div>
                 <div class="course-card">
-                    <span class="badge" style="background: #ef4444;">Avanzado</span>
-                    <h4 style="margin: 10px 0;">Algoritmos HFT</h4>
-                    <p style="font-size: 12px; color: #94a3b8;">Trading de alta frecuencia y redes neuronales.</p>
-                    <button class="btn btn-blue" style="width:100%; margin-top:10px;">Ver Clase</button>
+                    <span class="badge" style="background:#ef4444">Master</span>
+                    <h4>Redes Neuronales</h4>
+                    <p style="font-size:12px; color:#94a3b8;">Automatización con IA Masari.</p>
+                    <button class="btn btn-blue" style="margin-top:10px;">Ver Clase</button>
                 </div>
             </div>
         </section>
 
         <section id="favoritos" class="page">
-            <h1 class="title">Tus <span>Favoritos</span></h1>
+            <h1 class="title">Mis <span>Favoritos</span></h1>
             <div class="card">
-                <h3>Watchlist de Activos</h3>
-                <div style="margin-top:20px;">
-                    <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid var(--glass-border);">
-                        <span>BTC / USD</span><b style="color:var(--accent)">+4.2%</b>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid var(--glass-border);">
-                        <span>ETH / USD</span><b style="color:var(--accent)">+1.8%</b>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; padding:10px;">
-                        <span>GOLD</span><b style="color:var(--danger)">-0.5%</b>
-                    </div>
+                <h3>Watchlist de Monitoreo</h3>
+                <div id="watchlist" style="margin-top:15px;">
+                    <div class="history-item"><span>BTC/USD</span><b style="color:var(--accent)">+2.4%</b></div>
+                    <div class="history-item"><span>ETH/USD</span><b style="color:var(--accent)">+1.1%</b></div>
+                    <div class="history-item"><span>GOLD</span><b style="color:var(--danger)">-0.4%</b></div>
                 </div>
             </div>
         </section>
 
         <section id="comunidad" class="page">
-            <h1 class="title">Masari <span>Social</span></h1>
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
-                <div class="card">
-                    <h3>Feed de Señales</h3>
-                    <div class="chat-msg"><b>@AlphaBot:</b> ⚡ SEÑAL: Masari Token rompiendo resistencia en $820k.</div>
-                    <div class="chat-msg"><b>@TraderMax:</b> ¿Alguien vio el volumen de compra en el último minuto?</div>
-                    <div class="chat-msg"><b>@Masari_Admin:</b> Nueva actualización del algoritmo de IA desplegada.</div>
+            <h1 class="title">Masari <span>Network</span></h1>
+            <div class="card">
+                <h3>Feed Global</h3>
+                <div id="com-feed" style="height: 250px; overflow-y: auto;">
+                    <div class="history-item"><b>@TraderPro:</b> "Masari rompiendo máximos, ¡vamos!"</div>
+                    <div class="history-item"><b>@Alpha_AI:</b> "Detección de ballena en 815k."</div>
                 </div>
-                <div class="card">
-                    <h3>Usuarios Online</h3>
-                    <ul style="list-style:none; padding:0; font-size:14px; color:#94a3b8;">
-                        <li>● Inversionista (Tú)</li>
-                        <li>● Satoshi_N</li>
-                        <li>● Crypto_Queen</li>
-                    </ul>
-                </div>
+                <input type="text" placeholder="Escribe un mensaje..." style="margin-top:15px;">
             </div>
         </section>
 
         <section id="perfil" class="page">
-            <h1 class="title">Panel de <span>Usuario</span></h1>
-            <div class="grid-3">
-                <div class="card" style="text-align:center;">
-                    <p style="color:#94a3b8;">Win Rate</p>
-                    <h2 style="color:var(--accent)">68%</h2>
-                </div>
-                <div class="card" style="text-align:center;">
-                    <p style="color:#94a3b8;">Trades Totales</p>
-                    <h2>142</h2>
-                </div>
-                <div class="card" style="text-align:center;">
-                    <p style="color:#94a3b8;">Rango</p>
-                    <h2 style="color:var(--primary)">PRO</h2>
-                </div>
-            </div>
+            <h1 class="title">Mi <span>Perfil</span></h1>
             <div class="card">
-                <h3>Ajustes de Cuenta</h3>
-                <div style="margin-top:20px;">
-                    <label style="font-size:12px; color:#64748b;">API KEY</label>
-                    <input type="password" value="************" disabled style="background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); padding:10px; border-radius:8px; width:100%; color:white;">
+                <h3>Estadísticas de Rendimiento</h3>
+                <div class="grid-3" style="margin-top:20px;">
+                    <div><p style="font-size:12px; color:#94a3b8;">Win Rate</p><h2>72%</h2></div>
+                    <div><p style="font-size:12px; color:#94a3b8;">Nivel</p><h2 style="color:var(--primary)">Elite</h2></div>
+                    <div><p style="font-size:12px; color:#94a3b8;">Saldo Masari</p><h2>1.2M</h2></div>
                 </div>
             </div>
         </section>
     </main>
 
     <script>
-        // --- FONDO DE PARTÍCULAS ---
+        // --- MOTOR DE PARTÍCULAS ---
         const canvas = document.getElementById('canvas-bg');
         const ctx = canvas.getContext('2d');
         let particles = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
-        class P { constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-0.5)*0.8; this.vy=(Math.random()-0.5)*0.8; } update(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; } draw(){ ctx.fillStyle='rgba(59,130,246,0.3)'; ctx.beginPath(); ctx.arc(this.x,this.y,1.5,0,Math.PI*2); ctx.fill(); } }
-        for(let i=0; i<60; i++) particles.push(new P());
+        class P { constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-0.5)*0.6; this.vy=(Math.random()-0.5)*0.6; } update(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; } draw(){ ctx.fillStyle='rgba(59,130,246,0.3)'; ctx.beginPath(); ctx.arc(this.x,this.y,1.2,0,Math.PI*2); ctx.fill(); } }
+        for(let i=0; i<80; i++) particles.push(new P());
         function anim(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(anim); } anim();
 
-        // --- LÓGICA DE BOLSA ---
+        // --- LÓGICA DE TRADING ---
         let price = 800000, stocks = 0, chart;
+
         function initChart() {
             const ctxC = document.getElementById('graficaReal').getContext('2d');
+            const g = ctxC.createLinearGradient(0,0,0,400); g.addColorStop(0, 'rgba(59,130,246,0.2)'); g.addColorStop(1, 'transparent');
             chart = new Chart(ctxC, {
                 type: 'line',
-                data: { labels: Array(40).fill(""), datasets: [{ data: Array(40).fill(800000), borderColor: '#3b82f6', borderWidth: 4, pointRadius: 0, fill: true, backgroundColor: 'rgba(59,130,246,0.05)', tension: 0.4 }] },
+                data: { labels: Array(40).fill(""), datasets: [{ data: Array(40).fill(800000), borderColor: '#3b82f6', borderWidth: 4, pointRadius: 0, fill: true, backgroundColor: g, tension: 0.4 }] },
                 options: { responsive: true, maintainAspectRatio: false, scales: { x:{display:false}, y:{display:false} }, plugins: { legend: {display:false} } }
             });
         }
+
         setInterval(() => {
-            let last = price; price += (Math.random()-0.49)*15000;
+            let last = price;
+            price += (Math.random() - 0.49) * 15000;
+            const up = price >= last;
             document.getElementById('p-bolsa').innerText = "$" + Math.floor(price).toLocaleString();
-            document.getElementById('p-bolsa').style.color = price >= last ? 'var(--accent)' : 'var(--danger)';
+            document.getElementById('p-bolsa').style.color = up ? 'var(--accent)' : 'var(--danger)';
+            chart.data.datasets[0].borderColor = up ? '#10b981' : '#ef4444';
             chart.data.datasets[0].data.push(price); chart.data.datasets[0].data.shift();
             chart.update('none');
+            addHistory(price, up);
+            updateUI();
         }, 1500);
 
-        // --- NAVEGACIÓN ---
+        function addHistory(p, up) {
+            const div = document.createElement('div'); div.className = 'history-item';
+            div.innerHTML = `<span style="color:#64748b">${new Date().toLocaleTimeString()}</span><b style="color:${up?'var(--accent)':'var(--danger)'}">$${Math.floor(p).toLocaleString()}</b>`;
+            const container = document.getElementById('ticker-history');
+            container.prepend(div);
+            if(container.children.length > 10) container.removeChild(container.lastChild);
+        }
+
+        function trade(n) {
+            if(n < 0 && stocks <= 0) return;
+            stocks += n; updateUI();
+            meme(true, n > 0 ? "ORDEN DE COMPRA EJECUTADA" : "ORDEN DE VENTA EJECUTADA");
+        }
+
+        function updateUI() {
+            document.getElementById('ui-cartera').innerText = "$" + Math.floor(stocks * price).toLocaleString();
+            document.getElementById('ui-acciones').innerText = stocks;
+        }
+
         function goto(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('n-'+id).classList.add('active');
         }
+
+        function meme(win, txt) {
+            document.getElementById('meme-img').src = win ? "https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif" : "https://media.giphy.com/media/hStvd5LiWCFzXYZAzM/giphy.gif";
+            document.getElementById('meme-msg').innerText = txt;
+            document.getElementById('meme-box').classList.add('active');
+            setTimeout(() => document.getElementById('meme-box').classList.remove('active'), 2500);
+        }
+
+        const facts = ["La paciencia paga.", "El mercado es un ciclo.", "Masari v6 detecta ballenas.", "Controla tus emociones."];
+        setInterval(() => { document.getElementById('fact-content').innerText = facts[Math.floor(Math.random()*facts.length)]; }, 6000);
+
         window.onload = initChart;
     </script>
 </body>
