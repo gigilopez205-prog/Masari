@@ -35,38 +35,30 @@
         h1 { font-family: 'Montserrat'; font-size: 28px; margin-top: 0; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         h3 { font-family: 'Montserrat'; font-size: 14px; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
 
+        /* MEME GENERADO POR CÓDIGO (NUNCA FALLA) */
+        .market-meme-card {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(45deg, #000, #1e293b);
+            border: 3px solid var(--primary);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 0 40px rgba(0, 210, 255, 0.2);
+        }
+        .meme-text-top { position: absolute; top: 20px; font-family: 'Montserrat'; font-weight: 900; font-size: 32px; color: white; text-shadow: 2px 2px #000; z-index: 2; text-align: center; width: 90%; }
+        .meme-text-bottom { position: absolute; bottom: 20px; font-family: 'Montserrat'; font-weight: 900; font-size: 28px; color: var(--warning); text-shadow: 2px 2px #000; z-index: 2; text-align: center; width: 90%; }
+        .meme-graphic { font-size: 120px; filter: drop-shadow(0 0 20px var(--primary)); animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
         .price-display { font-family: 'JetBrains Mono'; font-size: 32px; font-weight: 800; margin: 10px 0; text-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
         .btn-action { background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary); }
-
-        /* MEME CONTENEDOR OPTIMIZADO */
-        .market-meme-box { 
-            width: 100%; 
-            margin-top: 20px; 
-            border-radius: 15px; 
-            overflow: hidden; 
-            border: 2px solid var(--primary); 
-            background: #000;
-            min-height: 300px;
-            display: flex;
-            flex-direction: column;
-        }
-        .market-meme-box img { 
-            width: 100%; 
-            height: auto;
-            object-fit: contain;
-            display: block; 
-        }
-        .meme-overlay { 
-            background: rgba(15, 23, 42, 0.9); 
-            color: var(--primary); 
-            padding: 15px; 
-            text-align: center; 
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-top: 1px solid var(--border);
-        }
 
         .history-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px; }
         .tag-buy { color: var(--accent); font-weight: bold; }
@@ -99,17 +91,18 @@
             <section id="inicio" class="page active">
                 <div class="card" style="background: linear-gradient(135deg, rgba(0,210,255,0.1), transparent); border-left: 5px solid var(--primary);">
                     <h1>Estado del Mercado Global</h1>
-                    <p style="color:#94a3b8;">Sincronización completa. Los algoritmos detectan alta volatilidad. Mantén la calma y confía en tu estrategia.</p>
+                    <p style="color:#94a3b8;">Sincronización completa. Alta volatilidad detectada en tiempo real.</p>
                 </div>
 
-                <div class="market-meme-box">
-                    <img src="https://i.imgur.com/8Yv2h7N.png" alt="Market Meme Masari">
-                    <div class="meme-overlay">DIAMOND HANDS: ACTIVATED 💎🙌</div>
+                <div class="market-meme-card">
+                    <div class="meme-text-top">EL MERCADO CAE -20%</div>
+                    <div class="meme-graphic">📉🤡</div>
+                    <div class="meme-text-bottom">"ES HORA DE COMPRAR EL DIP"</div>
                 </div>
 
                 <div class="card" style="margin-top: 25px;">
                     <h3>¿Por qué Masari?</h3>
-                    <p style="font-size: 14px; color: #94a3b8;">Dominamos el caos financiero con herramientas institucionales y la mejor comunidad de LATAM.</p>
+                    <p style="font-size: 14px; color: #94a3b8;">Domina el caos con herramientas institucionales y la mejor comunidad de traders.</p>
                 </div>
             </section>
 
@@ -137,7 +130,7 @@
                 <div class="card">
                     <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border-left: 4px solid var(--warning); margin-bottom: 12px;">
                         <b>Módulo 1: Velas y Acción del Precio</b>
-                        <p style="font-size:12px; color:#94a3b8;">Domina el arte de leer los gráficos sin indicadores basura.</p>
+                        <p style="font-size:12px; color:#94a3b8;">Domina el arte de leer los gráficos.</p>
                     </div>
                 </div>
             </section>
@@ -158,19 +151,14 @@
                 <h2 id="side-name" style="margin:0; font-size:18px;">TRADER_ALPHA_01</h2>
                 <div style="height: 160px; margin-top:15px;"><canvas id="pieChart"></canvas></div>
             </div>
-
             <div class="card">
                 <h3>Historial Reciente</h3>
                 <div id="history-box" style="max-height: 200px; overflow-y:auto;">
                     <div class="history-row"><span class="tag-buy">COMPRA</span> <span>STECK</span> <span>$52.10</span></div>
                 </div>
-                <div style="background:rgba(0, 210, 255, 0.05); padding:10px; border-radius:10px; font-size:11px; margin-top:10px; border:1px solid var(--border);">
-                    <b>Análisis IA:</b> Patrón detectado. Tu rentabilidad proyectada es del 4.2% semanal.
-                </div>
             </div>
-
             <div class="card">
-                <h3>Nivel de Riesgo</h3>
+                <h3>Riesgo</h3>
                 <input type="range" min="1" max="100" value="65" style="width:100%;">
             </div>
         </div>
