@@ -165,15 +165,21 @@
             mainChart = new Chart(ctxM, {
                 type: 'line',
                 data: {
-                    labels: ['1', '2', '3', '4', '5', '6'],
+                    labels: Array(20).fill(''), // Más puntos para suavizar el movimiento
                     datasets: [{
-                        data: [45, 52, 48, 60, 55, 65],
+                        data: Array(20).fill(54),
                         borderColor: '#00ff88',
                         backgroundColor: 'rgba(0, 255, 136, 0.1)',
-                        fill: true, tension: 0.4, borderWidth: 3, pointRadius: 4, pointBackgroundColor: '#fff'
+                        fill: true, tension: 0.4, borderWidth: 3, pointRadius: 2, pointBackgroundColor: '#fff'
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,0.1)' } } } }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    animation: { duration: 1000, easing: 'linear' }, // Movimiento suave
+                    plugins: { legend: { display: false } }, 
+                    scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.05)' } } } 
+                }
             });
 
             const ctxP = document.getElementById('pieChart').getContext('2d');
@@ -231,30 +237,30 @@
             requestAnimationFrame(drawBG);
         }
 
-        // LÓGICA DE COLOR DINÁMICO EN LA GRÁFICA
+        // MOVIMIENTO FLUIDO Y COLOR DINÁMICO
         setInterval(() => {
             const currentPrice = (50 + Math.random()*10).toFixed(2);
-            const ctxM = document.getElementById('mainChart').getContext('2d');
             
             if(document.getElementById('p-steck')) document.getElementById('p-steck').innerText = currentPrice;
 
             if(mainChart) {
-                // Si sube: Verde, Si baja: Rojo
+                // Lógica de color
                 const color = currentPrice >= lastPrice ? '#00ff88' : '#ff0055';
-                const bgGradient = ctxM.createLinearGradient(0, 0, 0, 400);
-                bgGradient.addColorStop(0, color.replace(')', ', 0.3)').replace('#', 'rgba(')); // Simulación de opacidad
+                const bgColor = currentPrice >= lastPrice ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 0, 85, 0.1)';
                 
-                // Actualizar colores del dataset
                 mainChart.data.datasets[0].borderColor = color;
-                mainChart.data.datasets[0].backgroundColor = currentPrice >= lastPrice ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 0, 85, 0.1)';
+                mainChart.data.datasets[0].backgroundColor = bgColor;
                 
+                // Efecto de deslizamiento: añadimos uno y quitamos el primero
                 mainChart.data.datasets[0].data.push(currentPrice);
                 mainChart.data.datasets[0].data.shift();
-                mainChart.update('none');
+                
+                // Update con animación lineal para que parezca que la gráfica "camina"
+                mainChart.update();
                 
                 lastPrice = currentPrice;
             }
-        }, 3000);
+        }, 2000); // Actualización más rápida para mayor sensación de movimiento
 
         window.onload = () => { initCharts(); initBG(); drawBG(); };
     </script>
