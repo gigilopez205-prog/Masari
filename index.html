@@ -31,34 +31,27 @@
         .page.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s; }
         h1 { font-family: 'Montserrat'; font-size: 28px; margin-top: 0; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         h3 { font-family: 'Montserrat'; font-size: 14px; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
 
-        /* MEME GENERADO POR CÓDIGO (NUNCA FALLA) */
+        /* COLORES ESPECÍFICOS BOLSA */
+        .card-steck { border: 2px solid var(--primary); box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
+        .card-stock2 { border: 2px solid var(--danger); box-shadow: 0 0 15px rgba(255, 0, 85, 0.2); }
+
+        .price-display { font-family: 'JetBrains Mono'; font-size: 32px; font-weight: 800; margin: 10px 0; text-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
+        .btn-action { background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
+        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary); }
+
+        /* MEME GENERADO POR CÓDIGO */
         .market-meme-card {
-            width: 100%;
-            height: 350px;
-            background: linear-gradient(45deg, #000, #1e293b);
-            border: 3px solid var(--primary);
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            margin: 20px 0;
-            box-shadow: 0 0 40px rgba(0, 210, 255, 0.2);
+            width: 100%; height: 350px; background: linear-gradient(45deg, #000, #1e293b); border: 3px solid var(--primary); border-radius: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; margin: 20px 0;
         }
         .meme-text-top { position: absolute; top: 20px; font-family: 'Montserrat'; font-weight: 900; font-size: 32px; color: white; text-shadow: 2px 2px #000; z-index: 2; text-align: center; width: 90%; }
         .meme-text-bottom { position: absolute; bottom: 20px; font-family: 'Montserrat'; font-weight: 900; font-size: 28px; color: var(--warning); text-shadow: 2px 2px #000; z-index: 2; text-align: center; width: 90%; }
         .meme-graphic { font-size: 120px; filter: drop-shadow(0 0 20px var(--primary)); animation: float 3s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-
-        .price-display { font-family: 'JetBrains Mono'; font-size: 32px; font-weight: 800; margin: 10px 0; text-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
-        .btn-action { background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
-        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary); }
 
         .history-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px; }
         .tag-buy { color: var(--accent); font-weight: bold; }
@@ -102,23 +95,23 @@
 
                 <div class="card" style="margin-top: 25px;">
                     <h3>¿Por qué Masari?</h3>
-                    <p style="font-size: 14px; color: #94a3b8;">Domina el caos con herramientas institucionales y la mejor comunidad de traders.</p>
+                    <p style="font-size: 14px; color: #94a3b8;">Domina el caos con herramientas institucionales.</p>
                 </div>
             </section>
 
             <section id="trading" class="page">
-                <div class="card">
-                    <h3>Terminal de Análisis</h3>
+                <div class="card" style="border-top: 3px solid var(--primary);">
+                    <h3>Terminal de Análisis (Live Feed)</h3>
                     <div style="height: 300px;"><canvas id="mainChart"></canvas></div>
                 </div>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                    <div class="card">
-                        <h3>STECK / USDT</h3>
+                    <div class="card card-steck">
+                        <h3 style="color:var(--primary) !important;">STECK / USDT</h3>
                         <div class="price-display" id="p-steck">54.20</div>
                         <button class="btn-action" onclick="logTrade('COMPRA', 'STECK', 54.20, 'var(--accent)')">Comprar</button>
                     </div>
-                    <div class="card">
-                        <h3>STOCK2 / USDT</h3>
+                    <div class="card card-stock2">
+                        <h3 style="color:var(--danger) !important;">STOCK2 / USDT</h3>
                         <div class="price-display" id="p-stock2" style="color:var(--danger)">28.15</div>
                         <button class="btn-action" style="background:var(--danger)" onclick="logTrade('VENTA', 'STOCK2', 28.15, 'var(--danger)')">Vender</button>
                     </div>
@@ -169,6 +162,12 @@
 
         function initCharts() {
             const ctxM = document.getElementById('mainChart').getContext('2d');
+            
+            // GRADIENTE PARA LA GRÁFICA
+            const gradient = ctxM.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(0, 210, 255, 0.4)');
+            gradient.addColorStop(1, 'rgba(0, 210, 255, 0)');
+
             mainChart = new Chart(ctxM, {
                 type: 'line',
                 data: {
@@ -176,11 +175,11 @@
                     datasets: [{
                         data: [45, 52, 48, 60, 55, 65],
                         borderColor: '#00d2ff',
-                        backgroundColor: 'rgba(0, 210, 255, 0.1)',
-                        fill: true, tension: 0.4, borderWidth: 3, pointRadius: 0
+                        backgroundColor: gradient,
+                        fill: true, tension: 0.4, borderWidth: 3, pointRadius: 4, pointBackgroundColor: '#fff'
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.05)' } } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,0.1)' } } } }
             });
 
             const ctxP = document.getElementById('pieChart').getContext('2d');
