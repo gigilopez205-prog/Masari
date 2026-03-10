@@ -8,15 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00b4d8; /* Azul Neón Suave */
-            --accent: #06d6a0;  /* Verde Esmeralda */
-            --danger: #ef476f;  /* Rojo Suave */
-            --warning: #ffd166; /* Dorado */
-            --bg: #0b132b;      /* Azul Medianoche */
-            --sidebar: #0a1120; 
-            --card: rgba(28, 37, 65, 0.7);
-            --border: rgba(0, 180, 216, 0.3);
-            --text: #edf2f4;
+            --primary: #00b4d8; --accent: #06d6a0; --danger: #ef476f; --warning: #ffd166;
+            --bg: #0b132b; --sidebar: #0a1120; --card: rgba(28, 37, 65, 0.7);
+            --border: rgba(0, 180, 216, 0.3); --text: #edf2f4;
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
@@ -46,9 +40,14 @@
         .btn-neon { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 8px; width: 100%; font-weight: 600; cursor: pointer; transition: 0.3s; }
         .btn-neon:hover { background: var(--primary); color: #000; }
         
-        /* ESTILOS DE TEXTO */
         .desc-text { font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 15px; }
         .explainer-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border-left: 3px solid var(--warning); margin-top: 10px; }
+
+        /* HISTORIAL ESTILIZADO */
+        .history-container { max-height: 200px; overflow-y: auto; font-size: 11px; margin-top: 10px; padding-right: 5px; }
+        .history-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 4px; }
+        .item-buy { background: rgba(6, 214, 160, 0.1); border-left: 3px solid var(--accent); }
+        .item-sell { background: rgba(239, 71, 111, 0.1); border-left: 3px solid var(--danger); }
 
         .profile-pic-container { width: 100px; height: 100px; border: 2px solid var(--primary); border-radius: 50%; margin: 0 auto 15px; cursor: pointer; overflow: hidden; }
         #profile-img { width: 100%; height: 100%; object-fit: cover; }
@@ -81,48 +80,38 @@
                 <div class="card" style="border: 2px solid var(--primary); background: rgba(0, 180, 216, 0.05);">
                     <h1 style="margin:0; font-size: 26px;">¿Por qué Masari es tu mejor opción?</h1>
                     <p class="desc-text" style="color:white; font-size: 14px; margin-top:10px;">
-                        A diferencia de otras plataformas, Masari combina la **precisión técnica** de una terminal profesional con la **curva de aprendizaje** de un simulador educativo. 
-                        No solo ves números; entiendes qué los mueve. Somos la mejor opción porque ofrecemos:
+                        Combinamos la **precisión técnica** de una terminal profesional con la **curva de aprendizaje** de un simulador educativo.
                     </p>
                     <ul style="font-size: 13px; color: #94a3b8; padding-left: 20px;">
-                        <li><b>Riesgo Cero:</b> Opera en mercados reales sin perder un solo centavo.</li>
-                        <li><b>Comunidad Activa:</b> Aprende de los aciertos y errores de otros traders en tiempo real.</li>
-                        <li><b>Educación Modular:</b> Desde "Qué es una acción" hasta "Estrategias de Arbitraje Complejas".</li>
+                        <li><b>Riesgo Cero:</b> Opera sin perder dinero real.</li>
+                        <li><b>Comunidad Activa:</b> Network de traders global.</li>
                     </ul>
                 </div>
-
                 <div class="card">
-                    <h3>Cultura Masari (Memes Diarios)</h3>
+                    <h3>Cultura & Memes</h3>
                     <div class="meme-gallery">
                         <img src="https://i.imgflip.com/4/30zz5g.jpg" class="meme-img">
                         <img src="https://i.imgflip.com/4/1otk96.jpg" class="meme-img">
                         <img src="https://i.imgflip.com/4/26am.jpg" class="meme-img">
                     </div>
                 </div>
-
-                <div class="card">
-                    <h3>Guía Rápida del Sistema</h3>
-                    <p class="desc-text">Para empezar, dirígete a la pestaña de <b>Trading Live</b>. Allí verás gráficas en tiempo real. Si el precio está bajo y crees que subirá, presiona "COMPRAR". Tu portafolio en la derecha se actualizará automáticamente.</p>
-                </div>
             </section>
 
             <section id="trading" class="page">
                 <h1 style="color:var(--primary)">DATA <span style="color:white">TERMINAL</span></h1>
-                <div class="card" style="background: #0d162d;">
+                <div class="card" style="background: linear-gradient(180deg, #0d162d 0%, #050a14 100%); border: 1px solid var(--primary);">
                     <div style="height: 280px;"><canvas id="mainChart"></canvas></div>
                 </div>
                 <div class="trading-grid">
-                    <div class="card">
-                        <h3>Activo: STECK (Technology)</h3>
-                        <p class="desc-text">Representa el índice de empresas tecnológicas. Es volátil pero con alto potencial.</p>
-                        <div class="price-tag" id="price-steck">59.00</div>
-                        <button class="btn-neon" style="margin-top:10px" onclick="trade('Compra')">EJECUTAR COMPRA</button>
+                    <div class="card" style="border-top: 4px solid var(--primary); background: rgba(0, 180, 216, 0.05);">
+                        <h3>Activo: STECK (Tech)</h3>
+                        <div class="price-tag" id="price-steck" style="color:var(--primary)">59.00</div>
+                        <button class="btn-neon" style="margin-top:10px" onclick="trade('Compra', 'STECK', 'var(--accent)')">COMPRA RÁPIDA</button>
                     </div>
-                    <div class="card">
+                    <div class="card" style="border-top: 4px solid var(--danger); background: rgba(239, 71, 111, 0.05);">
                         <h3>Activo: STOCK2 (Energy)</h3>
-                        <p class="desc-text">Inversión en energías renovables y fósiles. Suele ser más estable que STECK.</p>
-                        <div class="price-tag" id="price-stock2">31.00</div>
-                        <button class="btn-neon" style="border-color:var(--danger); color:var(--danger); margin-top:10px" onclick="trade('Venta')">EJECUTAR VENTA</button>
+                        <div class="price-tag" id="price-stock2" style="color:var(--danger)">31.00</div>
+                        <button class="btn-neon" style="border-color:var(--danger); color:var(--danger); margin-top:10px" onclick="trade('Venta', 'STOCK2', 'var(--danger)')">VENTA RÁPIDA</button>
                     </div>
                 </div>
             </section>
@@ -130,36 +119,15 @@
             <section id="academia" class="page">
                 <h1>NEURAL <span style="color:white">ACADEMY</span></h1>
                 <div class="card">
-                    <h3>Cursos Disponibles</h3>
                     <div class="explainer-box">
                         <strong style="color:var(--warning)">Módulo 1: Velas Japonesas</strong>
-                        <p class="desc-text" style="margin:5px 0">Aprende a identificar patrones de reversión como el 'Martillo' o la 'Estrella de la Mañana'. Es la base del análisis técnico.</p>
-                        <button class="btn-neon" style="font-size:11px; padding:5px;">Comenzar Lección</button>
-                    </div>
-                    <div class="explainer-box" style="border-color: var(--primary);">
-                        <strong style="color:var(--primary)">Módulo 2: Gestión de Riesgo</strong>
-                        <p class="desc-text" style="margin:5px 0">Cómo configurar tu 'Stop Loss' para que una mala operación no destruya tu cuenta. Regla de oro: nunca arriesgues más del 1% por trade.</p>
-                        <button class="btn-neon" style="font-size:11px; padding:5px;">Comenzar Lección</button>
+                        <p class="desc-text">Identifica patrones de reversión en el mercado.</p>
                     </div>
                 </div>
             </section>
-
-            <section id="network" class="page">
-                <h1>GLOBAL <span style="color:white">FEED</span></h1>
-                <div class="card">
-                    <textarea id="post-input" class="profile-input" placeholder="Comparte tu análisis con el mundo..."></textarea>
-                    <button class="btn-neon" onclick="addPost()">PUBLICAR EN EL FEED</button>
-                </div>
-                <div id="feed">
-                    <div class="card" style="margin-bottom:10px; padding:15px; font-size:13px;">
-                        <b style="color:var(--primary)">@Wolf_Trader:</b> "STECK acaba de romper la resistencia de los 60.00. ¡Ojo que puede volar!"
-                    </div>
-                    <div class="card" style="margin-bottom:10px; padding:15px; font-size:13px;">
-                        <b style="color:var(--accent)">@Elena_Finance:</b> "Recuerden diversificar. No pongan todo en Stock2 solo porque subió hoy."
-                    </div>
-                </div>
-            </section>
-
+            
+            <section id="network" class="page"><h1>GLOBAL FEED</h1><div class="card" id="feed"></div></section>
+            
             <section id="perfil" class="page">
                 <h1 style="color:var(--primary)">USER <span style="color:white">IDENTITY</span></h1>
                 <div class="card" style="text-align:center;">
@@ -167,16 +135,7 @@
                         <img id="profile-img" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Felix" alt="Avatar">
                     </div>
                     <input type="file" id="file-upload" hidden accept="image/*" onchange="previewImage(event)">
-                    
-                    <div style="max-width: 400px; margin: 0 auto; text-align: left;">
-                        <label style="font-size: 10px; color: var(--primary);">ALIAS DEL AGENTE</label>
-                        <input type="text" id="user-name" class="profile-input" value="TRADER_MASARI_01" oninput="updateProfileDisplay()">
-                        
-                        <label style="font-size: 10px; color: var(--primary);">RANGO ACTUAL</label>
-                        <input type="text" id="user-rank" class="profile-input" value="TIBURÓN NOVATO" oninput="updateProfileDisplay()">
-                        
-                        <button class="btn-neon" onclick="alert('Datos Guardados')">GUARDAR PERFIL</button>
-                    </div>
+                    <input type="text" id="user-name" class="profile-input" value="TRADER_MASARI_01" oninput="updateProfileDisplay()">
                 </div>
             </section>
         </div>
@@ -184,16 +143,22 @@
         <div class="sidebar-right">
             <div class="card" style="text-align: center;">
                 <h3 id="display-name">TRADER_MASARI_01</h3>
-                <p id="display-rank" style="color: var(--accent); font-size: 11px; margin: -10px 0 15px;">TIBURÓN NOVATO</p>
                 <div style="height: 140px;"><canvas id="pieChart"></canvas></div>
-                <div class="explainer-box" style="font-size: 11px; text-align: left; border-left: 3px solid var(--accent);">
-                    <b>Portafolio de Activos:</b> Refleja tu salud financiera. Un portafolio equilibrado reduce las pérdidas en mercados bajistas.
+            </div>
+
+            <div class="card" style="border-color: var(--warning);">
+                <h3>Historial & Análisis</h3>
+                <div id="trade-history" class="history-container">
+                    <div style="color:#64748b; text-align:center; padding:20px;">Sin operaciones recientes</div>
+                </div>
+                <div id="ai-analysis" class="explainer-box" style="font-size: 10px; border-color: var(--primary); display:none;">
+                    <b>Análisis IA:</b> <span id="analysis-text">Esperando datos...</span>
                 </div>
             </div>
+
             <div class="card">
-                <h3>RIESGO (Risk Meter)</h3>
+                <h3>RIESGO</h3>
                 <input type="range" min="1" max="100" value="50" style="width: 100%;">
-                <p style="font-size:10px; color:#64748b; margin-top:5px;">A mayor riesgo, mayor es la ganancia potencial, pero también la posibilidad de 'Margin Call'.</p>
             </div>
         </div>
     </main>
@@ -209,21 +174,17 @@
                     labels: ['0', '1', '2', '3', '4', '5'],
                     datasets: [{
                         data: [60, 65, 58, 62, 70, 68],
-                        borderColor: '#00b4d8', // Azul menos brillante
-                        backgroundColor: 'rgba(0, 180, 216, 0.05)',
+                        borderColor: '#00b4d8',
+                        backgroundColor: 'rgba(0, 180, 216, 0.1)',
                         fill: true,
-                        tension: 0.3,
-                        borderWidth: 2,
-                        pointRadius: 2
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 0
                     }]
                 },
                 options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    scales: { 
-                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } },
-                        x: { display: false }
-                    },
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } }, x: { display: false } },
                     plugins: { legend: { display: false } }
                 }
             });
@@ -232,7 +193,7 @@
             pieChart = new Chart(ctxPie, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Tech', 'Energy', 'Crypto'],
+                    labels: ['Tech', 'Energy', 'Cash'],
                     datasets: [{
                         data: [40, 30, 30],
                         backgroundColor: ['#00b4d8', '#06d6a0', '#ef476f'],
@@ -243,6 +204,29 @@
             });
         }
 
+        function trade(tipo, activo, color) {
+            const hist = document.getElementById('trade-history');
+            const analysis = document.getElementById('ai-analysis');
+            const analysisText = document.getElementById('analysis-text');
+            
+            if(hist.innerText.includes("Sin operaciones")) hist.innerHTML = '';
+            
+            const precio = activo === 'STECK' ? document.getElementById('price-steck').innerText : document.getElementById('price-stock2').innerText;
+            
+            const item = document.createElement('div');
+            item.className = `history-item ${tipo === 'Compra' ? 'item-buy' : 'item-sell'}`;
+            item.innerHTML = `<span><b>${tipo}</b> ${activo}</span> <span>$${precio}</span>`;
+            hist.prepend(item);
+
+            // Análisis simulado
+            analysis.style.display = 'block';
+            if(tipo === 'Compra') {
+                analysisText.innerText = `Has adquirido ${activo} en un punto de soporte. Tu exposición al sector ha aumentado un 5%.`;
+            } else {
+                analysisText.innerText = `Liquidación de ${activo} completada. Has asegurado liquidez en un momento de volatilidad alta.`;
+            }
+        }
+
         function previewImage(event) {
             const reader = new FileReader();
             reader.onload = function() { document.getElementById('profile-img').src = reader.result; }
@@ -251,18 +235,6 @@
 
         function updateProfileDisplay() {
             document.getElementById('display-name').innerText = document.getElementById('user-name').value;
-            document.getElementById('display-rank').innerText = document.getElementById('user-rank').value;
-        }
-
-        function addPost() {
-            const txt = document.getElementById('post-input').value;
-            if(!txt) return;
-            const post = document.createElement('div');
-            post.className = 'card';
-            post.style.cssText = "margin-bottom:10px; padding:15px; font-size:13px;";
-            post.innerHTML = `<b style="color:var(--primary)">@Tú:</b> "${txt}"`;
-            document.getElementById('feed').prepend(post);
-            document.getElementById('post-input').value = '';
         }
 
         function goto(id, btn) {
@@ -282,21 +254,16 @@
             mainChart.update('none');
         }, 3000);
 
-        function trade(t) { alert("Orden de " + t + " procesada en el servidor."); }
-
         window.onload = () => {
             initCharts();
             const canvas = document.getElementById('bg-canvas');
             const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             function draw() {
                 ctx.fillStyle = 'rgba(11, 19, 43, 0.2)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#00b4d8';
-                for(let i=0; i<15; i++) {
-                    ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 0.5, 0, Math.PI*2); ctx.fill();
-                }
+                for(let i=0; i<10; i++) { ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 0.5, 0, Math.PI*2); ctx.fill(); }
                 requestAnimationFrame(draw);
             }
             draw();
