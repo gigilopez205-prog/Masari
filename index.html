@@ -35,13 +35,18 @@
         
         /* MEME GALLERY INICIO */
         .meme-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-        .meme-pic { width: 100%; border-radius: 15px; border: 1px solid var(--border); transition: 0.3s; filter: grayscale(0.3); }
-        .meme-pic:hover { filter: grayscale(0); transform: scale(1.02); }
+        .meme-pic { width: 100%; border-radius: 15px; border: 1px solid var(--border); transition: 0.3s; }
+        .meme-pic:hover { transform: scale(1.02); }
 
         /* FORMULARIOS */
         input, textarea, select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 12px; border-radius: 12px; color: white; margin-top: 8px; font-family: inherit; }
         .btn-action { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; margin-top: 15px; }
         .btn-action:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); }
+
+        /* NETWORKING FEED */
+        .post-card { border-bottom: 1px solid var(--border); padding: 15px 0; }
+        .post-user { color: var(--primary); font-weight: bold; font-size: 14px; }
+        .post-content { font-size: 14px; margin-top: 5px; color: #cbd5e1; }
 
         /* CLASES Y GRID */
         .class-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
@@ -94,16 +99,16 @@
             <h2>Cultura <span style="color:var(--primary)">Trader</span></h2>
             <div class="meme-gallery">
                 <div class="card" style="padding:10px; text-align:center;">
-                    <img src="https://i.imgflip.com/4/30zz5g.jpg" class="meme-pic" alt="Stonks">
-                    <p style="font-size:10px; margin-top:5px;">Cuando compras el dip</p>
+                    <img src="https://i.imgur.com/8YvY4S8.jpg" class="meme-pic" alt="Stonks">
+                    <p style="font-size:10px; margin-top:5px;">Cuando aplicas lo aprendido en Masari</p>
                 </div>
                 <div class="card" style="padding:10px; text-align:center;">
                     <img src="https://i.imgflip.com/4/1otk96.jpg" class="meme-pic" alt="This is fine">
-                    <p style="font-size:10px; margin-top:5px;">El mercado hoy</p>
+                    <p style="font-size:10px; margin-top:5px;">Manteniendo la calma en el mercado</p>
                 </div>
                 <div class="card" style="padding:10px; text-align:center;">
                     <img src="https://i.imgflip.com/4/26am.jpg" class="meme-pic" alt="Success Kid">
-                    <p style="font-size:10px; margin-top:5px;">Mi primer profit</p>
+                    <p style="font-size:10px; margin-top:5px;">¡Mi primera operación ganadora!</p>
                 </div>
             </div>
         </section>
@@ -161,7 +166,39 @@
                 <textarea id="post-text" placeholder="Comparte tu análisis..."></textarea>
                 <button class="btn-action" onclick="addPost()">Publicar</button>
             </div>
-            <div id="feed-container"></div>
+            <div class="card">
+                <h3>Actividad Global</h3>
+                <div id="feed-container">
+                    <div class="post-card">
+                        <div class="post-user">@AlphaTrader</div>
+                        <div class="post-content">¿Alguien vio la vela de las 4 PM? Impresionante el soporte que formó Masari Asset.</div>
+                    </div>
+                    <div class="post-card">
+                        <div class="post-user">@CryptoElena</div>
+                        <div class="post-content">Acabo de terminar mi curso de gestión de riesgo en la Academia. ¡10/10!</div>
+                    </div>
+                    <div class="post-card">
+                        <div class="post-user">@MarketWizard</div>
+                        <div class="post-content">Recuerden: No se enamoren de sus activos, enamórense de su estrategia. 📉📈</div>
+                    </div>
+                    <div class="post-card">
+                        <div class="post-user">@JuniorInvestor</div>
+                        <div class="post-content">¿Cuál es el mejor libro para principiantes? Estoy entre 'El Inversor Inteligente' y las clases de aquí.</div>
+                    </div>
+                    <div class="post-card">
+                        <div class="post-user">@MasariOfficial</div>
+                        <div class="post-content">¡Nueva actualización en el simulador! Ahora con datos más precisos. 🚀</div>
+                    </div>
+                    <div class="post-card">
+                        <div class="post-user">@ScalpingKing</div>
+                        <div class="post-content">Día verde 🟢. Siguiendo el método 50/30/20 a rajatabla.</div>
+                    </div>
+                    <div class="post-card">
+                        <div class="post-user">@FinanceGuru</div>
+                        <div class="post-content">La paciencia paga más que cualquier algoritmo de trading de alta frecuencia.</div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="perfil" class="page">
@@ -250,6 +287,18 @@
             });
         }
         function deleteClass(id) { clases = clases.filter(c => c.id !== id); renderClasses(); }
+
+        // --- POSTING ---
+        function addPost() {
+            const txt = document.getElementById('post-text');
+            if(!txt.value) return;
+            const container = document.getElementById('feed-container');
+            const newPost = document.createElement('div');
+            newPost.className = 'post-card';
+            newPost.innerHTML = `<div class="post-user">@Tú</div><div class="post-content">${txt.value}</div>`;
+            container.prepend(newPost);
+            txt.value = '';
+        }
 
         // --- PERFIL ---
         function loadImage(e) { document.getElementById('profile-pic').src = URL.createObjectURL(e.target.files[0]); }
