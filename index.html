@@ -35,36 +35,31 @@
         h1 { font-family: 'Montserrat'; font-size: 28px; margin-top: 0; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         h3 { font-family: 'Montserrat'; font-size: 14px; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
 
-        /* ACADEMIA GRID MEJORADA */
-        .academy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding-bottom: 40px; }
-        .course-card { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); padding: 20px; border-radius: 15px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; }
-        .course-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(0,210,255,0.1); }
-        .course-level { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; display: block; }
-        .course-desc { font-size: 13px; color: #94a3b8; margin: 10px 0 20px; line-height: 1.4; }
-        .btn-enroll { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; }
-        .btn-enroll:hover { background: var(--primary); color: #000; }
-        .btn-enroll.enrolled { background: var(--accent); border-color: var(--accent); color: #000; }
+        /* RED SOCIAL ESTILO AESTHETIC */
+        .network-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .user-profile-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: 15px; padding: 20px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
+        .user-profile-card:hover { border-color: var(--primary); transform: scale(1.02); }
+        .user-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--primary); margin-bottom: 10px; }
+        .user-status { font-size: 10px; color: var(--accent); font-weight: bold; background: rgba(0,255,136,0.1); padding: 2px 8px; border-radius: 10px; }
+        .user-bio { font-size: 12px; color: #94a3b8; margin: 10px 0; font-style: italic; }
+        .follow-btn { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--primary); background: transparent; color: var(--primary); cursor: pointer; font-size: 12px; font-weight: bold; }
+        .follow-btn:hover { background: var(--primary); color: #000; }
 
-        .benefit-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; font-size: 14px; }
-        .benefit-icon { color: var(--accent); font-weight: bold; }
+        /* FUN FACTS */
+        .fun-fact-box { font-size: 12px; color: #94a3b8; line-height: 1.4; padding: 10px; background: rgba(0,210,255,0.05); border-radius: 10px; border-left: 3px solid var(--warning); }
+
+        /* ACADEMIA GRID */
+        .academy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .course-card { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); padding: 20px; border-radius: 15px; display: flex; flex-direction: column; transition: 0.3s; }
+        .btn-enroll { border: 1px solid var(--primary); background: transparent; color: var(--primary); padding: 10px; border-radius: 8px; cursor: pointer; margin-top: auto; }
+        .btn-enroll:hover { background: var(--primary); color: #000; }
 
         .price-display { font-family: 'JetBrains Mono'; font-size: 32px; font-weight: 800; margin: 10px 0; }
-        .btn-action { background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
-        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary); }
+        .btn-action { background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        
+        .history-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 11px; }
 
-        .market-meme-card {
-            width: 100%; height: 350px; background: linear-gradient(45deg, #000, #1e293b); border: 3px solid var(--primary); border-radius: 20px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; margin: 20px 0;
-        }
-        .meme-text-top { position: absolute; top: 20px; font-family: 'Montserrat'; font-weight: 900; font-size: 32px; color: white; text-shadow: 2px 2px #000; z-index: 2; text-align: center; width: 90%; }
-        .meme-text-bottom { position: absolute; bottom: 20px; font-family: 'Montserrat'; font-weight: 900; font-size: 28px; color: var(--warning); text-shadow: 2px 2px #000; z-index: 2; text-align: center; width: 90%; }
-        .meme-graphic { font-size: 120px; filter: drop-shadow(0 0 20px var(--primary)); animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-
-        .history-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px; }
-        .tag-buy { color: var(--accent); font-weight: bold; }
-
-        .profile-pic { width: 110px; height: 110px; border: 3px solid var(--primary); border-radius: 50%; margin: 0 auto 20px; position: relative; overflow: hidden; box-shadow: 0 0 30px var(--primary); cursor: pointer; }
+        .profile-pic { width: 110px; height: 110px; border: 3px solid var(--primary); border-radius: 50%; margin: 0 auto 20px; position: relative; overflow: hidden; box-shadow: 0 0 30px var(--primary); }
         .profile-pic img { width: 100%; height: 100%; object-fit: cover; }
         .edit-input { background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: white; padding: 12px; border-radius: 10px; width: 100%; margin-top: 10px; }
     </style>
@@ -90,37 +85,18 @@
             
             <section id="inicio" class="page active">
                 <div class="card" style="background: linear-gradient(135deg, rgba(0,210,255,0.1), transparent); border-left: 5px solid var(--primary);">
-                    <h1>¿Por qué somos tu mejor opción?</h1>
-                    <p style="color:#94a3b8; margin-bottom: 25px;">Masari Terminal no es solo una plataforma, es tu ventaja injusta en el mercado.</p>
-                    
-                    <div class="benefit-item">
-                        <span class="benefit-icon">✓</span>
-                        <div><strong>Latencia Cero:</strong> Ejecución instantánea con nodos directos a la blockchain.</div>
-                    </div>
-                    <div class="benefit-item">
-                        <span class="benefit-icon">✓</span>
-                        <div><strong>IA Predictiva:</strong> Algoritmos que analizan el sentimiento del mercado en milisegundos.</div>
-                    </div>
-                    <div class="benefit-item">
-                        <span class="benefit-icon">✓</span>
-                        <div><strong>Seguridad Grado Militar:</strong> Tus fondos y datos protegidos por cifrado cuántico.</div>
-                    </div>
-                    <div class="benefit-item">
-                        <span class="benefit-icon">✓</span>
-                        <div><strong>Comunidad de Élite:</strong> Acceso a señales exclusivas de traders con 90% de win-rate.</div>
-                    </div>
+                    <h1>Bienvenido, Trader</h1>
+                    <p style="color:#94a3b8;">Sincronización completa. Alta volatilidad detectada en tiempo real.</p>
                 </div>
-
-                <div class="market-meme-card">
-                    <div class="meme-text-top">EL MERCADO CAE -20%</div>
-                    <div class="meme-graphic">📉🤡</div>
-                    <div class="meme-text-bottom">"ES HORA DE COMPRAR EL DIP"</div>
+                <div class="card">
+                    <h3>¿Por qué Masari?</h3>
+                    <p style="font-size: 14px; color: #94a3b8;">Ejecución instantánea, seguridad cuántica y una comunidad de élite.</p>
                 </div>
             </section>
 
             <section id="trading" class="page">
                 <div class="card" style="border-top: 3px solid var(--primary);">
-                    <h3>Terminal de Análisis (Real-Time Tick)</h3>
+                    <h3>Terminal (Real-Time Tick)</h3>
                     <div style="height: 300px;"><canvas id="mainChart"></canvas></div>
                 </div>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
@@ -139,9 +115,13 @@
 
             <section id="academia" class="page">
                 <h1>Academia <span style="color:var(--primary)">Pro</span></h1>
-                <p style="color:#94a3b8; margin-bottom: 25px;">Formación de élite para traders institucionales.</p>
-                
-                <div class="academy-grid" id="academy-list">
+                <div class="academy-grid" id="academy-list"></div>
+            </section>
+
+            <section id="network" class="page">
+                <h1>Red <span style="color:var(--primary)">Masari</span></h1>
+                <p style="color:#94a3b8; margin-bottom: 20px;">Conéctate con los mejores traders de la red.</p>
+                <div class="network-grid" id="user-list">
                     </div>
             </section>
 
@@ -159,27 +139,14 @@
             <div class="card" style="text-align:center;">
                 <h2 id="side-name" style="margin:0; font-size:18px;">TRADER_ALPHA_01</h2>
                 <div style="height: 160px; margin-top:15px;"><canvas id="pieChart"></canvas></div>
-                
-                <div style="text-align: left; margin-top: 15px; font-size: 11px; line-height: 1.6;">
-                    <h3 style="font-size: 10px; margin-bottom: 8px;">Distribución de Cartera</h3>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;"></span>
-                        <span><strong>50% STECK:</strong> Activos de alta liquidez.</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="width: 8px; height: 8px; background: var(--accent); border-radius: 50%;"></span>
-                        <span><strong>30% USDT:</strong> Capital estable para compras.</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="width: 8px; height: 8px; background: var(--danger); border-radius: 50%;"></span>
-                        <span><strong>20% STOCK2:</strong> Inversiones de riesgo.</span>
-                    </div>
-                </div>
             </div>
-            
             <div class="card">
-                <h3>Historial Reciente</h3>
-                <div id="history-box" style="max-height: 200px; overflow-y:auto;"></div>
+                <h3>Historial</h3>
+                <div id="history-box" style="max-height: 150px; overflow-y:auto;"></div>
+            </div>
+            <div class="card">
+                <h3>💡 Fun Facts</h3>
+                <div id="fun-fact" class="fun-fact-box">Cargando dato curioso...</div>
             </div>
         </div>
     </main>
@@ -188,39 +155,61 @@
         let mainChart, pieChart;
         let currentPrice = 54.20;
 
-        const courses = [
-            { title: "Psicología de Ballenas", level: "Avanzado", desc: "Aprende a identificar las zonas de manipulación institucional." },
-            { title: "Scalping Relámpago", level: "Intermedio", desc: "Técnicas de entrada y salida en gráficos de 15 segundos." },
-            { title: "Smart Money Concepts", level: "Experto", desc: "El curso definitivo para entender la liquidez del mercado." },
-            { title: "Fundamentos de Blockchain", level: "Básico", desc: "Entiende la tecnología detrás de los activos que tradeas." },
-            { title: "Gestión de Riesgo 2.0", level: "Esencial", desc: "Cómo sobrevivir a un mercado bajista sin quemar tu cuenta." },
-            { title: "Análisis de Sentimiento IA", level: "Pro", desc: "Uso de herramientas de IA para predecir movimientos de precio." },
-            { title: "Trading de Opciones", level: "Avanzado", desc: "Estrategias complejas para mercados laterales." },
-            { title: "Macroeconomía Global", level: "Intermedio", desc: "Cómo afectan las tasas de la FED al mercado cripto." },
-            { title: "Arbitraje de Criptoactivos", level: "Pro", desc: "Aprovecha las diferencias de precio entre exchanges." },
-            { title: "Masterclass: DeFi Yield", level: "Avanzado", desc: "Genera ingresos pasivos con protocolos descentralizados." }
+        const profiles = [
+            { name: "CryptoQueen", bio: "Dominando Bitcoin desde 2014.", seed: "1" },
+            { name: "BullRunner", bio: "Solo velas verdes en mi feed.", seed: "2" },
+            { name: "MacroExpert", bio: "Analizando la FED cada mañana.", seed: "3" },
+            { name: "SatoshiGhost", bio: "La descentralización es el camino.", seed: "4" },
+            { name: "AlphaWolf", bio: "Scalper agresivo. 90% Winrate.", seed: "5" },
+            { name: "LunaLover", bio: "Buscando la próxima gema x100.", seed: "6" },
+            { name: "WhaleHunter", bio: "Rastreando billeteras de ballenas.", seed: "7" },
+            { name: "ChartMaster", bio: "Las gráficas nunca mienten.", seed: "8" },
+            { name: "DefiDuke", bio: "Viviendo del Yield Farming.", seed: "9" },
+            { name: "PixelTrader", bio: "NFTs y Crypto es mi pasión.", seed: "10" }
         ];
 
-        function loadCourses() {
-            const list = document.getElementById('academy-list');
-            courses.forEach((c, i) => {
+        const funFacts = [
+            "El primer artículo comprado con Bitcoin fueron 2 pizzas por 10,000 BTC.",
+            "El mercado de valores suele ser más volátil los lunes.",
+            "El 90% de los traders novatos pierden dinero en sus primeros 90 días.",
+            "Wall Street debe su nombre a un muro construido por holandeses en 1653.",
+            "La palabra 'Bolsa' proviene del apellido Van der Bürse de una familia belga.",
+            "Warren Buffett compró su primera acción a los 11 años."
+        ];
+
+        function loadNetwork() {
+            const list = document.getElementById('user-list');
+            profiles.forEach(u => {
                 const card = document.createElement('div');
-                card.className = 'course-card';
+                card.className = 'user-profile-card';
                 card.innerHTML = `
-                    <div>
-                        <span class="course-level">${c.level}</span>
-                        <h3 style="margin:0; font-size:16px;">${c.title}</h3>
-                        <p class="course-desc">${c.desc}</p>
-                    </div>
-                    <button class="btn-enroll" onclick="enroll(this)">Inscribirse</button>
+                    <span class="user-status">ONLINE</span><br>
+                    <img class="user-avatar" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=${u.seed}">
+                    <h4 style="margin:5px 0;">${u.name}</h4>
+                    <p class="user-bio">"${u.bio}"</p>
+                    <button class="follow-btn" onclick="this.innerText='Siguiendo'">Seguir</button>
                 `;
                 list.appendChild(card);
             });
         }
 
-        function enroll(btn) {
-            btn.innerText = "✓ Inscrito";
-            btn.classList.add('enrolled');
+        function loadAcademy() {
+            const list = document.getElementById('academy-list');
+            for(let i=1; i<=10; i++) {
+                const card = document.createElement('div');
+                card.className = 'course-card';
+                card.innerHTML = `
+                    <span style="font-size:10px; color:var(--primary)">CLASE ONLINE #${i}</span>
+                    <h3 style="margin:5px 0; font-size:16px;">Estrategia Avanzada V${i}</h3>
+                    <p style="font-size:12px; color:#94a3b8;">Domina el mercado con esta clase magistral.</p>
+                    <button class="btn-enroll" onclick="this.innerText='Inscrito'">Inscribirse</button>
+                `;
+                list.appendChild(card);
+            }
+        }
+
+        function updateFunFact() {
+            document.getElementById('fun-fact').innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
         }
 
         function initCharts() {
@@ -238,47 +227,38 @@
                 },
                 options: { 
                     responsive: true, maintainAspectRatio: false, 
-                    animation: { duration: 800, easing: 'linear' },
+                    animation: { duration: 800 },
                     plugins: { legend: { display: false } }, 
                     scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.03)' } } } 
                 }
             });
-
             const ctxP = document.getElementById('pieChart').getContext('2d');
             pieChart = new Chart(ctxP, {
                 type: 'doughnut',
                 data: {
-                    labels: ['STECK', 'USDT', 'STOCK2'],
-                    datasets: [{
-                        data: [50, 30, 20],
-                        backgroundColor: ['#00d2ff', '#00ff88', '#ff0055'],
-                        borderWidth: 0
-                    }]
+                    datasets: [{ data: [50, 30, 20], backgroundColor: ['#00d2ff', '#00ff88', '#ff0055'], borderWidth: 0 }]
                 },
-                options: { cutout: '80%', plugins: { legend: { display: false } } }
+                options: { cutout: '80%'}
             });
         }
 
         setInterval(() => {
-            const volatility = 0.005;
-            const change = currentPrice * volatility * (Math.random() * 2 - 1);
+            const change = currentPrice * 0.005 * (Math.random() * 2 - 1);
             const oldPrice = currentPrice;
             currentPrice = parseFloat((currentPrice + change).toFixed(2));
-
             if(document.getElementById('p-steck')) {
                 document.getElementById('p-steck').innerText = currentPrice.toFixed(2);
                 document.getElementById('p-steck').style.color = currentPrice >= oldPrice ? 'var(--accent)' : 'var(--danger)';
             }
-
             if(mainChart) {
-                const color = currentPrice >= oldPrice ? '#00ff88' : '#ff0055';
-                mainChart.data.datasets[0].borderColor = color;
-                mainChart.data.datasets[0].backgroundColor = color + '11';
+                mainChart.data.datasets[0].borderColor = currentPrice >= oldPrice ? '#00ff88' : '#ff0055';
                 mainChart.data.datasets[0].data.push(currentPrice);
                 mainChart.data.datasets[0].data.shift();
                 mainChart.update('none');
             }
         }, 1000);
+
+        setInterval(updateFunFact, 8000);
 
         function logTrade(t, a, p, c) {
             const box = document.getElementById('history-box');
@@ -289,7 +269,6 @@
         }
 
         function sync() { document.getElementById('side-name').innerText = document.getElementById('nameIn').value; }
-
         function goto(id, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -305,16 +284,12 @@
             for(let i=0; i<80; i++) dots.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.5, s: Math.random()*0.3});
         }
         function drawBG() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(0, 210, 255, 0.2)";
-            dots.forEach(d => {
-                ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
-                d.y -= d.s; if(d.y < 0) d.y = canvas.height;
-            });
+            ctx.clearRect(0,0,canvas.width, canvas.height); ctx.fillStyle = "rgba(0, 210, 255, 0.2)";
+            dots.forEach(d => { ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill(); d.y -= d.s; if(d.y < 0) d.y = canvas.height; });
             requestAnimationFrame(drawBG);
         }
 
-        window.onload = () => { initCharts(); initBG(); drawBG(); loadCourses(); };
+        window.onload = () => { initCharts(); initBG(); drawBG(); loadAcademy(); loadNetwork(); updateFunFact(); };
     </script>
 </body>
 </html>
