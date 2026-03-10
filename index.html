@@ -16,7 +16,6 @@
         * { box-sizing: border-box; }
         body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden; }
         
-        /* FONDO INTERACTIVO */
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
 
         nav { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: flex; flex-direction: column; gap: 8px; z-index: 100; box-shadow: 15px 0 50px rgba(0,0,0,0.5); }
@@ -36,20 +35,19 @@
         h1 { font-family: 'Montserrat'; font-size: 28px; margin-top: 0; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         h3 { font-family: 'Montserrat'; font-size: 14px; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
 
-        /* SECCIONES ESPECÍFICAS IMÁGENES */
-        .module-item { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border-left: 4px solid var(--warning); margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
-        .module-item:hover { transform: scale(1.02); background: rgba(247, 255, 0, 0.05); }
-
         .price-display { font-family: 'JetBrains Mono'; font-size: 32px; font-weight: 800; margin: 10px 0; text-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
         .btn-action { background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary); }
 
-        /* HISTORIAL */
+        /* MEME GRANDE DE INICIO */
+        .market-meme-box { width: 100%; margin-top: 20px; border-radius: 15px; overflow: hidden; border: 1px solid var(--border); position: relative; }
+        .market-meme-box img { width: 100%; display: block; filter: saturate(1.2) contrast(1.1); }
+        .meme-overlay { position: absolute; bottom: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 20px; text-align: center; font-style: italic; font-weight: 600; }
+
         .history-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px; }
         .tag-buy { color: var(--accent); font-weight: bold; }
         .tag-sell { color: var(--danger); font-weight: bold; }
 
-        /* PERFIL */
         .profile-pic { width: 110px; height: 110px; border: 3px solid var(--primary); border-radius: 50%; margin: 0 auto 20px; position: relative; overflow: hidden; box-shadow: 0 0 30px var(--primary); cursor: pointer; }
         .profile-pic img { width: 100%; height: 100%; object-fit: cover; }
         .edit-input { background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: white; padding: 12px; border-radius: 10px; width: 100%; margin-top: 10px; }
@@ -75,20 +73,19 @@
         <div class="content-area">
             
             <section id="inicio" class="page active">
-                <div class="card" style="background: linear-gradient(135deg, rgba(0,210,255,0.1), transparent);">
-                    <h1>¿Por qué elegirnos?</h1>
-                    <p style="color:#94a3b8; line-height: 1.6;">Masari no es solo un simulador; es una **forja de traders**. Accede a datos de baja latencia y algoritmos de análisis que solo las instituciones poseen, pero con 0% de riesgo para tu capital.</p>
+                <div class="card" style="background: linear-gradient(135deg, rgba(0,210,255,0.1), transparent); border-left: 5px solid var(--primary);">
+                    <h1>Estado del Mercado Global</h1>
+                    <p style="color:#94a3b8;">Sincronización completa. Los algoritmos detectan alta volatilidad en los activos tecnológicos. Mantén la calma y confía en tu estrategia.</p>
                 </div>
-                <div class="card">
-                    <h3>Tendencias del día</h3>
-                    <div style="display:flex; gap:15px;">
-                        <div style="flex:1; background:rgba(0,0,0,0.2); padding:15px; border-radius:15px; border-top: 4px solid var(--accent);">
-                            <small>MÁS RENTABLE</small><br><b>STECK Corp. (+12.4%)</b>
-                        </div>
-                        <div style="flex:1; background:rgba(0,0,0,0.2); padding:15px; border-radius:15px; border-top: 4px solid var(--danger);">
-                            <small>MÁS VOLÁTIL</small><br><b>STOCK2 Energy (-5.1%)</b>
-                        </div>
-                    </div>
+
+                <div class="market-meme-box card">
+                    <img src="https://i.imgflip.com/3vps9y.jpg" alt="Market Situation Meme">
+                    <div class="meme-overlay">"Cuando el mercado cae pero tú ya no sientes nada..."</div>
+                </div>
+
+                <div class="card" style="margin-top: 25px;">
+                    <h3>¿Por qué elegir Masari?</h3>
+                    <p style="font-size: 14px; color: #94a3b8;">Combinamos datos de baja latencia con una comunidad de élite. Aquí no solo operas, aquí aprendes a dominar el caos financiero con herramientas institucionales.</p>
                 </div>
             </section>
 
@@ -101,12 +98,12 @@
                     <div class="card">
                         <h3>STECK / USDT</h3>
                         <div class="price-display" id="p-steck">54.20</div>
-                        <button class="btn-action" onclick="logTrade('COMPRA', 'STECK', 54.20, 'var(--accent)')">Comprar Ahora</button>
+                        <button class="btn-action" onclick="logTrade('COMPRA', 'STECK', 54.20, 'var(--accent)')">Comprar</button>
                     </div>
                     <div class="card">
                         <h3>STOCK2 / USDT</h3>
                         <div class="price-display" id="p-stock2" style="color:var(--danger)">28.15</div>
-                        <button class="btn-action" style="background:var(--danger)" onclick="logTrade('VENTA', 'STOCK2', 28.15, 'var(--danger)')">Vender Ahora</button>
+                        <button class="btn-action" style="background:var(--danger)" onclick="logTrade('VENTA', 'STOCK2', 28.15, 'var(--danger)')">Vender</button>
                     </div>
                 </div>
             </section>
@@ -114,13 +111,9 @@
             <section id="academia" class="page">
                 <h1>Masari <span style="color:var(--warning)">University</span></h1>
                 <div class="card">
-                    <div class="module-item">
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border-left: 4px solid var(--warning); margin-bottom: 12px;">
                         <b>Módulo 1: Velas y Acción del Precio</b>
-                        <p style="font-size:12px; color:#94a3b8; margin:5px 0;">Ejemplo: Identifica un "Morning Star" para predecir rebotes alcistas.</p>
-                    </div>
-                    <div class="module-item" style="border-left-color: var(--primary);">
-                        <b>Módulo 2: Psicología del Trading</b>
-                        <p style="font-size:12px; color:#94a3b8; margin:5px 0;">Cómo controlar el miedo durante una caída del 20%.</p>
+                        <p style="font-size:12px; color:#94a3b8;">Domina el arte de leer los gráficos sin indicadores basura.</p>
                     </div>
                 </div>
             </section>
@@ -131,38 +124,30 @@
                         <img id="my-img" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Masari">
                     </div>
                     <input type="file" id="fileIn" hidden onchange="uploadImg(event)">
-                    <label style="font-size:11px; color:var(--primary)">NOMBRE DE OPERADOR</label>
                     <input type="text" id="nameIn" class="edit-input" value="TRADER_ALPHA_01" oninput="sync()">
-                    <button class="btn-action" style="margin-top:20px; width:200px;" onclick="alert('Perfil Guardado')">Guardar</button>
                 </div>
             </section>
-
         </div>
 
         <div class="sidebar-right">
             <div class="card" style="text-align:center;">
                 <h2 id="side-name" style="margin:0; font-size:18px;">TRADER_ALPHA_01</h2>
                 <div style="height: 160px; margin-top:15px;"><canvas id="pieChart"></canvas></div>
-                <p style="font-size:12px; color:var(--accent); margin-top:10px;">Portafolio Saludable ✅</p>
             </div>
 
             <div class="card">
                 <h3>Historial Reciente</h3>
-                <div id="history-box" style="max-height: 150px; overflow-y:auto;">
+                <div id="history-box" style="max-height: 200px; overflow-y:auto;">
                     <div class="history-row"><span class="tag-buy">COMPRA</span> <span>STECK</span> <span>$52.10</span></div>
-                    <div class="history-row"><span class="tag-sell">VENTA</span> <span>STOCK2</span> <span>$30.00</span></div>
                 </div>
                 <div style="background:rgba(0, 210, 255, 0.05); padding:10px; border-radius:10px; font-size:11px; margin-top:10px; border:1px solid var(--border);">
-                    <b>Análisis IA:</b> Has optimizado tu entrada en STECK un 3% mejor que el promedio del mercado.
+                    <b>Análisis IA:</b> Patrón detectado. Tu rentabilidad proyectada es del 4.2% semanal.
                 </div>
             </div>
 
             <div class="card">
-                <h3>Control de Riesgo</h3>
-                <input type="range" min="1" max="100" value="65" style="width:100%; cursor:pointer;">
-                <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--primary); margin-top:5px;">
-                    <span>CONSERVADOR</span><span>AGRESIVO</span>
-                </div>
+                <h3>Nivel de Riesgo</h3>
+                <input type="range" min="1" max="100" value="65" style="width:100%;">
             </div>
         </div>
     </main>
@@ -224,7 +209,6 @@
             btn.classList.add('active');
         }
 
-        // FONDO INTERACTIVO
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let dots = [];
@@ -234,7 +218,7 @@
         }
         function drawBG() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(0, 210, 255, 0.2)";
+            ctx.fillStyle = "rgba(0, 210, 255, 0.15)";
             dots.forEach(d => {
                 ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
                 d.y -= d.s; if(d.y < 0) d.y = canvas.height;
@@ -244,7 +228,7 @@
 
         setInterval(() => {
             const p1 = (50 + Math.random()*10).toFixed(2);
-            document.getElementById('p-steck').innerText = p1;
+            if(document.getElementById('p-steck')) document.getElementById('p-steck').innerText = p1;
             mainChart.data.datasets[0].data.push(p1);
             mainChart.data.datasets[0].data.shift();
             mainChart.update('none');
