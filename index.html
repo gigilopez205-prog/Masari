@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari Terminal | Interactive Edition</title>
+    <title>Masari Terminal | Live Exchange</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
@@ -38,11 +38,9 @@
         .card-steck { border: 2px solid var(--primary); box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
         .card-stock2 { border: 2px solid var(--danger); box-shadow: 0 0 15px rgba(255, 0, 85, 0.2); }
 
-        /* ACADEMIA GRID */
         .academy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .course-card { background: rgba(0,0,0,0.3); border-left: 4px solid var(--primary); padding: 20px; border-radius: 12px; transition: 0.3s; cursor: pointer; }
         .course-card:hover { background: rgba(0,210,255,0.05); transform: translateX(5px); }
-        .course-tag { font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 4px; margin-bottom: 10px; display: inline-block; }
 
         .market-meme-card {
             width: 100%; height: 350px; background: linear-gradient(45deg, #000, #1e293b); border: 3px solid var(--primary); border-radius: 20px;
@@ -53,7 +51,7 @@
         .meme-graphic { font-size: 120px; filter: drop-shadow(0 0 20px var(--primary)); animation: float 3s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        .price-display { font-family: 'JetBrains Mono'; font-size: 32px; font-weight: 800; margin: 10px 0; text-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
+        .price-display { font-family: 'JetBrains Mono'; font-size: 32px; font-weight: 800; margin: 10px 0; }
         .btn-action { background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary); }
 
@@ -96,27 +94,22 @@
                     <div class="meme-graphic">📉🤡</div>
                     <div class="meme-text-bottom">"ES HORA DE COMPRAR EL DIP"</div>
                 </div>
-
-                <div class="card" style="margin-top: 25px;">
-                    <h3>¿Por qué Masari?</h3>
-                    <p style="font-size: 14px; color: #94a3b8;">Domina el caos con herramientas institucionales.</p>
-                </div>
             </section>
 
             <section id="trading" class="page">
                 <div class="card" style="border-top: 3px solid var(--primary);">
-                    <h3>Terminal de Análisis (Live Wavefeed)</h3>
+                    <h3>Terminal de Análisis (Real-Time Tick)</h3>
                     <div style="height: 300px;"><canvas id="mainChart"></canvas></div>
                 </div>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
                     <div class="card card-steck">
-                        <h3 style="color:var(--primary) !important;">STECK / USDT</h3>
-                        <div class="price-display" id="p-steck">54.20</div>
+                        <h3>STECK / USDT</h3>
+                        <div class="price-display" id="p-steck" style="text-shadow: 0 0 10px var(--accent);">54.20</div>
                         <button class="btn-action" onclick="logTrade('COMPRA', 'STECK', 54.20, 'var(--accent)')">Comprar</button>
                     </div>
                     <div class="card card-stock2">
-                        <h3 style="color:var(--danger) !important;">STOCK2 / USDT</h3>
-                        <div class="price-display" id="p-stock2" style="color:var(--danger)">28.15</div>
+                        <h3>STOCK2 / USDT</h3>
+                        <div class="price-display" id="p-stock2" style="color:var(--danger); text-shadow: 0 0 10px var(--danger);">28.15</div>
                         <button class="btn-action" style="background:var(--danger)" onclick="logTrade('VENTA', 'STOCK2', 28.15, 'var(--danger)')">Vender</button>
                     </div>
                 </div>
@@ -125,26 +118,10 @@
             <section id="academia" class="page">
                 <h1>Masari <span style="color:var(--warning)">University</span></h1>
                 <div class="academy-grid">
-                    <div class="course-card">
-                        <span class="course-tag" style="background: var(--primary); color: #000;">NIVEL: BÁSICO</span>
-                        <h3 style="margin:5px 0;">Psicología del Trading</h3>
-                        <p style="font-size:12px; color:#94a3b8;">Cómo no entrar en pánico cuando ves velas rojas gigantes.</p>
-                    </div>
-                    <div class="course-card" style="border-left-color: var(--accent);">
-                        <span class="course-tag" style="background: var(--accent); color: #000;">NIVEL: PRO</span>
-                        <h3 style="margin:5px 0;">Scalping de Alta Frecuencia</h3>
-                        <p style="font-size:12px; color:#94a3b8;">Entradas y salidas en menos de 60 segundos.</p>
-                    </div>
-                    <div class="course-card" style="border-left-color: var(--danger);">
-                        <span class="course-tag" style="background: var(--danger); color: #fff;">NIVEL: EXPERTO</span>
-                        <h3 style="margin:5px 0;">Algoritmos Institucionales</h3>
-                        <p style="font-size:12px; color:#94a3b8;">Entiende cómo operan las ballenas y los bancos.</p>
-                    </div>
-                    <div class="course-card" style="border-left-color: var(--warning);">
-                        <span class="course-tag" style="background: var(--warning); color: #000;">MASTERCLASS</span>
-                        <h3 style="margin:5px 0;">Gestión de Riesgo 101</h3>
-                        <p style="font-size:12px; color:#94a3b8;">La única diferencia entre un trader y un apostador.</p>
-                    </div>
+                    <div class="course-card"><h3>Psicología del Trading</h3><p>Control de emociones en el mercado.</p></div>
+                    <div class="course-card" style="border-left-color: var(--accent);"><h3>Scalping Pro</h3><p>Estrategias de 1 minuto.</p></div>
+                    <div class="course-card" style="border-left-color: var(--danger);"><h3>Gestión Institucional</h3><p>Manejo de grandes capitales.</p></div>
+                    <div class="course-card" style="border-left-color: var(--warning);"><h3>Análisis Algorítmico</h3><p>Bots y trading automático.</p></div>
                 </div>
             </section>
 
@@ -166,43 +143,31 @@
             </div>
             <div class="card">
                 <h3>Historial Reciente</h3>
-                <div id="history-box" style="max-height: 200px; overflow-y:auto;">
-                    <div class="history-row"><span class="tag-buy">COMPRA</span> <span>STECK</span> <span>$52.10</span></div>
-                </div>
-            </div>
-            <div class="card">
-                <h3>Riesgo</h3>
-                <input type="range" min="1" max="100" value="65" style="width:100%;">
+                <div id="history-box" style="max-height: 200px; overflow-y:auto;"></div>
             </div>
         </div>
     </main>
 
     <script>
         let mainChart, pieChart;
-        let lastPrice = 54.20;
+        let currentPrice = 54.20; // Precio base real
 
         function initCharts() {
             const ctxM = document.getElementById('mainChart').getContext('2d');
-            
             mainChart = new Chart(ctxM, {
                 type: 'line',
                 data: {
-                    labels: Array(30).fill(''), 
+                    labels: Array(40).fill(''), 
                     datasets: [{
-                        data: Array(30).fill(54),
+                        data: Array(40).fill(54),
                         borderColor: '#00ff88',
                         backgroundColor: 'rgba(0, 255, 136, 0.05)',
-                        fill: true, 
-                        tension: 0.5, // MOVIMIENTO ONDULADO
-                        borderWidth: 4, 
-                        pointRadius: 0,
-                        borderCapStyle: 'round'
+                        fill: true, tension: 0.3, borderWidth: 3, pointRadius: 0
                     }]
                 },
                 options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    animation: { duration: 1500, easing: 'easeInOutQuart' }, // MOVIMIENTO MÁS SUAVE
+                    responsive: true, maintainAspectRatio: false, 
+                    animation: { duration: 800, easing: 'linear' },
                     plugins: { legend: { display: false } }, 
                     scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.03)' } } } 
                 }
@@ -222,6 +187,30 @@
                 options: { cutout: '80%', plugins: { legend: { display: false } } }
             });
         }
+
+        // MOTOR DE MERCADO REAL (Random Walk)
+        setInterval(() => {
+            // La bolsa no salta, se mueve un pequeño % respecto al precio anterior
+            const volatility = 0.005; // 0.5% de volatilidad por tick
+            const change = currentPrice * volatility * (Math.random() * 2 - 1);
+            const oldPrice = currentPrice;
+            currentPrice = parseFloat((currentPrice + change).toFixed(2));
+
+            if(document.getElementById('p-steck')) {
+                document.getElementById('p-steck').innerText = currentPrice.toFixed(2);
+                document.getElementById('p-steck').style.color = currentPrice >= oldPrice ? 'var(--accent)' : 'var(--danger)';
+            }
+
+            if(mainChart) {
+                const color = currentPrice >= oldPrice ? '#00ff88' : '#ff0055';
+                mainChart.data.datasets[0].borderColor = color;
+                mainChart.data.datasets[0].backgroundColor = color + '11';
+                
+                mainChart.data.datasets[0].data.push(currentPrice);
+                mainChart.data.datasets[0].data.shift();
+                mainChart.update('none'); // Update sin lag para fluidez total
+            }
+        }, 1000); // Ticks de 1 segundo
 
         function logTrade(t, a, p, c) {
             const box = document.getElementById('history-box');
@@ -246,42 +235,23 @@
             btn.classList.add('active');
         }
 
+        // Fondo Estelar
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let dots = [];
         function initBG() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            for(let i=0; i<100; i++) dots.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.5, s: Math.random()*0.5});
+            for(let i=0; i<80; i++) dots.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.5, s: Math.random()*0.3});
         }
         function drawBG() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(0, 210, 255, 0.15)";
+            ctx.fillStyle = "rgba(0, 210, 255, 0.2)";
             dots.forEach(d => {
                 ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
                 d.y -= d.s; if(d.y < 0) d.y = canvas.height;
             });
             requestAnimationFrame(drawBG);
         }
-
-        // NUEVA LÓGICA DE MOVIMIENTO TIPO ONDA
-        setInterval(() => {
-            const currentPrice = (50 + Math.random()*15).toFixed(2);
-            
-            if(document.getElementById('p-steck')) document.getElementById('p-steck').innerText = currentPrice;
-
-            if(mainChart) {
-                const color = currentPrice >= lastPrice ? '#00ff88' : '#ff0055';
-                
-                mainChart.data.datasets[0].borderColor = color;
-                mainChart.data.datasets[0].backgroundColor = currentPrice >= lastPrice ? 'rgba(0, 255, 136, 0.05)' : 'rgba(255, 0, 85, 0.05)';
-                
-                mainChart.data.datasets[0].data.push(currentPrice);
-                mainChart.data.datasets[0].data.shift();
-                
-                mainChart.update();
-                lastPrice = currentPrice;
-            }
-        }, 1500); // ACTUALIZACIÓN RÍTMICA
 
         window.onload = () => { initCharts(); initBG(); drawBG(); };
     </script>
