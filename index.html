@@ -17,44 +17,38 @@
         
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.5; }
 
-        /* NAVEGACIÓN ESTILO TABLET */
         nav { width: 240px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 5px; z-index: 100; }
         .logo-box { padding: 10px; margin-bottom: 20px; text-align: center; }
-        .logo-img { width: 120px; margin-bottom: 10px; }
         .nav-btn { background: transparent; border: none; color: #6b7280; padding: 12px 15px; border-radius: 10px; text-align: left; cursor: pointer; font-weight: 500; transition: 0.2s; display: flex; align-items: center; gap: 10px; }
         .nav-btn:hover, .nav-btn.active { background: #eff6ff; color: var(--primary); font-weight: 600; }
 
-        /* LAYOUT PRINCIPAL */
         main { flex: 1; overflow-y: auto; padding: 30px; display: flex; gap: 20px; }
         .content-area { flex: 3; }
         .sidebar-right { flex: 1; display: flex; flex-direction: column; gap: 20px; }
 
         .page { display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* CARDS ESTILO IMAGEN */
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
         h3 { font-family: 'Montserrat'; font-size: 16px; margin-bottom: 15px; color: #374151; }
 
-        /* SECCIÓN TRADING - GRID */
         .trading-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .asset-stat { border: 1px solid var(--border); border-radius: 12px; padding: 15px; background: #f9fafb; }
         .price-tag { font-family: 'JetBrains Mono'; font-size: 24px; font-weight: 700; margin: 5px 0; }
 
-        /* RANGOS Y SELECTORES */
-        input[type="range"] { width: 100%; height: 6px; border-radius: 5px; appearance: none; background: #d1d5db; outline: none; }
-        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; background: var(--primary); border-radius: 50%; cursor: pointer; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-
-        .btn-blue { background: #3b82f6; color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; font-weight: 600; cursor: pointer; }
-        .btn-red { background: #ef4444; color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; font-weight: 600; cursor: pointer; }
-
-        /* CATEGORÍAS LATERALES */
-        .category-item { background: #eff6ff; padding: 12px; border-radius: 10px; margin-bottom: 8px; font-size: 13px; color: #1e40af; cursor: pointer; border: 1px solid #dbeafe; transition: 0.2s; }
-        .category-item:hover { transform: translateX(5px); background: #dbeafe; }
-
+        .btn-blue { background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-blue:hover { transform: scale(1.02); background: #2563eb; }
+        
+        /* ESTILOS DIVERTIDOS PARA SECCIONES NUEVAS */
+        .post-card { background: #f8fafc; border-radius: 12px; padding: 15px; margin-bottom: 10px; border-left: 4px solid var(--primary); }
+        .academy-card { border: 2px solid transparent; transition: 0.3s; cursor: pointer; }
+        .academy-card:hover { border-color: var(--primary); background: #f0f7ff; }
+        .badge { background: var(--warning); color: white; padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 800; }
+        
+        input, textarea { width: 100%; border: 1px solid var(--border); padding: 10px; border-radius: 8px; margin-top: 5px; font-family: inherit; }
         .meme-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .meme-img { width: 100%; border-radius: 10px; height: 100px; object-fit: cover; border: 1px solid var(--border); }
+        .meme-img { width: 100%; border-radius: 10px; height: 100px; object-fit: cover; }
     </style>
 </head>
 <body>
@@ -64,9 +58,9 @@
     <nav>
         <div class="logo-box">
             <h2 style="font-family:'Montserrat'; color:var(--primary); margin:0">MASARI</h2>
-            <span style="font-size: 10px; color:#9ca3af">INTELLIGENCE TERMINAL</span>
+            <span style="font-size: 10px; color:#9ca3af">TERMINAL INTELIGENTE</span>
         </div>
-        <button class="nav-btn active" onclick="goto('inicio', this)">🏠 Home</button>
+        <button class="nav-btn active" onclick="goto('inicio', this)">🏠 Inicio</button>
         <button class="nav-btn" onclick="goto('trading', this)">📈 Trading</button>
         <button class="nav-btn" onclick="goto('academia', this)">🎓 Academia</button>
         <button class="nav-btn" onclick="goto('network', this)">🌐 Network</button>
@@ -75,97 +69,131 @@
 
     <main>
         <div class="content-area">
+            
             <section id="inicio" class="page active">
-                <h1>Bienvenido, <span style="color:var(--primary)">Inversor</span></h1>
+                <h1>¡Hola, <span style="color:var(--primary)">Lobo de Wall Street!</span> 🐺</h1>
                 <div class="card">
-                    <h3>Cultura & Memes Financieros</h3>
+                    <h3>Cultura & Memes (No apto para aburridos)</h3>
                     <div class="meme-gallery">
                         <img src="https://i.imgflip.com/4/30zz5g.jpg" class="meme-img">
                         <img src="https://i.imgflip.com/4/1otk96.jpg" class="meme-img">
                         <img src="https://i.imgflip.com/4/26am.jpg" class="meme-img">
                     </div>
                 </div>
-                <div class="card">
-                    <h3>¿Por qué Masari?</h3>
-                    <p style="color:#6b7280; font-size:14px">Combinamos visualización de datos profesional con aprendizaje lúdico.</p>
+                <div class="card" style="background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);">
+                    <h3>¿Qué es Masari?</h3>
+                    <p style="color:#4b5563;">Es tu patio de juegos financiero. Aquí el dinero es de mentira, pero el aprendizaje es **muy real**. ¡Rómpela en el mercado sin miedo a la quiebra!</p>
                 </div>
             </section>
 
             <section id="trading" class="page">
                 <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h1 style="margin:0">Interactive <span style="color:var(--primary)">Chart</span></h1>
-                    <span style="font-family:'JetBrains Mono'; font-size:12px; color:#9ca3af">ExBics 100 4KDS VD 80K</span>
+                    <span style="font-family:'JetBrains Mono'; font-size:12px; color:#9ca3af">VOL: 80.4K | LIVE FEED</span>
                 </div>
-
-                <div class="card">
-                    <div style="height: 300px;"><canvas id="mainChart"></canvas></div>
-                </div>
-
+                <div class="card"><div style="height: 300px;"><canvas id="mainChart"></canvas></div></div>
                 <div class="trading-grid">
                     <div class="card">
-                        <h3>Steck</h3>
+                        <h3>Steck (Tecnología)</h3>
                         <div class="asset-stat">
-                            <span style="font-size:12px; color:#9ca3af">Price</span>
+                            <span style="font-size:12px; color:#9ca3af">Precio Actual</span>
                             <div class="price-tag" id="price-steck">59.00</div>
-                            <div style="display:flex; justify-content: space-between; font-size:11px; color:#9ca3af">
-                                <span>Value</span><span>Sides</span>
-                            </div>
                         </div>
-                        <button class="btn-blue" style="margin-top:15px" onclick="trade('BUY')">Buy Now</button>
+                        <button class="btn-blue" style="margin-top:15px" onclick="trade('Compra')">¡Comprar el Dip!</button>
                     </div>
-
                     <div class="card">
-                        <h3>Stock2</h3>
+                        <h3>Stock2 (Energía)</h3>
                         <div class="asset-stat">
-                            <span style="font-size:12px; color:#9ca3af">Price</span>
+                            <span style="font-size:12px; color:#9ca3af">Precio Actual</span>
                             <div class="price-tag" id="price-stock2">31.00</div>
-                            <div style="display:flex; justify-content: space-between; font-size:11px; color:#9ca3af">
-                                <span>Value</span><span>Value</span>
-                            </div>
                         </div>
-                        <button class="btn-red" style="margin-top:15px" onclick="trade('SELL')">Set</button>
+                        <button class="btn-blue" style="background:var(--danger); margin-top:15px" onclick="trade('Venta')">Vender Todo</button>
                     </div>
+                </div>
+            </section>
+
+            <section id="academia" class="page">
+                <h1>Masari <span style="color:var(--primary)">University</span> 🎓</h1>
+                <div class="card">
+                    <h3>Cursos que no te duermen</h3>
+                    <div class="academy-card card" onclick="alert('Inscrito en Cripto 101')">
+                        <div style="display:flex; justify-content:space-between">
+                            <strong>Cripto para Abuelas</strong> <span class="badge">NUEVO</span>
+                        </div>
+                        <p style="font-size:13px; color:#6b7280">Entiende Bitcoin sin explotar en el intento.</p>
+                    </div>
+                    <div class="academy-card card" onclick="alert('Inscrito en Velas')">
+                        <strong>Velas Japonesas (No son para decorar)</strong>
+                        <p style="font-size:13px; color:#6b7280">Aprende a leer el futuro en los gráficos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="network" class="page">
+                <h1>Trader <span style="color:var(--primary)">Chisme</span> 💬</h1>
+                <div class="card">
+                    <textarea id="post-input" placeholder="¿Cuál es tu predicción para hoy?"></textarea>
+                    <button class="btn-blue" style="margin-top:10px" onclick="addPost()">Lanzar a la red</button>
+                </div>
+                <div id="feed">
+                    <div class="post-card"><strong>@DogeMaster:</strong> "¡El mercado está en oferta! Compré Steck a 40."</div>
+                    <div class="post-card"><strong>@CryptoElena:</strong> "Chicos, sigan el curso de velas, ¡me salvó de una caída hoy!"</div>
+                </div>
+            </section>
+
+            <section id="perfil" class="page">
+                <h1>Tu <span style="color:var(--primary)">Expediente</span> 👤</h1>
+                <div class="card" style="text-align:center">
+                    <div style="width:80px; height:80px; background:var(--primary); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; color:white; font-size:30px">🚀</div>
+                    <input type="text" value="Trader Masari" style="text-align:center; font-weight:800; border:none; font-size:20px">
+                    <p style="color:#6b7280">Rango: Tiburón Novato</p>
+                </div>
+                <div class="card">
+                    <h3>Estadísticas de Supervivencia</h3>
+                    <p>Cursos completados: 2</p>
+                    <p>Operaciones exitosas: 15</p>
+                    <button class="btn-blue" style="background:#10b981">Retirar Ganancias Imaginarias</button>
                 </div>
             </section>
         </div>
 
         <div class="sidebar-right">
             <div class="card">
-                <h3>Asset Portfolio</h3>
-                <div style="height: 180px;"><canvas id="pieChart"></canvas></div>
+                <h3>Portafolio de Activos</h3>
+                <div style="height: 150px;"><canvas id="pieChart"></canvas></div>
+                <div style="margin-top:15px; font-size:12px; line-height:1.4; color:#6b7280">
+                    <strong style="color:var(--text)">¿Qué es esto?</strong><br>
+                    Es el "pastel" de tus inversiones. Te muestra cómo tienes repartido tu dinero: si tienes mucho en Cripto, poco en Cash o si estás diversificado como un profesional. ¡No pongas todos los huevos en la misma canasta!
+                </div>
             </div>
 
             <div class="card">
-                <h3>Risk Tolerance</h3>
+                <h3>Tolerancia al Riesgo</h3>
                 <div style="display:flex; justify-content: space-between; font-size:11px; margin-bottom:10px">
-                    <span>Low</span><span>High</span>
+                    <span>Miedo (Bajo)</span><span>YOLO (Alto)</span>
                 </div>
                 <input type="range" min="1" max="100" value="45">
             </div>
 
             <div class="card">
-                <h3>Categorias</h3>
-                <div class="category-item">Curso de introducción a la inversión</div>
-                <div class="category-item">Curso de Edrección y Diversión</div>
-                <div class="category-item">Curso de Payires on coronaados</div>
-                <div class="category-item">Curso de Consultww y Inversión</div>
+                <h3>Categorías Pro</h3>
+                <div class="category-item" onclick="goto('academia')">🔥 Inversión para Gen Z</div>
+                <div class="category-item" onclick="goto('academia')">🧠 Psicología del Trader</div>
+                <div class="category-item" onclick="goto('academia')">📊 Análisis Fundamental</div>
             </div>
         </div>
     </main>
 
     <script>
-        // --- GRÁFICOS ---
         let mainChart, pieChart;
 
         function initCharts() {
-            // Gráfico de Velas/Líneas (Interactive Chart)
             const ctxMain = document.getElementById('mainChart').getContext('2d');
             mainChart = new Chart(ctxMain, {
                 type: 'line',
                 data: {
-                    labels: ['Sun', 'Nov', '2023', 'Hop', 'Dec', 'Jan'],
+                    labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
                     datasets: [{
-                        label: 'Market',
                         data: [40, 55, 45, 70, 60, 85],
                         borderColor: '#3b82f6',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -176,58 +204,71 @@
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
 
-            // Gráfico de Pastel (Asset Portfolio)
             const ctxPie = document.getElementById('pieChart').getContext('2d');
             pieChart = new Chart(ctxPie, {
                 type: 'doughnut',
                 data: {
-                    labels: ['BTC', 'ETH', 'Stock', 'Cash'],
+                    labels: ['Tecno', 'Energía', 'Cash'],
                     datasets: [{
-                        data: [30, 20, 40, 10],
-                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
+                        data: [50, 30, 20],
+                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'],
                         borderWidth: 0
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
+                options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } }
             });
         }
 
-        // --- LÓGICA DE PRECIOS ---
         setInterval(() => {
-            const p1 = (Math.random() * 100).toFixed(2);
-            const p2 = (Math.random() * 50).toFixed(2);
-            document.getElementById('price-steck').innerText = p1;
-            document.getElementById('price-stock2').innerText = p2;
-            
-            mainChart.data.datasets[0].data.push(Math.random() * 100);
+            document.getElementById('price-steck').innerText = (40 + Math.random() * 20).toFixed(2);
+            document.getElementById('price-stock2').innerText = (20 + Math.random() * 15).toFixed(2);
+            mainChart.data.datasets[0].data.push(40 + Math.random() * 40);
             mainChart.data.datasets[0].data.shift();
             mainChart.update('none');
         }, 2000);
 
-        // --- NAVEGACIÓN ---
         function goto(id, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if(btn) {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+        }
+
+        function addPost() {
+            const txt = document.getElementById('post-input').value;
+            if(!txt) return;
+            const post = document.createElement('div');
+            post.className = 'post-card';
+            post.innerHTML = `<strong>@Tú:</strong> "${txt}"`;
+            document.getElementById('feed').prepend(post);
+            document.getElementById('post-input').value = '';
         }
 
         function trade(type) {
-            alert("Operación " + type + " ejecutada con éxito.");
+            alert(type + " ejecutada. ¡Tu billetera (imaginaria) ha cambiado!");
         }
 
-        // --- FONDO ANIMADO (Limpio) ---
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-        class P { constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-0.5)*0.5; this.vy=(Math.random()-0.5)*0.5; } update(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; } draw(){ ctx.fillStyle='rgba(59,130,246,0.2)'; ctx.beginPath(); ctx.arc(this.x,this.y,1,0,Math.PI*2); ctx.fill(); } }
-        for(let i=0; i<40; i++) particles.push(new P());
-        function anim(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(anim); } 
-        
-        anim();
-        window.onload = initCharts;
+        window.onload = () => {
+            initCharts();
+            // Animación de fondo simple
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            function draw() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.fillStyle = 'rgba(59,130,246,0.05)';
+                for(let i=0; i<20; i++) {
+                    ctx.beginPath();
+                    ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 2, 0, Math.PI*2);
+                    ctx.fill();
+                }
+                setTimeout(() => requestAnimationFrame(draw), 500);
+            }
+            draw();
+        };
     </script>
 </body>
 </html>
