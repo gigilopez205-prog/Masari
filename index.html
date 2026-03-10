@@ -35,7 +35,16 @@
         h1 { font-family: 'Montserrat'; font-size: 28px; margin-top: 0; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         h3 { font-family: 'Montserrat'; font-size: 14px; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
 
-        /* LISTAS DE BENEFICIOS */
+        /* ACADEMIA GRID MEJORADA */
+        .academy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding-bottom: 40px; }
+        .course-card { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); padding: 20px; border-radius: 15px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; }
+        .course-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(0,210,255,0.1); }
+        .course-level { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; display: block; }
+        .course-desc { font-size: 13px; color: #94a3b8; margin: 10px 0 20px; line-height: 1.4; }
+        .btn-enroll { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .btn-enroll:hover { background: var(--primary); color: #000; }
+        .btn-enroll.enrolled { background: var(--accent); border-color: var(--accent); color: #000; }
+
         .benefit-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; font-size: 14px; }
         .benefit-icon { color: var(--accent); font-weight: bold; }
 
@@ -129,10 +138,11 @@
             </section>
 
             <section id="academia" class="page">
-                <h1>Academia Pro</h1>
-                <div class="card">
-                    <p>Cursos exclusivos en desarrollo...</p>
-                </div>
+                <h1>Academia <span style="color:var(--primary)">Pro</span></h1>
+                <p style="color:#94a3b8; margin-bottom: 25px;">Formación de élite para traders institucionales.</p>
+                
+                <div class="academy-grid" id="academy-list">
+                    </div>
             </section>
 
             <section id="perfil" class="page">
@@ -178,6 +188,41 @@
         let mainChart, pieChart;
         let currentPrice = 54.20;
 
+        const courses = [
+            { title: "Psicología de Ballenas", level: "Avanzado", desc: "Aprende a identificar las zonas de manipulación institucional." },
+            { title: "Scalping Relámpago", level: "Intermedio", desc: "Técnicas de entrada y salida en gráficos de 15 segundos." },
+            { title: "Smart Money Concepts", level: "Experto", desc: "El curso definitivo para entender la liquidez del mercado." },
+            { title: "Fundamentos de Blockchain", level: "Básico", desc: "Entiende la tecnología detrás de los activos que tradeas." },
+            { title: "Gestión de Riesgo 2.0", level: "Esencial", desc: "Cómo sobrevivir a un mercado bajista sin quemar tu cuenta." },
+            { title: "Análisis de Sentimiento IA", level: "Pro", desc: "Uso de herramientas de IA para predecir movimientos de precio." },
+            { title: "Trading de Opciones", level: "Avanzado", desc: "Estrategias complejas para mercados laterales." },
+            { title: "Macroeconomía Global", level: "Intermedio", desc: "Cómo afectan las tasas de la FED al mercado cripto." },
+            { title: "Arbitraje de Criptoactivos", level: "Pro", desc: "Aprovecha las diferencias de precio entre exchanges." },
+            { title: "Masterclass: DeFi Yield", level: "Avanzado", desc: "Genera ingresos pasivos con protocolos descentralizados." }
+        ];
+
+        function loadCourses() {
+            const list = document.getElementById('academy-list');
+            courses.forEach((c, i) => {
+                const card = document.createElement('div');
+                card.className = 'course-card';
+                card.innerHTML = `
+                    <div>
+                        <span class="course-level">${c.level}</span>
+                        <h3 style="margin:0; font-size:16px;">${c.title}</h3>
+                        <p class="course-desc">${c.desc}</p>
+                    </div>
+                    <button class="btn-enroll" onclick="enroll(this)">Inscribirse</button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function enroll(btn) {
+            btn.innerText = "✓ Inscrito";
+            btn.classList.add('enrolled');
+        }
+
         function initCharts() {
             const ctxM = document.getElementById('mainChart').getContext('2d');
             mainChart = new Chart(ctxM, {
@@ -214,7 +259,6 @@
             });
         }
 
-        // MOTOR DE MERCADO REAL
         setInterval(() => {
             const volatility = 0.005;
             const change = currentPrice * volatility * (Math.random() * 2 - 1);
@@ -270,7 +314,7 @@
             requestAnimationFrame(drawBG);
         }
 
-        window.onload = () => { initCharts(); initBG(); drawBG(); };
+        window.onload = () => { initCharts(); initBG(); drawBG(); loadCourses(); };
     </script>
 </body>
 </html>
