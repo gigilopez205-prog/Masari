@@ -35,12 +35,13 @@
         h1 { font-family: 'Montserrat'; font-size: 28px; margin-top: 0; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         h3 { font-family: 'Montserrat'; font-size: 14px; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
 
-        .card-steck { border: 2px solid var(--primary); box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
-        .card-stock2 { border: 2px solid var(--danger); box-shadow: 0 0 15px rgba(255, 0, 85, 0.2); }
+        /* LISTAS DE BENEFICIOS */
+        .benefit-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; font-size: 14px; }
+        .benefit-icon { color: var(--accent); font-weight: bold; }
 
-        .academy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .course-card { background: rgba(0,0,0,0.3); border-left: 4px solid var(--primary); padding: 20px; border-radius: 12px; transition: 0.3s; cursor: pointer; }
-        .course-card:hover { background: rgba(0,210,255,0.05); transform: translateX(5px); }
+        .price-display { font-family: 'JetBrains Mono'; font-size: 32px; font-weight: 800; margin: 10px 0; }
+        .btn-action { background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
+        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary); }
 
         .market-meme-card {
             width: 100%; height: 350px; background: linear-gradient(45deg, #000, #1e293b); border: 3px solid var(--primary); border-radius: 20px;
@@ -51,13 +52,8 @@
         .meme-graphic { font-size: 120px; filter: drop-shadow(0 0 20px var(--primary)); animation: float 3s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        .price-display { font-family: 'JetBrains Mono'; font-size: 32px; font-weight: 800; margin: 10px 0; }
-        .btn-action { background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
-        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary); }
-
         .history-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px; }
         .tag-buy { color: var(--accent); font-weight: bold; }
-        .tag-sell { color: var(--danger); font-weight: bold; }
 
         .profile-pic { width: 110px; height: 110px; border: 3px solid var(--primary); border-radius: 50%; margin: 0 auto 20px; position: relative; overflow: hidden; box-shadow: 0 0 30px var(--primary); cursor: pointer; }
         .profile-pic img { width: 100%; height: 100%; object-fit: cover; }
@@ -85,8 +81,25 @@
             
             <section id="inicio" class="page active">
                 <div class="card" style="background: linear-gradient(135deg, rgba(0,210,255,0.1), transparent); border-left: 5px solid var(--primary);">
-                    <h1>Estado del Mercado Global</h1>
-                    <p style="color:#94a3b8;">Sincronización completa. Alta volatilidad detectada en tiempo real.</p>
+                    <h1>¿Por qué somos tu mejor opción?</h1>
+                    <p style="color:#94a3b8; margin-bottom: 25px;">Masari Terminal no es solo una plataforma, es tu ventaja injusta en el mercado.</p>
+                    
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✓</span>
+                        <div><strong>Latencia Cero:</strong> Ejecución instantánea con nodos directos a la blockchain.</div>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✓</span>
+                        <div><strong>IA Predictiva:</strong> Algoritmos que analizan el sentimiento del mercado en milisegundos.</div>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✓</span>
+                        <div><strong>Seguridad Grado Militar:</strong> Tus fondos y datos protegidos por cifrado cuántico.</div>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✓</span>
+                        <div><strong>Comunidad de Élite:</strong> Acceso a señales exclusivas de traders con 90% de win-rate.</div>
+                    </div>
                 </div>
 
                 <div class="market-meme-card">
@@ -102,35 +115,31 @@
                     <div style="height: 300px;"><canvas id="mainChart"></canvas></div>
                 </div>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                    <div class="card card-steck">
+                    <div class="card" style="border: 1px solid var(--primary);">
                         <h3>STECK / USDT</h3>
-                        <div class="price-display" id="p-steck" style="text-shadow: 0 0 10px var(--accent);">54.20</div>
+                        <div class="price-display" id="p-steck">54.20</div>
                         <button class="btn-action" onclick="logTrade('COMPRA', 'STECK', 54.20, 'var(--accent)')">Comprar</button>
                     </div>
-                    <div class="card card-stock2">
+                    <div class="card" style="border: 1px solid var(--danger);">
                         <h3>STOCK2 / USDT</h3>
-                        <div class="price-display" id="p-stock2" style="color:var(--danger); text-shadow: 0 0 10px var(--danger);">28.15</div>
+                        <div class="price-display" id="p-stock2" style="color:var(--danger)">28.15</div>
                         <button class="btn-action" style="background:var(--danger)" onclick="logTrade('VENTA', 'STOCK2', 28.15, 'var(--danger)')">Vender</button>
                     </div>
                 </div>
             </section>
 
             <section id="academia" class="page">
-                <h1>Masari <span style="color:var(--warning)">University</span></h1>
-                <div class="academy-grid">
-                    <div class="course-card"><h3>Psicología del Trading</h3><p>Control de emociones en el mercado.</p></div>
-                    <div class="course-card" style="border-left-color: var(--accent);"><h3>Scalping Pro</h3><p>Estrategias de 1 minuto.</p></div>
-                    <div class="course-card" style="border-left-color: var(--danger);"><h3>Gestión Institucional</h3><p>Manejo de grandes capitales.</p></div>
-                    <div class="course-card" style="border-left-color: var(--warning);"><h3>Análisis Algorítmico</h3><p>Bots y trading automático.</p></div>
+                <h1>Academia Pro</h1>
+                <div class="card">
+                    <p>Cursos exclusivos en desarrollo...</p>
                 </div>
             </section>
 
             <section id="perfil" class="page">
                 <div class="card" style="text-align:center;">
-                    <div class="profile-pic" onclick="document.getElementById('fileIn').click()">
+                    <div class="profile-pic">
                         <img id="my-img" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Masari">
                     </div>
-                    <input type="file" id="fileIn" hidden onchange="uploadImg(event)">
                     <input type="text" id="nameIn" class="edit-input" value="TRADER_ALPHA_01" oninput="sync()">
                 </div>
             </section>
@@ -140,7 +149,24 @@
             <div class="card" style="text-align:center;">
                 <h2 id="side-name" style="margin:0; font-size:18px;">TRADER_ALPHA_01</h2>
                 <div style="height: 160px; margin-top:15px;"><canvas id="pieChart"></canvas></div>
+                
+                <div style="text-align: left; margin-top: 15px; font-size: 11px; line-height: 1.6;">
+                    <h3 style="font-size: 10px; margin-bottom: 8px;">Distribución de Cartera</h3>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;"></span>
+                        <span><strong>50% STECK:</strong> Activos de alta liquidez.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 8px; height: 8px; background: var(--accent); border-radius: 50%;"></span>
+                        <span><strong>30% USDT:</strong> Capital estable para compras.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 8px; height: 8px; background: var(--danger); border-radius: 50%;"></span>
+                        <span><strong>20% STOCK2:</strong> Inversiones de riesgo.</span>
+                    </div>
+                </div>
             </div>
+            
             <div class="card">
                 <h3>Historial Reciente</h3>
                 <div id="history-box" style="max-height: 200px; overflow-y:auto;"></div>
@@ -150,7 +176,7 @@
 
     <script>
         let mainChart, pieChart;
-        let currentPrice = 54.20; // Precio base real
+        let currentPrice = 54.20;
 
         function initCharts() {
             const ctxM = document.getElementById('mainChart').getContext('2d');
@@ -177,7 +203,7 @@
             pieChart = new Chart(ctxP, {
                 type: 'doughnut',
                 data: {
-                    labels: ['A', 'B', 'C'],
+                    labels: ['STECK', 'USDT', 'STOCK2'],
                     datasets: [{
                         data: [50, 30, 20],
                         backgroundColor: ['#00d2ff', '#00ff88', '#ff0055'],
@@ -188,10 +214,9 @@
             });
         }
 
-        // MOTOR DE MERCADO REAL (Random Walk)
+        // MOTOR DE MERCADO REAL
         setInterval(() => {
-            // La bolsa no salta, se mueve un pequeño % respecto al precio anterior
-            const volatility = 0.005; // 0.5% de volatilidad por tick
+            const volatility = 0.005;
             const change = currentPrice * volatility * (Math.random() * 2 - 1);
             const oldPrice = currentPrice;
             currentPrice = parseFloat((currentPrice + change).toFixed(2));
@@ -205,12 +230,11 @@
                 const color = currentPrice >= oldPrice ? '#00ff88' : '#ff0055';
                 mainChart.data.datasets[0].borderColor = color;
                 mainChart.data.datasets[0].backgroundColor = color + '11';
-                
                 mainChart.data.datasets[0].data.push(currentPrice);
                 mainChart.data.datasets[0].data.shift();
-                mainChart.update('none'); // Update sin lag para fluidez total
+                mainChart.update('none');
             }
-        }, 1000); // Ticks de 1 segundo
+        }, 1000);
 
         function logTrade(t, a, p, c) {
             const box = document.getElementById('history-box');
@@ -218,12 +242,6 @@
             row.className = 'history-row';
             row.innerHTML = `<span style="color:${c}; font-weight:bold;">${t}</span> <span>${a}</span> <span>$${p}</span>`;
             box.prepend(row);
-        }
-
-        function uploadImg(e) {
-            const reader = new FileReader();
-            reader.onload = () => document.getElementById('my-img').src = reader.result;
-            reader.readAsDataURL(e.target.files[0]);
         }
 
         function sync() { document.getElementById('side-name').innerText = document.getElementById('nameIn').value; }
@@ -235,7 +253,6 @@
             btn.classList.add('active');
         }
 
-        // Fondo Estelar
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let dots = [];
