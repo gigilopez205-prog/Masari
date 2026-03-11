@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masari Terminal | Live Exchange</title>
+    <title>Masari Terminal | Global Network</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
@@ -35,33 +35,29 @@
         h1 { font-family: 'Montserrat'; font-size: 28px; margin-top: 0; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         h3 { font-family: 'Montserrat'; font-size: 14px; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
 
-        /* RED SOCIAL ESTILO AESTHETIC */
-        .network-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-        .user-profile-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: 15px; padding: 20px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
-        .user-profile-card:hover { border-color: var(--primary); transform: scale(1.02); }
+        /* PERFIL EXPANDIDO */
+        .profile-header { display: grid; grid-template-columns: 150px 1fr; gap: 30px; align-items: center; }
+        .profile-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; font-size: 10px; color: var(--primary); text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
+
+        /* BOTS Y RED SOCIAL */
+        .network-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+        .bot-card { border: 1px solid var(--warning); background: rgba(247, 255, 0, 0.05); }
+        .bot-tag { background: var(--warning); color: #000; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 4px; position: absolute; top: 10px; right: 10px; }
+
+        .user-profile-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: 15px; padding: 20px; text-align: center; transition: 0.3s; position: relative; }
         .user-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--primary); margin-bottom: 10px; }
-        .user-status { font-size: 10px; color: var(--accent); font-weight: bold; background: rgba(0,255,136,0.1); padding: 2px 8px; border-radius: 10px; }
-        .user-bio { font-size: 12px; color: #94a3b8; margin: 10px 0; font-style: italic; }
         .follow-btn { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--primary); background: transparent; color: var(--primary); cursor: pointer; font-size: 12px; font-weight: bold; }
         .follow-btn:hover { background: var(--primary); color: #000; }
 
-        /* FUN FACTS */
         .fun-fact-box { font-size: 12px; color: #94a3b8; line-height: 1.4; padding: 10px; background: rgba(0,210,255,0.05); border-radius: 10px; border-left: 3px solid var(--warning); }
-
-        /* ACADEMIA GRID */
-        .academy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .course-card { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); padding: 20px; border-radius: 15px; display: flex; flex-direction: column; transition: 0.3s; }
-        .btn-enroll { border: 1px solid var(--primary); background: transparent; color: var(--primary); padding: 10px; border-radius: 8px; cursor: pointer; margin-top: auto; }
-        .btn-enroll:hover { background: var(--primary); color: #000; }
-
-        .price-display { font-family: 'JetBrains Mono'; font-size: 32px; font-weight: 800; margin: 10px 0; }
-        .btn-action { background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        
         .history-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 11px; }
 
-        .profile-pic { width: 110px; height: 110px; border: 3px solid var(--primary); border-radius: 50%; margin: 0 auto 20px; position: relative; overflow: hidden; box-shadow: 0 0 30px var(--primary); }
+        .profile-pic { width: 130px; height: 130px; border: 3px solid var(--primary); border-radius: 50%; overflow: hidden; box-shadow: 0 0 30px var(--primary); margin: 0 auto; }
         .profile-pic img { width: 100%; height: 100%; object-fit: cover; }
-        .edit-input { background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: white; padding: 12px; border-radius: 10px; width: 100%; margin-top: 10px; }
+        .edit-input { background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: white; padding: 10px; border-radius: 8px; width: 100%; font-size: 13px; }
+        textarea.edit-input { resize: none; height: 80px; }
     </style>
 </head>
 <body>
@@ -73,64 +69,88 @@
             <h2 style="font-family:'Montserrat'; color:var(--primary); margin:0;">MASARI</h2>
             <span style="font-size: 10px; color:var(--primary); opacity: 0.6; font-weight: 700;">V3.0 NEURAL SYSTEM</span>
         </div>
-        <button class="nav-btn active" onclick="goto('inicio', this)">🏠 Panel Principal</button>
+        <button class="nav-btn" onclick="goto('inicio', this)">🏠 Panel Principal</button>
         <button class="nav-btn" onclick="goto('trading', this)">📈 Trading en Vivo</button>
         <button class="nav-btn" onclick="goto('academia', this)">🎓 Academia Pro</button>
         <button class="nav-btn" onclick="goto('network', this)">🌐 Red Masari</button>
-        <button class="nav-btn" onclick="goto('perfil', this)">👤 Mi Perfil</button>
+        <button class="nav-btn active" onclick="goto('perfil', this)">👤 Mi Perfil</button>
     </nav>
 
     <main>
         <div class="content-area">
             
-            <section id="inicio" class="page active">
-                <div class="card" style="background: linear-gradient(135deg, rgba(0,210,255,0.1), transparent); border-left: 5px solid var(--primary);">
-                    <h1>Bienvenido, Trader</h1>
-                    <p style="color:#94a3b8;">Sincronización completa. Alta volatilidad detectada en tiempo real.</p>
-                </div>
-                <div class="card">
-                    <h3>¿Por qué Masari?</h3>
-                    <p style="font-size: 14px; color: #94a3b8;">Ejecución instantánea, seguridad cuántica y una comunidad de élite.</p>
+            <section id="inicio" class="page">
+                <div class="card" style="border-left: 5px solid var(--primary);">
+                    <h1>¿Por qué somos tu mejor opción?</h1>
+                    <p style="color:#94a3b8;">Tecnología de ejecución sub-atómica y comunidad de alto nivel.</p>
                 </div>
             </section>
 
             <section id="trading" class="page">
                 <div class="card" style="border-top: 3px solid var(--primary);">
-                    <h3>Terminal (Real-Time Tick)</h3>
+                    <h3>Terminal de Análisis (Real-Time Tick)</h3>
                     <div style="height: 300px;"><canvas id="mainChart"></canvas></div>
                 </div>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
                     <div class="card" style="border: 1px solid var(--primary);">
                         <h3>STECK / USDT</h3>
-                        <div class="price-display" id="p-steck">54.20</div>
-                        <button class="btn-action" onclick="logTrade('COMPRA', 'STECK', 54.20, 'var(--accent)')">Comprar</button>
-                    </div>
-                    <div class="card" style="border: 1px solid var(--danger);">
-                        <h3>STOCK2 / USDT</h3>
-                        <div class="price-display" id="p-stock2" style="color:var(--danger)">28.15</div>
-                        <button class="btn-action" style="background:var(--danger)" onclick="logTrade('VENTA', 'STOCK2', 28.15, 'var(--danger)')">Vender</button>
+                        <div class="price-display" id="p-steck" style="font-size: 32px; font-weight: 800; margin: 10px 0;">54.20</div>
+                        <button class="btn-action" style="background: linear-gradient(45deg, var(--primary), #0044ff); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer;">Comprar</button>
                     </div>
                 </div>
             </section>
 
             <section id="academia" class="page">
                 <h1>Academia <span style="color:var(--primary)">Pro</span></h1>
-                <div class="academy-grid" id="academy-list"></div>
+                <div class="academy-grid" id="academy-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;"></div>
             </section>
 
             <section id="network" class="page">
-                <h1>Red <span style="color:var(--primary)">Masari</span></h1>
-                <p style="color:#94a3b8; margin-bottom: 20px;">Conéctate con los mejores traders de la red.</p>
+                <h1>Masari <span style="color:var(--primary)">Network</span></h1>
+                <h3 style="margin-top: 20px; color: var(--warning);">⚡ Neural Bots (HFT Algorithms)</h3>
+                <div class="network-grid" id="bot-list" style="margin-bottom: 40px;">
+                    </div>
+                <h3>👥 Top Traders</h3>
                 <div class="network-grid" id="user-list">
                     </div>
             </section>
 
-            <section id="perfil" class="page">
-                <div class="card" style="text-align:center;">
+            <section id="perfil" class="page active">
+                <div class="card profile-header">
                     <div class="profile-pic">
                         <img id="my-img" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Masari">
                     </div>
-                    <input type="text" id="nameIn" class="edit-input" value="TRADER_ALPHA_01" oninput="sync()">
+                    <div>
+                        <h1 id="display-name" style="margin:0;">TRADER_ALPHA_01</h1>
+                        <p id="display-country" style="color: var(--primary); font-size: 12px; font-weight: bold;">📍 ESPAÑA</p>
+                        <div class="profile-stats-grid">
+                            <div class="input-group">
+                                <label>Nombre de Usuario</label>
+                                <input type="text" id="nameIn" class="edit-input" value="TRADER_ALPHA_01" oninput="sync()">
+                            </div>
+                            <div class="input-group">
+                                <label>Edad</label>
+                                <input type="number" id="ageIn" class="edit-input" value="28">
+                            </div>
+                            <div class="input-group">
+                                <label>País</label>
+                                <input type="text" id="countryIn" class="edit-input" value="España" oninput="sync()">
+                            </div>
+                            <div class="input-group">
+                                <label>Estrategia Principal</label>
+                                <select id="stratIn" class="edit-input">
+                                    <option>Scalping Intradía</option>
+                                    <option>Swing Trading</option>
+                                    <option>HODL a Largo Plazo</option>
+                                    <option>Arbitraje IA</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Descripción de Perfil</label>
+                            <textarea id="descIn" class="edit-input">Trader enfocado en el análisis técnico de alta precisión y liquidez institucional.</textarea>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -158,38 +178,38 @@
         const profiles = [
             { name: "CryptoQueen", bio: "Dominando Bitcoin desde 2014.", seed: "1" },
             { name: "BullRunner", bio: "Solo velas verdes en mi feed.", seed: "2" },
-            { name: "MacroExpert", bio: "Analizando la FED cada mañana.", seed: "3" },
-            { name: "SatoshiGhost", bio: "La descentralización es el camino.", seed: "4" },
-            { name: "AlphaWolf", bio: "Scalper agresivo. 90% Winrate.", seed: "5" },
-            { name: "LunaLover", bio: "Buscando la próxima gema x100.", seed: "6" },
-            { name: "WhaleHunter", bio: "Rastreando billeteras de ballenas.", seed: "7" },
-            { name: "ChartMaster", bio: "Las gráficas nunca mienten.", seed: "8" },
-            { name: "DefiDuke", bio: "Viviendo del Yield Farming.", seed: "9" },
-            { name: "PixelTrader", bio: "NFTs y Crypto es mi pasión.", seed: "10" }
+            { name: "AlphaWolf", bio: "Scalper agresivo. 90% Winrate.", seed: "5" }
+        ];
+
+        const bots = [
+            { name: "Aegis-v9", bio: "Bot de arbitraje triangular ultra rápido.", seed: "bot1" },
+            { name: "CyberPulse", bio: "Detección de ballenas en tiempo real.", seed: "bot2" },
+            { name: "Titan-HFT", bio: "Frecuencia alta con latencia de 1ms.", seed: "bot3" }
         ];
 
         const funFacts = [
-            "El primer artículo comprado con Bitcoin fueron 2 pizzas por 10,000 BTC.",
-            "El mercado de valores suele ser más volátil los lunes.",
-            "El 90% de los traders novatos pierden dinero en sus primeros 90 días.",
-            "Wall Street debe su nombre a un muro construido por holandeses en 1653.",
-            "La palabra 'Bolsa' proviene del apellido Van der Bürse de una familia belga.",
-            "Warren Buffett compró su primera acción a los 11 años."
+            "El 90% de los traders pierden dinero por falta de gestión de riesgo.",
+            "La primera bolsa de valores moderna nació en Ámsterdam en 1602.",
+            "Warren Buffett compró su primera acción a los 11 años.",
+            "Bitcoin no tiene dueño; es un protocolo descentralizado."
         ];
 
         function loadNetwork() {
-            const list = document.getElementById('user-list');
+            const uList = document.getElementById('user-list');
+            const bList = document.getElementById('bot-list');
+            
+            bots.forEach(b => {
+                const card = document.createElement('div');
+                card.className = 'user-profile-card bot-card';
+                card.innerHTML = `<span class="bot-tag">ALGO-BOT</span><img class="user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=${b.seed}"><h4 style="margin:5px 0;">${b.name}</h4><p style="font-size:11px; color:#94a3b8;">${b.bio}</p><button class="follow-btn" style="border-color:var(--warning); color:var(--warning)">Copiar Estrategia</button>`;
+                bList.appendChild(card);
+            });
+
             profiles.forEach(u => {
                 const card = document.createElement('div');
                 card.className = 'user-profile-card';
-                card.innerHTML = `
-                    <span class="user-status">ONLINE</span><br>
-                    <img class="user-avatar" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=${u.seed}">
-                    <h4 style="margin:5px 0;">${u.name}</h4>
-                    <p class="user-bio">"${u.bio}"</p>
-                    <button class="follow-btn" onclick="this.innerText='Siguiendo'">Seguir</button>
-                `;
-                list.appendChild(card);
+                card.innerHTML = `<img class="user-avatar" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=${u.seed}"><h4 style="margin:5px 0;">${u.name}</h4><p style="font-size:11px; color:#94a3b8;">${u.bio}</p><button class="follow-btn" onclick="this.innerText='Siguiendo'">Seguir</button>`;
+                uList.appendChild(card);
             });
         }
 
@@ -197,19 +217,18 @@
             const list = document.getElementById('academy-list');
             for(let i=1; i<=10; i++) {
                 const card = document.createElement('div');
-                card.className = 'course-card';
-                card.innerHTML = `
-                    <span style="font-size:10px; color:var(--primary)">CLASE ONLINE #${i}</span>
-                    <h3 style="margin:5px 0; font-size:16px;">Estrategia Avanzada V${i}</h3>
-                    <p style="font-size:12px; color:#94a3b8;">Domina el mercado con esta clase magistral.</p>
-                    <button class="btn-enroll" onclick="this.innerText='Inscrito'">Inscribirse</button>
-                `;
+                card.className = 'card'; card.style.padding = "15px";
+                card.innerHTML = `<h4 style="margin:0; font-size:14px; color:var(--primary)">Clase Online #${i}</h4><p style="font-size:11px; color:#94a3b8;">Módulo de alta precisión financiera.</p><button style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--primary); background:transparent; color:var(--primary); cursor:pointer; font-size:11px; font-weight:bold;" onclick="this.innerText='Inscrito'">Inscribirse</button>`;
                 list.appendChild(card);
             }
         }
 
-        function updateFunFact() {
-            document.getElementById('fun-fact').innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
+        function sync() {
+            const name = document.getElementById('nameIn').value;
+            const country = document.getElementById('countryIn').value;
+            document.getElementById('side-name').innerText = name;
+            document.getElementById('display-name').innerText = name;
+            document.getElementById('display-country').innerText = "📍 " + country.toUpperCase();
         }
 
         function initCharts() {
@@ -227,7 +246,6 @@
                 },
                 options: { 
                     responsive: true, maintainAspectRatio: false, 
-                    animation: { duration: 800 },
                     plugins: { legend: { display: false } }, 
                     scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.03)' } } } 
                 }
@@ -235,40 +253,26 @@
             const ctxP = document.getElementById('pieChart').getContext('2d');
             pieChart = new Chart(ctxP, {
                 type: 'doughnut',
-                data: {
-                    datasets: [{ data: [50, 30, 20], backgroundColor: ['#00d2ff', '#00ff88', '#ff0055'], borderWidth: 0 }]
-                },
+                data: { datasets: [{ data: [50, 30, 20], backgroundColor: ['#00d2ff', '#00ff88', '#ff0055'], borderWidth: 0 }] },
                 options: { cutout: '80%'}
             });
         }
 
         setInterval(() => {
             const change = currentPrice * 0.005 * (Math.random() * 2 - 1);
-            const oldPrice = currentPrice;
             currentPrice = parseFloat((currentPrice + change).toFixed(2));
-            if(document.getElementById('p-steck')) {
-                document.getElementById('p-steck').innerText = currentPrice.toFixed(2);
-                document.getElementById('p-steck').style.color = currentPrice >= oldPrice ? 'var(--accent)' : 'var(--danger)';
-            }
+            if(document.getElementById('p-steck')) document.getElementById('p-steck').innerText = currentPrice.toFixed(2);
             if(mainChart) {
-                mainChart.data.datasets[0].borderColor = currentPrice >= oldPrice ? '#00ff88' : '#ff0055';
                 mainChart.data.datasets[0].data.push(currentPrice);
                 mainChart.data.datasets[0].data.shift();
                 mainChart.update('none');
             }
         }, 1000);
 
-        setInterval(updateFunFact, 8000);
-
-        function logTrade(t, a, p, c) {
-            const box = document.getElementById('history-box');
-            const row = document.createElement('div');
-            row.className = 'history-row';
-            row.innerHTML = `<span style="color:${c}; font-weight:bold;">${t}</span> <span>${a}</span> <span>$${p}</span>`;
-            box.prepend(row);
+        function updateFunFact() {
+            document.getElementById('fun-fact').innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
         }
 
-        function sync() { document.getElementById('side-name').innerText = document.getElementById('nameIn').value; }
         function goto(id, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -289,7 +293,7 @@
             requestAnimationFrame(drawBG);
         }
 
-        window.onload = () => { initCharts(); initBG(); drawBG(); loadAcademy(); loadNetwork(); updateFunFact(); };
+        window.onload = () => { initCharts(); initBG(); drawBG(); loadAcademy(); loadNetwork(); updateFunFact(); setInterval(updateFunFact, 8000); };
     </script>
 </body>
 </html>
